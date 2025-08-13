@@ -1,0 +1,25 @@
+ SETUP FOR THE REPO OWNER
+
+ 	STEP 1: CREATE A REPOSITORY (IF YOU HAVEN’T YET)
+
+		- Go to: https://github.com
+		- Click + New Repository
+		- Enter repository name (e.g., my-project)
+		- Choose Public or Private	
+		- Click Create Repository
+
+		- git init
+		- git add .
+		- git commit -m "Initial commit"
+		- git branch -M main
+		- git remote add origin https://github.com/YOUR-USERNAME/REPO-NAME.git
+		- git push -u origin main
+
+
+
+SETUP GIT ON YOU PC (FOR COLLABORATORS)
+
+	- git config --global user.name "YOUR NAME"
+	- git config --global user.email "YOUR EMAIL"
+
+	- git clone https://github.com/REPO-OWNER-USERNAME/REPO-NAME.git 
