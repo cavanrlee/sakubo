@@ -5,9 +5,9 @@ import './App.css'
 import Home from '../pages/HomePage'
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (Home)
+  return (<>
+  asfsfsaasf
+  </>)
 }
 
 export default App
