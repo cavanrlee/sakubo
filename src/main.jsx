@@ -7,7 +7,7 @@ import "./index.css";
 const App = () => {
   return (
     <BrowserRouter>
-      <AppRoutes />
+      <AppRoutes/>
     </BrowserRouter>
   );
 };
