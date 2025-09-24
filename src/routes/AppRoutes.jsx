@@ -1,14 +1,16 @@
 import { Routes, Route } from "react-router-dom";
-import HomePage from "../pages/HomePage";
-import AboutPage from "../pages/AboutPage";
+import HomePage from "../pages/Home/HomePage";
+import AboutPage from "../pages/About/AboutPage";
 import LoginPage from "../features/auth/pages/LoginPage";
 import MainLayout from "../layouts/MainLayout";
+import UserScripts from "../pages/Users/UserScripts";
+
 
 const AppRoutes = () => {
   return (
     <Routes>
       {/* PUBLIC ROUTES */}
-      <Route path="/" element={<HomePage />} />
+      <Route path="/" element={<UserScripts />} />
       <Route path="/about" element={<AboutPage />} />
 
       {/* AUTH ROUTES */}
