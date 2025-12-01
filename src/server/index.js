@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 
 import user_fetch from "../pages/Users/UsersController.js";
 
-
 dotenv.config();
 
 const app = express();

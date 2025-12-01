@@ -361,6 +361,92 @@ function Users({ andong }) {
 					</div>
 				</div>
 			</div >
+
+			{/* ===================== LOGIN FORM ===================== */}
+			<div className="col-12 mt-5">
+				<div className="card border-0 p-0">
+					<div className="row">
+						<div className="col-12" id="container-test">
+							<span className="text-md !text-gray-600">
+								Login to your account.
+							</span>
+						</div>
+					</div>
+				</div>
+
+				<form
+					onSubmit={async (e) => {
+						e.preventDefault();
+
+						try {
+							const res = await fetch("/users/login", {
+								method: "POST",
+								headers: { "Content-Type": "application/json" },
+								body: JSON.stringify({ username, password }),
+							});
+
+							const data = await res.json();
+
+							if (!res.ok) {
+								alert(data.error || "Login failed");
+							} else {
+								localStorage.setItem("auth_token", data.token);
+								alert(`Login successful! Welcome, ${data.user.username}`);
+								// optionally: redirect or fetch protected data
+							}
+						} catch (err) {
+							console.error("Login error:", err);
+							alert("Server error, try again later");
+						}
+					}}
+				>
+					<div className="card border-2 p-2">
+						<div className="row">
+							<div className="col-6 text-left">
+								<label className="my-1 font-bold" htmlFor="">
+									Username:
+								</label>
+								<input
+									className="form-control"
+									type="text"
+									placeholder="Enter username"
+									value={username}
+									onChange={(e) => setUsername(e.target.value)}
+									required
+								/>
+							</div>
+
+							<div className="col-6 text-left">
+								<label className="my-1 font-bold" htmlFor="">
+									Password:
+								</label>
+								<input
+									className="form-control"
+									type="password"
+									placeholder="Enter password"
+									value={password}
+									onChange={(e) => setPassword(e.target.value)}
+									required
+								/>
+							</div>
+						</div>
+					</div>
+
+					<div className="card border-0 p-2 mt-2">
+						<div className="row">
+							<div className="col-12">
+								<button
+									className="btn btn-success text-white !font-semibold h-13"
+									type="submit"
+								>
+									Login
+								</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+
 		</>
 	)
 }
