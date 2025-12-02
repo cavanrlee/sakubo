@@ -6,7 +6,6 @@ import RegisterPage from "../pages/Register/Register";
 import MainLayout from "../layouts/MainLayout";
 import UserScripts from "../pages/Users/UserScripts";
 
-
 const AppRoutes = () => {
   return (
     <Routes>

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import Users from "./Users";
 
-
 function UserScripts() {
 	const [users, setUsers] = useState([]);
 	// const [usersDeets, setUsersDeet] = useState([]);

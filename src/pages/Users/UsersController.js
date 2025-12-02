@@ -2,7 +2,7 @@ import express from "express";
 import db_connection from "../../server/db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { authenticateToken } from "../middleware/auth.js";
+import { authenticateToken } from "../../middleware/auth.js";
 
 const router = express.Router();
 
@@ -25,6 +25,8 @@ router.post("/login", async (req, res) => {
 
 		// Compare password with hashed password in DB
 		const isValid = await bcrypt.compare(password, user.password);
+
+		console.log(isValid);
 
 		if (!isValid) {
 			return res.status(401).json({ error: "Invalid username or passwordss" });

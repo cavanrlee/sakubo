@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function SaKuboLogin() {
+export default function SaKuboLogin({ user_data }) {
   return (
     <div className="bg-white text-gray-800 flex flex-col items-center justify-between min-h-screen p-4">
       <header className="text-center mt-8">
