@@ -6,6 +6,7 @@ import LogsinPage from "../pages/Login/Logsin";
 import RegisterPage from "../pages/Register/Register";
 import MainLayout from "../layouts/MainLayout";
 import UserScripts from "../pages/Users/UserScripts";
+import ProtectedRoute from "../middleware/ProtectedRoutes.jsx";
 
 const AppRoutes = () => {
   return (
@@ -20,7 +21,7 @@ const AppRoutes = () => {
 
 
       {/* NESTED ROUTES WITH LAYOUT */}
-      <Route element={<MainLayout />}>
+      <Route element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
         <Route path="/dashboard" element={<h2>Dashboard</h2>} />
         <Route path="/profile" element={<h2>Profile</h2>} />
       </Route>

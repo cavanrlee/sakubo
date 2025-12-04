@@ -49,7 +49,7 @@ export default function SaKuboLogin({ user_data }) {
 				<div className="card border-0 p-0">
 					<div className="row mb-2">
 						<div className="col-12 my-2">
-							<span className="text-2xl !text-gray-600 font-medium">
+							<span className="text-2xl !text-gray-600 font-bold">
 								Welcome back!
 							</span>
 						</div>
