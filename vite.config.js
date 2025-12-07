@@ -7,9 +7,6 @@ export default defineConfig({
         react(),
         tailwindcss()
     ],
-<<<<<<< HEAD
-})
-=======
     server: {
         proxy: {
             '/users': {
@@ -21,4 +18,3 @@ export default defineConfig({
         }
     }
 })
->>>>>>> origin/junjun-new
