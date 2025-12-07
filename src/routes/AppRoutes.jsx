@@ -12,11 +12,11 @@ const AppRoutes = () => {
   return (
     <Routes>
       {/* PUBLIC ROUTES */}
-      <Route path="/" element={<UserScripts />} />
+      {/* <Route path="/" element={<UserScripts />} /> */}
       <Route path="/about" element={<AboutPage />} />
 
       {/* AUTH ROUTES */}
-      <Route path="/login" element={<LogsinPage />} />
+      <Route path="/" element={<LogsinPage />} />
       <Route path="/Register" element={<RegisterPage />} />
 
 
