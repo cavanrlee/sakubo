@@ -7,4 +7,18 @@ export default defineConfig({
         react(),
         tailwindcss()
     ],
+<<<<<<< HEAD
 })
+=======
+    server: {
+        proxy: {
+            '/users': {
+                target: 'http://localhost:5000',
+                changeOrigin: true,
+                secure: false,
+                // rewrite: (path) => path.replace(/^\/api/, '')
+            }
+        }
+    }
+})
+>>>>>>> origin/junjun-new
