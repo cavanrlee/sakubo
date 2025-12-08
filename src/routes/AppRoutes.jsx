@@ -1,8 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import HomePage from "../pages/Home/HomePage";
 import AboutPage from "../pages/About/AboutPage";
-import LoginPage from "../pages/Login/Login";
-import LogsinPage from "../pages/Login/Logsin";
+import LoginPage from "../pages/Login/Login.jsx";
 import RegisterPage from "../pages/Register/Register";
 import MainLayout from "../layouts/MainLayout";
 import UserScripts from "../pages/Users/UserScripts";
@@ -16,7 +15,7 @@ const AppRoutes = () => {
       <Route path="/about" element={<AboutPage />} />
 
       {/* AUTH ROUTES */}
-      <Route path="/" element={<LogsinPage />} />
+      <Route path="/" element={<LoginPage />} />
       <Route path="/Register" element={<RegisterPage />} />
 
 

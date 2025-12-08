@@ -1,49 +1,129 @@
 import React from "react";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function SaKuboLogin({ user_data }) {
-  return (
-    <div className="bg-white text-gray-800 flex flex-col items-center justify-between min-h-screen p-4">
-      <header className="text-center mt-8">
-        <h1 className="text-2xl font-bold text-green-700">saKubo</h1>
-        <p className="text-sm text-gray-600 mt-1">
-          Discover local businesses in your community
-        </p>
-      </header>
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
 
-      <section className="w-full max-w-sm border border-green-300 rounded-2xl p-4 mt-6 text-center">
-        <div className="flex items-center justify-center text-red-600 mb-2">
-          <span className="mr-1">📍</span>
-          <span className="text-sm font-medium">Current Location Detected</span>
-        </div>
-        <p className="text-base font-semibold text-gray-800">
-          Brgy. Commonwealth, Quezon City
-        </p>
-        <p className="text-xs text-gray-500 mt-1">
-          47 businesses found in your area
-        </p>
-      </section>
+console.log(cn("bg-red-500", "text-white"));
 
-      <div className="flex flex-col gap-3 w-full max-w-sm mt-6">
-        <button className="bg-green-600 hover:bg-green-700 text-white py-2 rounded-2xl font-medium">
-          Log In
-        </button>
-        <button className="border border-green-600 text-green-600 hover:bg-green-50 py-2 rounded-2xl font-medium">
-          Sign Up
-        </button>
-      </div>
+	const handleLogin = async (e) => {
+		e.preventDefault();
 
-      <div className="mt-4 text-sm text-green-600 cursor-pointer hover:underline">
-        Log In as A Guest
-      </div>
+		try {
+			const res = await fetch("/users/login", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ username, password }),
+			});
 
-      <footer className="flex justify-center gap-4 w-full max-w-sm mt-6 mb-8">
-        <button className="flex-1 border border-gray-300 text-gray-700 py-2 rounded-2xl font-medium">
-          📰 saKubo News
-        </button>
-        <button className="flex-1 border border-gray-300 text-gray-700 py-2 rounded-2xl font-medium">
-          📍 See Coverage Map
-        </button>
-      </footer>
-    </div>
-  );
+			const data = await res.json();
+
+			if (!res.ok) {
+				alert(data.error || "Login failed");
+			} else {
+				localStorage.setItem("auth_token", data.token);
+				alert(`Login successful! Welcome, ${data.user.username}`);
+				// optionally: redirect or fetch protected data.
+				window.location.replace("/dashboard");
+			}
+		} catch (err) {
+			console.error("Login error:", err);
+			alert("Server error, try again later");
+		}
+	};
+
+	return (
+		<>
+			<div className="col-12">
+				<div className="card border-0 p-8">
+					<div className="row">
+						<div className="col-12">
+							<span className="text-4xl text-[#4CAF50] font-bold">
+								saKubo
+							</span>
+						</div>
+					</div>
+				</div>
+
+				<div className="card border-0 p-0">
+					<div className="row mb-2">
+						<div className="col-12 my-2">
+							<span className="text-2xl !text-gray-600 font-bold">
+								Welcome back!
+							</span>
+						</div>
+
+						<div className="col-12 my-2">
+							<span className="text-md !text-gray-600">
+								Sign in to your account.
+							</span>
+						</div>
+					</div>
+
+					<div className="row mt-4">
+						<form onSubmit={handleLogin} id="login-form">
+							<div className="col-12 text-left my-2">
+								<label className="form-label text-sm">
+									<span className="text-muted">
+										Mobile Number/Username
+									</span>
+								</label>
+
+								<input className="form-control h-13" id='input' type="text" placeholder="+639XX-XXX-XXXX" value={username} onChange={(e) => setUsername(e.target.value)} required />
+							</div>
+
+							<div className="col-12 text-left my-2">
+								<label className="form-label text-sm">
+									<span className="text-muted">
+										Password
+									</span>
+								</label>
+								<input className="form-control h-13" type="password" placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+							</div>
+						</form>
+					</div>
+
+					<div className="row mt-2">
+						<div className="col-6 text-left">
+							<input className='form-check-input me-2' type="checkbox" />
+
+							<label className="form-label text-sm">
+								<span className="text-muted">
+									Remember me
+								</span>
+							</label>
+						</div>
+
+						<div className="col-6 text-right">
+							<a href="#">
+								<label className="form-label text-sm">
+									<span className="text-gray-600 font-semibold hover:cursor-pointer hover:text-gray-900">
+										Forgot password?
+									</span>
+								</label>
+							</a>
+						</div>
+					</div>
+
+					<div className="row mt-2">
+						<div className="col-12 text-center my-2">
+							<div className="row mx-1">
+								      <Button>Default Button</Button>
+
+								<button className='btn btn-primary h-13' type="button" onClick={() => document.getElementById("login-form").requestSubmit()}>
+									<span className='text-white font-bold'>
+										Log In
+									</span>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div >
+		</>
+	);
 }
