@@ -22,9 +22,17 @@ export default function SaKuboLogin({ user_data }) {
 			if (!res.ok) {
 				alert(data.error || "Login failed");
 			} else {
-				localStorage.setItem("auth_token", data.token);
+				const token = data.token;
+
+				// Decode JWT EXP field
+				const decoded = JSON.parse(atob(token.split(".")[1]));
+
+				// Save token + expiration in localStorage
+				localStorage.setItem("auth_token", token);
+				localStorage.setItem("expires_at", decoded.exp * 1000); // convert to mss
+
 				alert(`Login successful! Welcome, ${data.user.username}`);
-				// optionally: redirect or fetch protected data.
+
 				window.location.replace("/dashboard");
 			}
 		} catch (err) {

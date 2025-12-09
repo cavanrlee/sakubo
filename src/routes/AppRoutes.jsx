@@ -4,7 +4,9 @@ import AboutPage from "../pages/About/AboutPage";
 import LoginPage from "../pages/Login/Login";
 import LogsinPage from "../pages/Login/Logsin";
 import RegisterPage from "../pages/Register/Register";
+import DashboardPage from "../pages/Dashboard/Dashboard";
 import MainLayout from "../layouts/MainLayout";
+import NavBarLayout from "../layouts/Navbar";
 import UserScripts from "../pages/Users/UserScripts";
 import ProtectedRoute from "../middleware/ProtectedRoutes.jsx";
 
@@ -21,9 +23,8 @@ const AppRoutes = () => {
 
 
       {/* NESTED ROUTES WITH LAYOUT */}
-      <Route element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
-        <Route path="/dashboard" element={<h2>Dashboard</h2>} />
-        <Route path="/profile" element={<h2>Profile</h2>} />
+      <Route element={<ProtectedRoute><NavBarLayout /></ProtectedRoute>}>
+        <Route path="/Dashboard" element={<DashboardPage />} />
       </Route>
 
       {/* FALLBACK (404) */}
