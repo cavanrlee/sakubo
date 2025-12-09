@@ -52,13 +52,13 @@ console.log(cn("bg-red-500", "text-white"));
 				<div className="card border-0 p-0">
 					<div className="row mb-2">
 						<div className="col-12 my-2">
-							<span className="text-2xl !text-gray-600 font-bold">
+							<span className="text-2xl text-gray-600 font-bold">
 								Welcome back!
 							</span>
 						</div>
 
-						<div className="col-12 my-2">
-							<span className="text-md !text-gray-600">
+						<div className="col-12">
+							<span className="text-md text-gray-600!">
 								Sign in to your account.
 							</span>
 						</div>
@@ -67,7 +67,7 @@ console.log(cn("bg-red-500", "text-white"));
 					<div className="row mt-4">
 						<form onSubmit={handleLogin} id="login-form">
 							<div className="col-12 text-left my-2">
-								<label className="form-label text-sm">
+								<label className="form-label font-bold text-sm">
 									<span className="text-muted">
 										Mobile Number/Username
 									</span>
@@ -77,7 +77,7 @@ console.log(cn("bg-red-500", "text-white"));
 							</div>
 
 							<div className="col-12 text-left my-2">
-								<label className="form-label text-sm">
+								<label className="form-label font-bold text-sm">
 									<span className="text-muted">
 										Password
 									</span>
@@ -101,7 +101,7 @@ console.log(cn("bg-red-500", "text-white"));
 						<div className="col-6 text-right">
 							<a href="#">
 								<label className="form-label text-sm">
-									<span className="text-gray-600 font-semibold hover:cursor-pointer hover:text-gray-900">
+									<span className="text-red-500 font-semibold hover:cursor-pointer">
 										Forgot password?
 									</span>
 								</label>
@@ -112,8 +112,6 @@ console.log(cn("bg-red-500", "text-white"));
 					<div className="row mt-2">
 						<div className="col-12 text-center my-2">
 							<div className="row mx-1">
-								      <Button>Default Button</Button>
-
 								<button className='btn btn-primary h-13' type="button" onClick={() => document.getElementById("login-form").requestSubmit()}>
 									<span className='text-white font-bold'>
 										Log In

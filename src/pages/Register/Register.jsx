@@ -4,39 +4,65 @@ export default function SaKuboRegister() {
   const [activeTab, setActiveTab] = useState("personal");
 
   return (
-    <div className="bg-white text-gray-800 flex flex-col items-center min-h-screen p-6">
+    <div className="col-12">
+
       {/* HEADER */}
-      <header className="text-center mt-4">
-        <h1 className="text-2xl font-bold text-green-700">saKubo</h1>
-        <p className="text-sm text-gray-600 mt-1">Join our community today</p>
-      </header>
+        <div className="card border-0 p-8">
+					<div className="row">
+						<div className="col-12">
+							<span className="text-4xl text-[#4CAF50] font-bold">
+								saKubo
+							</span>
+						</div>
+					</div>
+				</div>
+
+        <div className="row mb-2">
+          <div className="col-12">
+            <span className="text-2xl text-gray-600 font-bold">
+              Create Account
+            </span>
+          </div>
+
+          <div className="col-12">
+            <span className="text-md text-gray-600!">
+              Join our community today
+            </span>
+          </div>
+        </div>
 
       {/* TAB BUTTONS */}
-      <div className="flex mt-4 w-full max-w-sm bg-gray-100 rounded-xl p-1">
-        <button
-          className={`w-1/2 py-2 rounded-lg font-medium transition ${
-            activeTab === "personal"
-              ? "bg-green-600 text-white"
-              : "text-gray-700 hover:bg-gray-200"
-          }`}
-          onClick={() => setActiveTab("personal")}
-        >
-          Personal
-        </button>
-        <button
-          className={`w-1/2 py-2 rounded-lg font-medium transition ${
-            activeTab === "business"
-              ? "bg-green-600 text-white"
-              : "text-gray-700 hover:bg-gray-200"
-          }`}
-          onClick={() => setActiveTab("business")}
-        >
-          Business
-        </button>
+
+      <div className="flex w-full bg-gray-100 rounded p-1 mt-4">
+          <button
+            type="button"
+            className={`w-1/2 h-13 btn py-2 font-semibold transition-all duration-200 ${
+              activeTab === "personal"
+                ? "btn-primary text-white"
+                : "text-gray-700"
+            }`}
+            onClick={() => setActiveTab("personal")}
+          >
+            Personal
+          </button>
+
+          <button
+            type="button"
+            className={`w-1/2 h-13 btn py-2 font-semibold transition-all duration-200 ${
+              activeTab === "business"
+                ? "btn-primary text-white"
+                : "text-gray-700"
+            }`}
+            onClick={() => setActiveTab("business")}
+          >
+            Business
+          </button>
       </div>
 
+
+
       {/* FORM SECTION */}
-      <form className="w-full max-w-sm mt-6 flex flex-col gap-4">
+      <form className="w-full mt-6 flex flex-col gap-4 pb-10">
         {activeTab === "personal" ? (
           <>
             <div className="flex gap-2">
@@ -87,10 +113,20 @@ export default function SaKuboRegister() {
                 className="w-1/3 border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
               />
             </div>
-
-            <button className="bg-green-600 text-white py-3 rounded-xl font-medium hover:bg-green-700 transition">
-              Create Personal Account
-            </button>
+              <button className='btn btn-primary h-13' type="button">
+                <span className='text-white font-bold'>
+                  Create Personal Account
+                </span>
+              </button>
+ 
+            {/* TERMS */}
+            <p className="text-xs text-center text-gray-500 px-4">
+              By creating an account, you agree to our{" "}
+              <span className="text-green-600 font-medium">Terms of Service</span> and{" "}
+              <span className="text-green-600 font-medium">Privacy Policy</span>.
+              You also consent to receive SMS notifications about local business updates
+              and promotional offers.
+            </p>
           </>
         ) : (
           <>
@@ -141,10 +177,48 @@ export default function SaKuboRegister() {
               placeholder="Contact Number"
               className="border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
             />
+    
+            <div className="flex gap-2">
+              <select className="border  w-1/2 border-gray-300 rounded-xl p-3 text-sm text-gray-700 focus:ring-2 focus:ring-green-500 outline-none">
+                <option>Select Days</option>
+                <option>15</option>
+                <option>30</option>
+              </select>
+              <input
+                  type="text"
+                  placeholder="8:00 AM - 9:00 AM"
+                  className="border  w-1/2 border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
+                />
+            </div>
 
-            <button className="bg-green-600 text-white py-3 rounded-xl font-medium hover:bg-green-700 transition">
-              Create Business Account
-            </button>
+
+            <div className="flex gap-2">
+              <input
+                  type="text"
+                  placeholder="8:00 AM - 9:00 AM"
+                  className="border  w-1/2 border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
+                />
+              <input
+                  type="text"
+                  placeholder="8:00 AM - 9:00 AM"
+                  className="border  w-1/2 border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
+                />
+            </div>
+
+
+
+			          <button className='btn btn-primary h-13' type="button">
+									<span className='text-white font-bold'>
+										Create Business Account
+									</span>
+								</button>
+
+            {/* TERMS */}
+            <p className="text-xs text-center text-gray-500 px-4">
+              By creating an account, you agree to our{" "}
+              <span className="text-green-600 font-medium">Terms of Service</span> and{" "}
+              <span className="text-green-600 font-medium">Privacy Policy</span>.
+            </p>
           </>
         )}
       </form>
