@@ -8,14 +8,14 @@ export default function SaKuboRegister() {
 
       {/* HEADER */}
         <div className="card border-0 p-8">
-					<div className="row">
-						<div className="col-12">
-							<span className="text-4xl text-[#4CAF50] font-bold">
-								saKubo
-							</span>
-						</div>
-					</div>
+			<div className="row">
+				<div className="col-12">
+					<span className="text-4xl text-[#4CAF50] font-bold">
+						saKubo
+					</span>
 				</div>
+			</div>
+		</div>
 
         <div className="row mb-2">
           <div className="col-12">
@@ -43,7 +43,7 @@ export default function SaKuboRegister() {
             }`}
             onClick={() => setActiveTab("personal")}
           >
-            Personal
+            Personal	 
           </button>
 
           <button
@@ -65,54 +65,90 @@ export default function SaKuboRegister() {
       <form className="w-full mt-6 flex flex-col gap-4 pb-10">
         {activeTab === "personal" ? (
           <>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                placeholder="First Name"
-                className="w-1/2 border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
-              />
-              <input
-                type="text"
-                placeholder="Last Name"
-                className="w-1/2 border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
-              />
-            </div>
+           <div className="flex flex-col gap-4">
 
-            <input
-              type="text"
-              placeholder="Nickname"
-              className="border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
-            />
+  {/* First and Last Name */}
+  <div className="flex gap-2">
+    <div className="flex-1">
+      <label className="form-label font-bold text-left text-sm">
+        <span className="text-muted">First Name</span>
+      </label>
+      <input
+        type="text"
+        placeholder="First Name"
+        className="w-full border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
+      />
+    </div>
 
-            <input
-              type="text"
-              placeholder="Mobile Number"
-              className="border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
-            />
+    <div className="flex-1">
+      <label className="form-label font-bold text-left text-sm">
+        <span className="text-muted">Last Name</span>
+      </label>
+      <input
+        type="text"
+        placeholder="Last Name"
+        className="w-full border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
+      />
+    </div>
+  </div>
 
-            <input
-              type="email"
-              placeholder="Email Address (Optional)"
-              className="border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
-            />
+  {/* Nickname */}
+  <div>
+    <label className="form-label font-bold text-left text-sm">
+      <span className="text-muted">Nickname</span>
+    </label>
+    <input
+      type="text"
+      placeholder="Nickname"
+      className="w-full border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
+    />
+  </div>
 
-            <div className="flex gap-2">
-              <input
-                type="text"
-                placeholder="Barangay"
-                className="w-1/3 border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
-              />
-              <input
-                type="text"
-                placeholder="City"
-                className="w-1/3 border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
-              />
-              <input
-                type="text"
-                placeholder="Province"
-                className="w-1/3 border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
-              />
-            </div>
+  {/* Mobile Number */}
+  <div>
+    <label className="form-label font-bold text-left text-sm">
+      <span className="text-muted">Mobile Number</span>
+    </label>
+    <input
+      type="text"
+      placeholder="Mobile Number"
+      className="w-full border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
+    />
+  </div>
+
+  {/* Email Address */}
+  <div>
+    <label className="form-label font-bold text-left text-sm">
+      <span className="text-muted">Email Address (Optional)</span>
+    </label>
+    <input
+      type="email"
+      placeholder="Email Address (Optional)"
+      className="w-full border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
+    />
+  </div>
+
+  {/* Address */}
+  <div className="flex gap-2">
+    <input
+      type="text"
+      placeholder="Barangay"
+      className="w-1/3 border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
+    />
+    <input
+      type="text"
+      placeholder="City"
+      className="w-1/3 border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
+    />
+    <input
+      type="text"
+      placeholder="Province"
+      className="w-1/3 border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
+    />
+  </div>
+
+</div>
+
               <button className='btn btn-primary h-13' type="button">
                 <span className='text-white font-bold'>
                   Create Personal Account
