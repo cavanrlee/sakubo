@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import HomePage from "../pages/Home/HomePage";
+import ProfilePage from "../pages/Profile/ProfilePage";
 import AboutPage from "../pages/About/AboutPage";
 import LoginPage from "../pages/Login/Login";
 import LogsinPage from "../pages/Login/Logsin";
@@ -25,6 +26,8 @@ const AppRoutes = () => {
       {/* NESTED ROUTES WITH LAYOUT */}
       <Route element={<ProtectedRoute><NavBarLayout /></ProtectedRoute>}>
         <Route path="/Dashboard" element={<DashboardPage />} />
+        <Route path="/Home" element={<HomePage />} />
+        <Route path="/Profile" element={<ProfilePage />} />
       </Route>
 
       {/* FALLBACK (404) */}
