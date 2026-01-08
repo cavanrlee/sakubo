@@ -30,8 +30,8 @@ const NavBar = () => {
 				<div className="row">
 					<div className="col-12">
 						<div className="row">
-							<nav className="fixed bottom-0 left-0 right-0 p-0 bg-white  shadow-[0_-2px_6px_-1px_rgba(0,0,0,0.1)]">
-								<ul className="flex justify-around items-center h-14 m-0 p-0">
+							<nav className="fixed bottom-0 left-0 right-0 p-0 bg-white  shadow-[0_-2px_6px_-1px_rgba(0,0,0,0.1)] h-11">
+								<ul className="flex justify-around items-center h-10.5 m-0 p-0">
 									<li className={navItemClass("/Home")} onClick={() => navigate("/Home")}>
 										<span className="text-sm">Home</span>
 									</li>
