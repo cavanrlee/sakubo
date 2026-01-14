@@ -35,7 +35,9 @@ export default function SakuboProfile({ user_data }) {
 					<div className="row">
 						<div className="col-12 text-left">
 							<ul className="list-none p-0">
-								<li><a className="!text-gray-600 !no-underline text-semibold" id="log-out" type="button" onClick={logout}>Logout</a></li>
+								<li>
+									<a className="!text-gray-600 !no-underline text-semibold" id="log-out" type="button" onClick={logout}><i class='bx bx-log-out'></i> Logout</a>
+								</li>
 							</ul>
 						</div>
 					</div>
