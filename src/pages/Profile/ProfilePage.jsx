@@ -27,7 +27,7 @@ export default function SakuboProfile({ user_data }) {
 					</div>
 				</div>
 
-				
+
 				<div className="card border-0 p-8">
 					<div className="row">
 						<div className="col-12 text-left">
@@ -48,7 +48,7 @@ export default function SakuboProfile({ user_data }) {
 						<div className="col-12 text-left">
 							<ul className="list-none p-0">
 								<li>
-									<a className="!text-gray-600 !no-underline text-semibold" id="log-out" type="button" onClick={logout}><i class='bx bx-log-out'></i> Logout</a>
+									<a className="text-gray-600! no-underline! text-semibold" id="log-out" type="button" onClick={logout}><i class='bx bx-log-out'></i> Logout</a>
 								</li>
 							</ul>
 						</div>

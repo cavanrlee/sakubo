@@ -127,19 +127,6 @@ export default function SaKuboLogin({ user_data }) {
 							</div>
 						</div>
 					</div>
-
-					
-					<div className="row mt-2">
-						<div className="col-12 text-center my-2">
-							<div className="row mx-1">
-								<a className='btn btn-primary h-13' type="button" onClick={() => navigate("/Register")}>
-									<span className='text-white font-bold'>
-										Sign Up
-									</span>
-								</a>
-							</div>
-						</div>
-					</div>
 				</div>
 			</div >
 		</>
