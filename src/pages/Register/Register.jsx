@@ -160,7 +160,57 @@ export default function SaKuboRegister() {
           </>
         ) : (
           <>
-            {/* BUSINESS FORM KEPT AS-IS (STYLING CONSISTENT ONLY) */}
+            <input
+              type="text"
+              placeholder="Business Name"
+              className="border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
+            />
+
+            <input
+              type="text"
+              placeholder="Business Category"
+              className="border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
+            />
+
+            <select className="border border-gray-300 rounded-xl p-3 text-sm text-gray-700 focus:ring-2 focus:ring-green-500 outline-none">
+              <option>Select Type</option>
+              <option>Retail</option>
+              <option>Service</option>
+            </select>
+
+            <input
+              type="text"
+              placeholder="Street Address"
+              className="border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
+            />
+
+            <div className="flex gap-2">
+              <input
+                type="text"
+                placeholder="Barangay"
+                className="w-1/3 border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
+              />
+              <input
+                type="text"
+                placeholder="City"
+                className="w-1/3 border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
+              />
+              <input
+                type="text"
+                placeholder="Province"
+                className="w-1/3 border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
+              />
+            </div>
+
+            <input
+              type="text"
+              placeholder="Contact Number"
+              className="border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
+            />
+
+            <button className="bg-green-600 text-white py-3 rounded-xl font-medium hover:bg-green-700 transition">
+              Create Business Account
+            </button>
           </>
         )}
       </form>

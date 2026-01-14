@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import HomePage from "../pages/Home/HomePage";
 import ProfilePage from "../pages/Profile/ProfilePage";
 import AboutPage from "../pages/About/AboutPage";
-import LoginPage from "../pages/Login/Login.jsx";
+import LoginPage from "../pages/Login/Logsin.jsx";
 import RegisterPage from "../pages/Register/Register";
 import DashboardPage from "../pages/Dashboard/Dashboard";
 import MainLayout from "../layouts/MainLayout";
@@ -18,14 +18,14 @@ const AppRoutes = () => {
       <Route path="/about" element={<AboutPage />} />
 
       {/* AUTH ROUTES */}
-      <Route path="/" element={<LoginPage />} />
+      <Route path="/" element={<HomePage />} />
+      <Route path="/Login" element={<LoginPage />} />
       <Route path="/Register" element={<RegisterPage />} />
 
 
       {/* NESTED ROUTES WITH LAYOUT */}
       <Route element={<ProtectedRoute><NavBarLayout /></ProtectedRoute>}>
         <Route path="/Dashboard" element={<DashboardPage />} />
-        <Route path="/Home" element={<HomePage />} />
         <Route path="/Profile" element={<ProfilePage />} />
       </Route>
 

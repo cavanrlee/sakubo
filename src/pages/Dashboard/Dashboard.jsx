@@ -23,6 +23,23 @@ export default function SakuboDashboard({ user_data }) {
 					</div>
 				</div>
 
+				<div className="card border-0 p-8">
+					<div className="row">
+						<div className="col-12 text-left">
+							<span className="text-2xl text-[#4CAF50] font-bold">
+								Dashboard
+							</span>
+						</div>
+					</div>
+					
+					<div className="row">
+						<div className="col-12 text-left">
+							<hr />
+						</div>
+					</div>
+				</div>
+
+	
 				{/* <footer>
 					<div className="row">
 						<div className="col-12">

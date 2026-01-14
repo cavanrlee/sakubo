@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 export default function SaKuboLogin({ user_data }) {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
+	const navigate = useNavigate();
+
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
@@ -122,6 +124,19 @@ export default function SaKuboLogin({ user_data }) {
 										Log In
 									</span>
 								</button>
+							</div>
+						</div>
+					</div>
+
+					
+					<div className="row mt-2">
+						<div className="col-12 text-center my-2">
+							<div className="row mx-1">
+								<a className='btn btn-primary h-13' type="button" onClick={() => navigate("/Register")}>
+									<span className='text-white font-bold'>
+										Sign Up
+									</span>
+								</a>
 							</div>
 						</div>
 					</div>

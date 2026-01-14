@@ -16,6 +16,18 @@ export default function SakuboProfile({ user_data }) {
 	return (
 		<>
 			<div className="col-12">
+				
+				<div className="card border-0 p-8">
+					<div className="row">
+						<div className="col-12">
+							<span className="text-4xl text-[#4CAF50] font-bold">
+								saKubo
+							</span>
+						</div>
+					</div>
+				</div>
+
+				
 				<div className="card border-0 p-8">
 					<div className="row">
 						<div className="col-12 text-left">
