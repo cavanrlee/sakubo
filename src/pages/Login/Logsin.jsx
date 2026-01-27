@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../../api"; // your Axios instance
+import { loginUser } from "./LoginController";
 
 export default function SaKuboLogin() {
   const [username, setUsername] = useState("");
@@ -11,33 +11,21 @@ export default function SaKuboLogin() {
     e.preventDefault();
 
     try {
-      // ✅ Fetch CSRF cookie first
-      await axios.get("/sanctum/csrf-cookie");
-
-      // ✅ Make login request
-      const response = await axios.post("http://sakubo-laravel-api.com/api/login", {
-        email: username,
-        password: password,
-      });
-
-      localStorage.setItem("auth_token", response.data.token || "");
-
-      alert(`Login successful! Welcome, ${response.data.user.name}`);
-
+      const data = await loginUser(username, password);
+      localStorage.setItem("auth_token", data.token);
       navigate("/dashboard");
     } catch (error) {
-      if (error.response) {
-        if (error.response.status === 401) {
-          alert("Invalid credentials");
-        } else if (error.response.status === 409) {
-          alert("Conflict: " + (error.response.data.message || "Resource conflict"));
-        } else {
-          alert(error.response.data.message || "Login failed");
-        }
-      } else {
-        console.error("Login error:", error);
-        alert("Server error, try again later");
-      }
+      	if (error.response) {
+			if (error.response.status === 401) {
+				alert(error.response.data.message);
+			} else if (error.response.status === 409) {
+				alert("Conflict: " + (error.response.data.message || "Resource conflict"));
+			} else {
+				alert(error.response.data.message || "Login failed");
+			}
+		} else {
+			alert("Server error, try again later");
+		}
     }
   };
 	return (
