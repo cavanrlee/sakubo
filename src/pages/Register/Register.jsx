@@ -57,7 +57,7 @@ export default function SaKuboRegister() {
   };
 
   const labelClass =
-    "form-label text-sm text-muted d-block text-start mb-1";
+    "form-label text-sm text-muted d-block text-start mb-1 font-bold";
 
   const inputClass =
     "w-full border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none";

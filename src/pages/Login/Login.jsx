@@ -6,26 +6,31 @@ import { loginUser } from "./LoginController";
 export default function SaKuboLogin() {
   	const [username, setUsername] = useState("");
   	const [password, setPassword] = useState("");
-	const [error, setError] = useState(null);
+	const [errors, setErrors] = useState({});
   	const navigate = useNavigate();
  
   	const handleLogin = async (e) => {
     	e.preventDefault();
+    	setErrors({});
 
     	try {
       		const data = await loginUser(username, password);
       		localStorage.setItem("auth_token", data.token);
-      		setError(null);
+      		
       		navigate("/dashboard");
-    	} catch (error) {
-			// FIX: USE THE SAME VARIABLE
-			if (error.response && error.response.data && error.response.data.error) {
-				setError(error.response.data.error.message);
-			} else {
-				setError("Something went wrong.");
+    	} catch (err) {
+			if (err.response?.data?.error?.fields) {
+				setErrors(err.response.data.error.fields);
 			}
     	}
   	};
+
+  	const errorText = (field) =>
+    errors[field] && (
+      <div className="text-danger text-sm mt-1 text-start">
+        {errors[field][0]}
+      </div>
+    );
 
 	return (
 		<div className="col-12">
@@ -69,6 +74,8 @@ export default function SaKuboLogin() {
 								value={username}
 								onChange={(e) => setUsername(e.target.value)}
 							/>
+
+							{errorText("email")}
 						</div>
 
 						<div className="col-12 text-left my-2">
@@ -84,14 +91,9 @@ export default function SaKuboLogin() {
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
 							/>
-						</div>
 
-						{/* ALERT BOXES */}
-						{error && (
-							<div className="alert alert-danger mt-2" role="alert">
-								{error}
-							</div>
-						)}
+							{errorText("password")}
+						</div>
 					</form>
 				</div>
 
