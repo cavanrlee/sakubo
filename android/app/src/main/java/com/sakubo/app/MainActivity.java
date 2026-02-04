@@ -1,4 +1,4 @@
-package com.sakubo.app;
+package com.saKubo.app;
 
 import com.getcapacitor.BridgeActivity;
 

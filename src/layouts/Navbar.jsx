@@ -1,21 +1,12 @@
-import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
-// import { Outlet, Link } from "react-router-dom";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 
 const logout = async (e) => {
-	localStorage.removeItem("auth_token");
 	alert("Logged out");
+	localStorage.removeItem("auth_token");
 	window.location.href = "/";
 }
 
 const NavBar = () => {
-	// const [active, setActive] = useState("home");
-
-	// const navItemClass = (key) => `flex flex-col items-center w-25 cursor-pointer transition-colors
-	// 		${active === key ? "text-[#4CAF50] font-semibold" : "text-gray-400"}`;
-
 	const navigate = useNavigate();
 	const location = useLocation();
 
@@ -39,14 +30,6 @@ const NavBar = () => {
 									<li className={navItemClass("/Profile")} onClick={() => navigate("/Profile")}>
 										<span className="text-sm">Profile</span>
 									</li>
-
-									{/* <li className={navItemClass("notifications")} onClick={() => setActive("notifications")}>
-										<span className="text-sm">Notifications</span>
-									</li>
-
-									<li className={navItemClass("profile")} onClick={() => setActive("profile")}>
-										<span className="text-sm">Profile</span>
-									</li> */}
 								</ul>
 							</nav>
 						</div>

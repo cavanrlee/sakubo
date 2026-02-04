@@ -1,20 +1,19 @@
-import { React } from 'react'
+import { React } from 'react';
+import saKuboLogo from '../../../public/saKubo.svg';
 import { useNavigate } from "react-router-dom";
-import './Home.css'
+import './Home.css';
 
 
 function HomePage() {
 	const navigate = useNavigate();
 
 	return (
-	
             <div className="col-12">
-                <div className="card border-0 px-8 pt-8 pb-1">
+                {/* HEADER */}
+                <div className="card border-0 p-0">
                     <div className="row">
-                        <div className="col-12">
-                            <span className="text-4xl text-[#4CAF50] font-bold">
-                                saKubo
-                            </span>
+                        <div className="col-12 d-flex justify-center">
+                            <img src={saKuboLogo} alt="saKubo" className='max-w-75'/>
                         </div>
                     </div>
                 </div>
@@ -22,7 +21,7 @@ function HomePage() {
                 <div className="card border-0 p-0">
                     <div className="row mb-2">
                         <div className="col-12 my-2">
-                            <span className="text-md !text-gray-600">
+                            <span className="text-md text-gray-600!">
                                 Discover local businesses in your community.
                             </span>
                         </div>
@@ -30,7 +29,7 @@ function HomePage() {
 
                     <div className="row my-4">
                         <div className="col-12 text-center my-2">
-                            <div class="alert !bg-[#E8F5E8] border-2 !border-[#4CAF50] !rounded-2xl" role="alert">
+                            <div className="alert bg-[#E8F5E8]! border-2 border-[#4CAF50]! rounded-2xl" role="alert">
                                 <div className="col-12 my-3">
                                     <span className='text-[#4CAF50] text-lg font-medium'>Current Location:</span>
                                 </div>
@@ -53,7 +52,7 @@ function HomePage() {
                             </div>
 
                             <div className="row mx-1 my-2">
-                                <button className='btn btn-outline-primary !bg-[white] !border-[#4CAF50] !text-[#4CAF50] !font-bold h-13' type="button" onClick={() => navigate("/Register")}>
+                                <button className='btn btn-outline-primary bg-[white] border-[#4CAF50]! text-[#4CAF50]! font-bold! h-13' type="button" onClick={() => navigate("/Register")}>
                                     Sign Up
                                 </button>
                             </div>

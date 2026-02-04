@@ -6,12 +6,10 @@ function Home() {
     return (
         <>
             <div className="col-12">
-                <div className="card border-0 px-8 pt-8 pb-1">
+                <div className="card border-0 p-8">
                     <div className="row">
                         <div className="col-12">
-                            <span className="text-4xl text-[#4CAF50] font-bold">
-                                saKubo
-                            </span>
+                            <img src={saKuboLogo} alt="saKubo" />
                         </div>
                     </div>
                 </div>

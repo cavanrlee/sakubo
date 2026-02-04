@@ -1,7 +1,8 @@
-import express from "express";
-import db_connection from "../../server/db.js";
+import axios from "../../api/axios.js"; 
 
-const router = express.Router();
+export const registerUser = async (formData) => {
+  await axios.get("/sanctum/csrf-cookie");
+  const response = await axios.post("http://sakubo-laravel-api.com/api/register", formData);
 
-
-export default router;
+  return response.data;
+};

@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import saKuboLogo from '../../../public/saKubo.svg';
 
 export default function SakuboProfile({ user_data }) {
 	const [active, setActive] = useState("home");
@@ -16,17 +17,14 @@ export default function SakuboProfile({ user_data }) {
 	return (
 		<>
 			<div className="col-12">
-				
-				<div className="card border-0 p-8">
+				{/* HEADER */}
+				<div className="card border-0 p-0">
 					<div className="row">
-						<div className="col-12">
-							<span className="text-4xl text-[#4CAF50] font-bold">
-								saKubo
-							</span>
+						<div className="col-12 d-flex justify-center">
+							<img src={saKuboLogo} alt="saKubo" className='max-w-75'/>
 						</div>
 					</div>
 				</div>
-
 
 				<div className="card border-0 p-8">
 					<div className="row">

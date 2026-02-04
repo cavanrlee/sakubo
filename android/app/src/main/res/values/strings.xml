@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">sakubo</string>
-    <string name="title_activity_main">sakubo</string>
-    <string name="package_name">com.sakubo.app</string>
-    <string name="custom_url_scheme">com.sakubo.app</string>
+    <string name="app_name">saKubo</string>
+    <string name="title_activity_main">saKubo</string>
+    <string name="package_name">com.saKubo.app</string>
+    <string name="custom_url_scheme">com.saKubo.app</string>
 </resources>
