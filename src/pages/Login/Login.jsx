@@ -12,7 +12,6 @@ export default function SaKuboLogin() {
   	const handleLogin = async (e) => {
     	e.preventDefault();
     	setErrors({});
-
     	try {
       		const data = await loginUser(username, password);
       		localStorage.setItem("auth_token", data.token);
@@ -128,8 +127,8 @@ export default function SaKuboLogin() {
 									document
 										.getElementById("login-form")
 										.requestSubmit()
-								}
-							>
+									}
+								>
 								<span className="text-white font-bold">
 									Log In
 								</span>

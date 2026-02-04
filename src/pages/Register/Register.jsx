@@ -185,27 +185,36 @@ export default function SaKuboRegister() {
             </div>
 
             <div className="flex gap-2">
-              <input
-                name="barangay"
-                placeholder="Barangay"
-                value={form.barangay}
-                onChange={handleChange}
-                className={inputClass}
-              />
-              <input
-                name="city"
-                placeholder="City"
-                value={form.city}
-                onChange={handleChange}
-                className={inputClass}
-              />
-              <input
-                name="province"
-                placeholder="Province"
-                value={form.province}
-                onChange={handleChange}
-                className={inputClass}
-              />
+              <div>
+                <label className={labelClass}>Barangay</label>
+                <input
+                  name="barangay"
+                  placeholder="Barangay"
+                  value={form.barangay}
+                  onChange={handleChange}
+                  className={inputClass}
+                />
+              </div>
+              <div>
+                <label className={labelClass}>City</label>
+                <input
+                  name="city"
+                  placeholder="City"
+                  value={form.city}
+                  onChange={handleChange}
+                  className={inputClass}
+                />
+              </div>
+              <div>
+                <label className={labelClass}>Province</label>
+                <input
+                  name="province"
+                  placeholder="Province"
+                  value={form.province}
+                  onChange={handleChange}
+                  className={inputClass}
+                />
+              </div>
             </div>
 
             <button
@@ -264,27 +273,36 @@ export default function SaKuboRegister() {
             </div>
 
             <div className="flex gap-2">
-              <input
-                name="business_barangay"
-                placeholder="Barangay"
-                value={form.business_barangay}
-                onChange={handleChange}
-                className={inputClass}
-              />
-              <input
-                name="business_city"
-                placeholder="City"
-                value={form.business_city}
-                onChange={handleChange}
-                className={inputClass}
-              />
-              <input
-                name="business_province"
-                placeholder="Province"
-                value={form.business_province}
-                onChange={handleChange}
-                className={inputClass}
-              />
+              <div>
+                <label className={labelClass}>Barangay</label>
+                <input
+                  name="business_barangay"
+                  placeholder="Barangay"
+                  value={form.business_barangay}
+                  onChange={handleChange}
+                  className={inputClass}
+                />
+              </div>
+              <div>
+                <label className={labelClass}>City</label>
+                <input
+                  name="business_city"
+                  placeholder="City"
+                  value={form.business_city}
+                  onChange={handleChange}
+                  className={inputClass}
+                />
+              </div>
+              <div>
+               <label className={labelClass}>Provice</label>
+                <input
+                  name="business_province"
+                  placeholder="Province"
+                  value={form.business_province}
+                  onChange={handleChange}
+                  className={inputClass}
+                />
+              </div>
             </div>
 
             <div>
