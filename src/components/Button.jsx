@@ -52,6 +52,15 @@ const Button = ({
     danger: "#FEE2E2", // red-50
   };
 
+  const hoverOutlineText = {
+    primary: "white",   // text turns white on hover
+    secondary: "white",
+    white: "black",
+    black: "white",
+    warning: "black",
+    danger: "white",
+  };
+  
   // HANDLE HOVER
   const handleMouseEnter = (e) => {
     if (disabled) return;

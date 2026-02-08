@@ -27,7 +27,7 @@ export default function SaKuboLogin() {;
 		setErrors({});
 		try {
 			const data = await loginUser(form);
-			localStorage.setItem("api_token", data.api_token);
+			localStorage.setItem("api_token", data.token);
 			navigate("/dashboard");
 		} catch (err) {
 			if (err.response?.data?.error?.fields) {
