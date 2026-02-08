@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import saKuboLogo from '/saKubo.svg';
 import { loginUser } from "@/pages/login/LoginController";
 import TextInput from "@/components/TextInput";
 import Button from "@/components/Button"; 
