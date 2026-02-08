@@ -32,6 +32,8 @@ export default function SaKuboLogin() {;
 		} catch (err) {
 			if (err.response?.data?.error?.fields) {
 				setErrors(err.response.data.error.fields);
+			}else{
+				alert(err.response.data.error.message);
 			}
 		}
   	};
