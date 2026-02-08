@@ -5,10 +5,11 @@ import TextInput from "@/components/TextInput";
 import Button from "@/components/Button"; 
 import Tabs from "@/components/Tabs";
 import Logo from "@/components/Logo";
-
+import MessageModal from "@/components/modals/MessageModal"; 
 
 export default function SaKuboRegister() {
   const [activeTab, setActiveTab] = useState("personal");
+  const [modal, setModal] = useState({ show: false, title: "", message: "", type: "success" });
 
   const tabList = [
     { key: "personal", label: "Personal" },
@@ -77,7 +78,16 @@ export default function SaKuboRegister() {
     try {
       const res = await registerUser(payload);
       localStorage.setItem("auth_token", res.token);
-      navigate("/login");
+
+      setModal({
+        show: true,
+        title: "Success",
+        message: res.message,
+        type: "success",
+      });
+
+      // Optionally navigate after a delay
+      setTimeout(() => navigate("/login"), 1500);
     } catch (err) {
       if (err.response?.data?.error?.fields) {
         setErrors(err.response.data.error.fields);
