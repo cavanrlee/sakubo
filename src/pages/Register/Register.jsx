@@ -83,14 +83,6 @@ export default function SaKuboRegister() {
     }
   };
 
-
-  const errorText = (field) =>
-  errors[field] && (
-    <div className="text-danger text-sm mt-1 text-start">
-      {errors[field][0]}
-    </div>
-  );
-
   return (
     <div className="col-12 max-w-xl mx-auto">
 

@@ -1,6 +1,3 @@
-const themeGreen = "#4CAF50"; // CUSTOM THEME GREEN
-const themeGreenLight = "#4CAF50"; // optional lighter focus border
-
 const TextInput = ({
   form,
   errors,
@@ -15,9 +12,8 @@ const TextInput = ({
   const baseClass =
     "w-full rounded-lg p-3 text-sm bg-transparent outline-none focus:outline-none transition-colors duration-200";
 
-  // DEFAULT VARIANTS: GREY BORDER, FOCUS SHOWS THEME GREEN
   const variants = {
-    primary: { borderColor: "#D1D5DB", focusBorderColor: themeGreen }, // GREY DEFAULT
+    primary: { borderColor: "#D1D5DB", focusBorderColor: "#4CAF50" },
     secondary: { borderColor: "#D1D5DB", focusBorderColor: "#9CA3AF" },
     white: { borderColor: "#D1D5DB", focusBorderColor: "white", color: "white" },
     black: { borderColor: "#D1D5DB", focusBorderColor: "black", color: "black" },
@@ -43,97 +39,92 @@ const TextInput = ({
   const commonProps = {
     name,
     onChange: handleChange,
-    className: baseClass,
+    className: `${baseClass} ${
+      (type === "checkbox" || type === "radio") ? "w-auto" : ""
+    }`,
     placeholder: placeHolder,
     style,
     onFocus: handleFocus,
     onBlur: handleBlur,
   };
 
-const renderInput = () => {
-  switch (type) {
-    case "textarea":
-      return (
-        <textarea
-          {...commonProps}
-          value={form[name] || ""}
-          rows="4"
-        />
-      );
+  const renderInput = () => {
+    switch (type) {
+      case "textarea":
+        return <textarea {...commonProps} value={form[name] || ""} rows="4" />;
 
-    case "select":
-      return (
-        <select
-          {...commonProps}
-          value={form[name] || ""}
-        >
-          <option value="">Select {label}</option>
-          {options.map((opt, i) => (
-            <option key={i} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
-      );
+      case "select":
+        return (
+          <select {...commonProps} value={form[name] || ""}>
+            <option value="">Select {label}</option>
+            {options.map((opt, i) => (
+              <option key={i} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+        );
 
-    case "checkbox":
-      return (
-        <input
-          {...commonProps}
-          type="checkbox"
-          checked={!!form[name]}
-          onChange={(e) =>
-            handleChange({
-              target: { name, value: e.target.checked, type: "checkbox" },
-            })
-          }
-        />
-      );
+      case "checkbox":
+        return (
+          <div className="flex gap-2">
+            <input
+              {...commonProps}
+              type="checkbox"
+              checked={!!form[name]}
+              onChange={(e) =>
+                handleChange({
+                  target: { name, value: e.target.checked, type: "checkbox" },
+                })
+              }
+            />
+            <span className="text-sm font-bold whitespace-nowrap! text-gray-700">{label}</span>
+          </div>
+        );
 
-    case "radio":
-      return (
-        <input
-          {...commonProps}
-          type="radio"
-          checked={!!form[name]}
-          onChange={(e) =>
-            handleChange({
-              target: { name, value: e.target.checked, type: "radio" },
-            })
-          }
-        />
-      );
+      case "radio":
+        return (
+          <div className="flex gap-2">
+            <input
+              {...commonProps}
+              type="radio"
+              checked={!!form[name]}
+              onChange={(e) =>
+                handleChange({
+                  target: { name, value: e.target.checked, type: "radio" },
+                })
+              }
+            />
+            <span className="text-sm font-bold whitespace-nowrap! text-gray-700">{label}</span>
+          </div>
+        );
 
-    case "file":
-      return (
-        <input
-          {...commonProps}
-          type="file"
-          onChange={(e) =>
-            handleChange({
-              target: { name, value: e.target.files[0] },
-            })
-          }
-        />
-      );
+      case "file":
+        return (
+          <input
+            {...commonProps}
+            type="file"
+            onChange={(e) =>
+              handleChange({
+                target: { name, value: e.target.files[0] },
+              })
+            }
+          />
+        );
 
-    default: // text, number, email, password, etc.
-      return (
-        <input
-          {...commonProps}
-          type={type}
-          value={form[name] || ""}
-        />
-      );
-  }
-};
-
+      default: // text, number, email, password, etc.
+        return <input {...commonProps} type={type} value={form[name] || ""} />;
+    }
+  };
 
   return (
     <div>
-      <label className="form-label text-left font-bold text-sm text-muted d-block mb-1">
-        {label} 
-      </label>
+      {/* Only show label for non-checkbox/radio */}
+      {type !== "checkbox" && type !== "radio" && (
+        <label className="form-label text-left font-bold text-sm text-muted d-block mb-1">
+          {label}
+        </label>
+      )}
 
       {renderInput()}
 
