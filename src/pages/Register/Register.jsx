@@ -117,6 +117,30 @@ export default function SaKuboRegister() {
                     form={form}
                     errors={errors}
                     handleChange={handleChange}
+                    name="firstname"
+                    label="First Name"
+                    variant="primary"
+                    type="text"
+                    placeHolder="First Name"
+                  />
+                </div>
+                <div className="flex-1">
+                  <TextInput
+                    form={form}
+                    errors={errors}
+                    handleChange={handleChange}
+                    name="middlename"
+                    label="Middle Name"
+                    variant="primary"
+                    type="text"
+                    placeHolder="Middle Name"
+                  />
+                </div>
+                <div className="flex-1">
+                  <TextInput
+                    form={form}
+                    errors={errors}
+                    handleChange={handleChange}
                     name="lastname"
                     label="Last Name"
                     variant="primary"
@@ -124,8 +148,9 @@ export default function SaKuboRegister() {
                     placeHolder="Last Name"
                   />
                 </div>
+              </div>
 
-                <div className="flex-1">
+               <div>
                   <TextInput
                     form={form}
                     errors={errors}
@@ -137,7 +162,6 @@ export default function SaKuboRegister() {
                     placeHolder="Nickname"
                   />
                 </div>
-              </div>
 
               <div>
                   <TextInput
