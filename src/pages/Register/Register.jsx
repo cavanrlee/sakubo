@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import saKuboLogo from "/saKubo.svg";
 import { registerUser } from "@/pages/register/RegisterController";
+import { useNavigate } from "react-router-dom";
 import TextInput from "@/components/TextInput";
 import Button from "@/components/Button"; 
 import Tabs from "@/components/Tabs";
@@ -10,6 +11,7 @@ import MessageModal from "@/components/modals/MessageModal";
 export default function SaKuboRegister() {
   const [activeTab, setActiveTab] = useState("personal");
   const [modal, setModal] = useState({ show: false, title: "", message: "", type: "success" });
+  const navigate = useNavigate();
 
   const tabList = [
     { key: "personal", label: "Personal" },

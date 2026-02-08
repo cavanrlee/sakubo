@@ -1,4 +1,6 @@
 import React from "react";
+import Button from "@/components/Button"; 
+
 
 const MessageModal = ({ show, onClose, title, message, type = "success" }) => {
   if (!show) return null;
@@ -19,12 +21,7 @@ const MessageModal = ({ show, onClose, title, message, type = "success" }) => {
         <h3 className={`font-bold text-lg mb-2 ${textColor}`}>{title}</h3>
         <p className={`text-sm ${textColor}`}>{message}</p>
         <div className="mt-4 text-right">
-          <button
-            onClick={onClose}
-            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded"
-          >
-            Close
-          </button>
+          <Button variant="secondary" type="submit" onClick={onClose}>Close</Button>
         </div>
       </div>
     </div>
