@@ -77,7 +77,7 @@ export default function SaKuboLogin() {;
 									name="password"
 									label="Password"
 									variant="primary"
-									type="text"
+									type="password"
 									placeHolder="Enter your password"
 								/>
 							</div>
