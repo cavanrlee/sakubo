@@ -1,5 +1,5 @@
 const themeGreen = "#4CAF50";
-const themeGreenLight = "#4CAF50"; // lighter hover shade
+const themeGreenLight = "#e8f5e8"; // lighter hover shade
 const themeGreenDark = "#27642b";  // darker hover shade
 
 const Button = ({
@@ -12,7 +12,7 @@ const Button = ({
 }) => {
 
   const baseClass =
-    "px-5 py-3 rounded-lg! text-sm font-medium transition-colors transition-shadow duration-200 shadow-sm";
+    "w-full px-5 py-3 rounded-lg! text-sm font-medium transition-colors transition-shadow duration-200 shadow-sm";
 
   // SOLID COLORS
   const solidStyle = {
@@ -55,13 +55,21 @@ const Button = ({
   // HANDLE HOVER
   const handleMouseEnter = (e) => {
     if (disabled) return;
-    e.target.style.backgroundColor = outline ? hoverOutline[variant] : hoverSolid[variant];
+
+    if (outline) {
+      e.target.style.backgroundColor = hoverOutline[variant];
+      e.target.style.color = hoverOutlineText[variant];
+    } else {
+      e.target.style.backgroundColor = hoverSolid[variant];
+    }
   };
 
   const handleMouseLeave = (e) => {
     if (disabled) return;
+
     const style = outline ? outlineStyle[variant] : solidStyle[variant];
     e.target.style.backgroundColor = style.backgroundColor;
+    e.target.style.color = style.color;
   };
 
   const currentStyle = outline ? outlineStyle[variant] : solidStyle[variant];

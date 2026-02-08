@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import saKuboLogo from '/saKubo.svg';
 import { loginUser } from "@/pages/login/LoginController";
 import TextInput from "@/components/TextInput";
+import Button from "@/components/Button"; 
+import Logo from "@/components/Logo";
+
 
 
 export default function SaKuboLogin() {;
@@ -34,93 +37,75 @@ export default function SaKuboLogin() {;
   	};
 
 	return (
-		<div className="col-12">
-			<div className="card border-0 p-0">
-				<div className="row">
-					<div className="col-12 d-flex justify-center">
-						<img src={saKuboLogo} alt="saKubo" className='max-w-75'/>
-					</div>
-				</div>
-			</div>
+        	<div className="row">
+            	<div className="col-12 max-w-xl mx-auto">
+				<Logo/>
 
-			<div className="card border-0 p-0">
-				<div className="row mb-2">
-					<div className="col-12 my-2">
-						<span className="text-2xl text-gray-600! font-bold">
-							Welcome back!
-						</span>
-					</div>
-					<div className="col-12 my-2">
-						<span className="text-md text-gray-600!">
-							Sign in to your account.
-						</span>
-					</div>
-				</div>
-
-				<div className="row mt-4">
-					<form onSubmit={handleLogin} id="login-form">
+				<div className="card border-0 p-0">
+					<div className="row mb-2">
 						<div className="col-12 my-2">
+							<span className="text-2xl text-gray-600! font-bold">
+								Welcome back!
+							</span>
+						</div>
+						<div className="col-12 my-2">
+							<span className="text-md text-gray-600!">
+								Sign in to your account.
+							</span>
+						</div>
+					</div>
+
+					<div className="row mt-4">
+						<form onSubmit={handleLogin} id="login-form">
+							<div className="col-12 my-2">
+								<TextInput
+									form={form}
+									errors={errors}
+									handleChange={handleChange}
+									name="email"
+									label="Mobile Number/Email"
+									variant="primary"
+									type="text"
+									placeHolder="+639XX-XXX-XXXX"
+								/>
+							</div>
+							<div className="col-12 my-2">
+								<TextInput
+									form={form}
+									errors={errors}
+									handleChange={handleChange}
+									name="password"
+									label="Password"
+									variant="primary"
+									type="text"
+									placeHolder="Enter your password"
+								/>
+							</div>
+						</form>
+					</div>
+
+					<div className="row mt-2">
+						<div className="col-6">
 							<TextInput
 								form={form}
 								errors={errors}
 								handleChange={handleChange}
-								name="email"
-								label="Mobile Number/Email"
+								name="remember"
+								label="Remember me"
 								variant="primary"
-								type="text"
-								placeHolder="+639XX-XXX-XXXX"
+								type="checkbox"
 							/>
 						</div>
+						<div className="col-6">
+							<a href="#" className="float-right text-gray-600! px-2 font-semibold hover:cursor-pointer hover:text-gray-900! no-underline!">
+								Forgot password?
+							</a>
+						</div>
+					</div>
+
+					<div className="row mt-2">
 						<div className="col-12 my-2">
-							<TextInput
-								form={form}
-								errors={errors}
-								handleChange={handleChange}
-								name="password"
-								label="Password"
-								variant="primary"
-								type="text"
-								placeHolder="Enter your password"
-							/>
-						</div>
-					</form>
-				</div>
-
-				<div className="row mt-2">
-					<div className="col-6">
-						<TextInput
-							form={form}
-							errors={errors}
-							handleChange={handleChange}
-							name="remember"
-							label="Remember me"
-							variant="primary"
-							type="checkbox"
-						/>
-					</div>
-					<div className="col-6 text-right">
-						<a href="#" className="text-gray-600! px-2 font-semibold hover:cursor-pointer hover:text-gray-900! no-underline!">
-							Forgot password?
-						</a>
-					</div>
-				</div>
-
-				<div className="row mt-2">
-					<div className="col-12 text-center my-2">
-						<div className="row mx-1">
-							<button
-								className="btn btn-primary h-13"
-								type="button"
-								onClick={() =>
-									document
-										.getElementById("login-form")
-										.requestSubmit()
-									}
-								>
-								<span className="text-white font-bold">
-									Log In
-								</span>
-							</button>
+							<Button variant="primary" type="submit" onClick={handleLogin}>Log In</Button>
 						</div>
 					</div>
 				</div>
