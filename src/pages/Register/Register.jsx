@@ -85,7 +85,7 @@ export default function SaKuboRegister() {
     
     try {
       const res = await registerUser(payload);
-      localStorage.setItem("auth_token", res.token);
+      localStorage.setItem("api_token", res.token);
       alert(res.message);
       navigate("/login")
     } catch (err) {

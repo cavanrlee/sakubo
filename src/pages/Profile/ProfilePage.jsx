@@ -3,7 +3,7 @@ import Logo from "@/components/Logo";
 
 export default function SakuboProfile() {
 	const logout = async (e) => {
-		localStorage.removeItem("auth_token");
+		localStorage.removeItem("api_token");
 		alert("Logged out");
 		window.location.href = "/";
 	}

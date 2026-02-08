@@ -2,7 +2,7 @@ import { Outlet, useNavigate, useLocation } from "react-router-dom";
 
 const logout = async (e) => {
 	alert("Logged out");
-	localStorage.removeItem("auth_token");
+	localStorage.removeItem("api_token");
 	window.location.href = "/";
 }
 
