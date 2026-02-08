@@ -1,5 +1,5 @@
 import { React } from 'react';
-import saKuboLogo from '../../../public/saKubo.svg';
+import saKuboLogo from '/saKubo.svg';
 import { useNavigate } from "react-router-dom";
 import './Home.css';
 

@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import saKuboLogo from '../../../public/saKubo.svg';
+import saKuboLogo from '/saKubo.svg';
 
 export default function SakuboDashboard({ user_data }) {
 	const [active, setActive] = useState("home");

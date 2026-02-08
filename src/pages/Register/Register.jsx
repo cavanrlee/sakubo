@@ -1,22 +1,33 @@
 import React, { useState, useEffect } from "react";
-import saKuboLogo from "../../../public/saKubo.svg";
-import { registerUser } from "./RegisterController";
+import saKuboLogo from "/saKubo.svg";
+import { registerUser } from "@/pages/register/RegisterController";
+import TextInput from "@/components/TextInput";
+import Button from "@/components/Button"; 
+import Tabs from "@/components/Tabs";
+
 
 export default function SaKuboRegister() {
   const [activeTab, setActiveTab] = useState("personal");
 
+  const tabList = [
+    { key: "personal", label: "Personal" },
+    { key: "business", label: "Business" },
+  ];
+
   const [form, setForm] = useState({
     account_type: "personal",
 
+    // personal
     lastname: "",
     nickname: "",
     email: "",
     password: "",
-    number: "",
+    number: 0,
     barangay: "",
     city: "",
     province: "",
 
+    // business
     business_name: "",
     business_category: "",
     business_type: "",
@@ -24,7 +35,7 @@ export default function SaKuboRegister() {
     business_barangay: "",
     business_city: "",
     business_province: "",
-    business_number: "",
+    business_number: 0,
   });
 
   const [errors, setErrors] = useState({});
@@ -36,18 +47,34 @@ export default function SaKuboRegister() {
     }));
   }, [activeTab]);
 
+
   const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value, type, checked } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setErrors({});
+    
+    const accountType = form.account_type;
+
+    // Dynamically pick relevant fields
+    const payload = Object.fromEntries(
+      Object.entries(form).filter(([key, value]) => {
+        if (key === "account_type") return true; // always include account_type
+        return accountType === "personal"
+          ? !key.startsWith("business_")
+          : key.startsWith("business_");
+      })
+    );
+
+    
     try {
-      const res = await registerUser(form);
-      alert("Account created successfully!");
+      const res = await registerUser(payload);
       localStorage.setItem("auth_token", res.token);
     } catch (err) {
       if (err.response?.data?.error?.fields) {
@@ -56,18 +83,13 @@ export default function SaKuboRegister() {
     }
   };
 
-  const labelClass =
-    "form-label text-sm text-muted d-block text-start mb-1 font-bold";
-
-  const inputClass =
-    "w-full border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none";
 
   const errorText = (field) =>
-    errors[field] && (
-      <div className="text-danger text-sm mt-1 text-start">
-        {errors[field][0]}
-      </div>
-    );
+  errors[field] && (
+    <div className="text-danger text-sm mt-1 text-start">
+      {errors[field][0]}
+    </div>
+  );
 
   return (
     <div className="col-12 max-w-xl mx-auto">
@@ -96,31 +118,7 @@ export default function SaKuboRegister() {
       </div>
 
       {/* TABS */}
-      <div className="flex w-full bg-gray-100 rounded-xl p-1 mt-4">
-        <button
-          type="button"
-          className={`w-1/2 h-13 btn font-semibold rounded-xl ${
-            activeTab === "personal"
-              ? "btn-primary text-white shadow"
-              : "text-gray-700"
-          }`}
-          onClick={() => setActiveTab("personal")}
-        >
-          Personal
-        </button>
-
-        <button
-          type="button"
-          className={`w-1/2 h-13 btn font-semibold rounded-xl ${
-            activeTab === "business"
-              ? "btn-primary text-white shadow"
-              : "text-gray-700"
-          }`}
-          onClick={() => setActiveTab("business")}
-        >
-          Business
-        </button>
-      </div>
+        <Tabs tabs={tabList} activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {/* FORM */}
       <form className="w-full mt-6 flex flex-col gap-4 pb-10">
@@ -129,202 +127,222 @@ export default function SaKuboRegister() {
           <>
             <div className="flex gap-2">
               <div className="flex-1">
-                <label className={labelClass}>Last Name</label>
-                <input
+                <TextInput
+                  form={form}
+                  errors={errors}
+                  handleChange={handleChange}
                   name="lastname"
-                  value={form.lastname}
-                  onChange={handleChange}
-                  className={inputClass}
+                  label="Last Name"
+                  variant="primary"
+                  type="text"
+                  placeHolder="Last Name"
                 />
-                {errorText("lastname")}
               </div>
 
               <div className="flex-1">
-                <label className={labelClass}>Nickname</label>
-                <input
+                <TextInput
+                  form={form}
+                  errors={errors}
+                  handleChange={handleChange}
                   name="nickname"
-                  value={form.nickname}
-                  onChange={handleChange}
-                  className={inputClass}
+                  label="Nickname (Optional)"
+                  variant="primary"
+                  type="text"
+                  placeHolder="Nickname"
                 />
               </div>
             </div>
 
             <div>
-              <label className={labelClass}>Mobile Number</label>
-              <input
-                name="number"
-                value={form.number}
-                onChange={handleChange}
-                className={inputClass}
-              />
-              {errorText("number")}
+                <TextInput
+                  form={form}
+                  errors={errors}
+                  handleChange={handleChange}
+                  name="number"
+                  label="Number"
+                  variant="primary"
+                  type="number"
+                  placeHolder="Number"
+                />
             </div>
 
             <div>
-              <label className={labelClass}>Email (Optional)</label>
-              <input
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                className={inputClass}
-              />
-              {errorText("email")}
+                <TextInput
+                  form={form}
+                  errors={errors}
+                  handleChange={handleChange}
+                  name="email"
+                  label="Email (Optional)"
+                  variant="primary"
+                  type="email"
+                  placeHolder="Email"
+                />
             </div>
 
             <div>
-              <label className={labelClass}>Password</label>
-              <input
-                type="password"
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                className={inputClass}
-              />
-              {errorText("password")}
+                <TextInput
+                  form={form}
+                  errors={errors}
+                  handleChange={handleChange}
+                  name="password"
+                  label="Password"
+                  variant="primary"
+                  type="password"
+                  placeHolder="Password"
+                />
             </div>
 
             <div className="flex gap-2">
               <div>
-                <label className={labelClass}>Barangay</label>
-                <input
+                <TextInput
+                  form={form}
+                  errors={errors}
+                  handleChange={handleChange}
                   name="barangay"
-                  placeholder="Barangay"
-                  value={form.barangay}
-                  onChange={handleChange}
-                  className={inputClass}
+                  label="Barangay"
+                  variant="primary"
+                  type="text"
+                  placeHolder="Barangay"
                 />
               </div>
               <div>
-                <label className={labelClass}>City</label>
-                <input
+                <TextInput
+                  form={form}
+                  errors={errors}
+                  handleChange={handleChange}
                   name="city"
-                  placeholder="City"
-                  value={form.city}
-                  onChange={handleChange}
-                  className={inputClass}
+                  label="City"
+                  variant="primary"
+                  type="text"
+                  placeHolder="City"
                 />
               </div>
               <div>
-                <label className={labelClass}>Province</label>
-                <input
+                <TextInput
+                  form={form}
+                  errors={errors}
+                  handleChange={handleChange}
                   name="province"
-                  placeholder="Province"
-                  value={form.province}
-                  onChange={handleChange}
-                  className={inputClass}
+                  label="Province"
+                  variant="primary"
+                  type="text"
+                  placeHolder="Province"
                 />
               </div>
             </div>
-
-            <button
-              type="button"
-              className="btn btn-primary h-13 mt-2"
-              onClick={handleSubmit}
-            >
-              <span className="text-white font-bold">
-                Create Personal Account
-              </span>
-            </button>
+            <Button variant="primary" type="submit" onClick={handleSubmit}>Create Personal Account</Button>
           </>
         ) : (
           <>
             <div>
-              <label className={labelClass}>Business Name</label>
-              <input
+              <TextInput
+                form={form}
+                errors={errors}
+                handleChange={handleChange}
                 name="business_name"
-                value={form.business_name}
-                onChange={handleChange}
-                className={inputClass}
+                label="Business Name"
+                variant="primary"
+                type="text"
+                placeHolder="Business Name"
               />
-              {errorText("business_name")}
             </div>
 
             <div>
-              <label className={labelClass}>Business Category</label>
-              <input
+              <TextInput
+                form={form}
+                errors={errors}
+                handleChange={handleChange}
                 name="business_category"
-                value={form.business_category}
-                onChange={handleChange}
-                className={inputClass}
+                label="Business Category"
+                variant="primary"
+                type="text"
+                placeHolder="Business Category"
               />
-              {errorText("business_category")}
             </div>
 
             <div>
-              <label className={labelClass}>Business Type</label>
-              <input
+              <TextInput
+                form={form}
+                errors={errors}
+                handleChange={handleChange}
                 name="business_type"
-                value={form.business_type}
-                onChange={handleChange}
-                className={inputClass}
+                label="Business Type"
+                type="select"
+                variant="primary"
+                placeHolder="Business Type"
+                options={[
+                  { value: "Local", label: "Local" },
+                  { value: "International", label: "International" },
+                ]}
               />
-              {errorText("business_type")}
             </div>
 
             <div>
-              <label className={labelClass}>Street Address</label>
-              <input
+              <TextInput
+                form={form}
+                errors={errors}
+                handleChange={handleChange}
                 name="business_address"
-                value={form.business_address}
-                onChange={handleChange}
-                className={inputClass}
+                label="Street Address"
+                variant="primary"
+                type="text"
+                placeHolder="Street Address"
               />
             </div>
 
             <div className="flex gap-2">
               <div>
-                <label className={labelClass}>Barangay</label>
-                <input
+                <TextInput
+                  form={form}
+                  errors={errors}
+                  handleChange={handleChange}
                   name="business_barangay"
-                  placeholder="Barangay"
-                  value={form.business_barangay}
-                  onChange={handleChange}
-                  className={inputClass}
+                  label="Barangay"
+                  variant="primary"
+                  type="text"
+                  placeHolder="Barangay"
                 />
               </div>
               <div>
-                <label className={labelClass}>City</label>
-                <input
+                <TextInput
+                  form={form}
+                  errors={errors}
+                  handleChange={handleChange}
                   name="business_city"
-                  placeholder="City"
-                  value={form.business_city}
-                  onChange={handleChange}
-                  className={inputClass}
+                  label="City"
+                  variant="primary"
+                  type="text"
+                  placeHolder="City"
                 />
               </div>
               <div>
-               <label className={labelClass}>Provice</label>
-                <input
+                <TextInput
+                  form={form}
+                  errors={errors}
+                  handleChange={handleChange}
                   name="business_province"
-                  placeholder="Province"
-                  value={form.business_province}
-                  onChange={handleChange}
-                  className={inputClass}
+                  label="Province"
+                  variant="primary"
+                  type="text"
+                  placeHolder="Province"
                 />
               </div>
             </div>
 
             <div>
-              <label className={labelClass}>Contact Number</label>
-              <input
-                name="business_number"
-                value={form.business_number}
-                onChange={handleChange}
-                className={inputClass}
-              />
-              {errorText("business_number")}
+                <TextInput
+                  form={form}
+                  errors={errors}
+                  handleChange={handleChange}
+                  name="business_number"
+                  label="Contact Number"
+                  variant="primary"
+                  type="number"                  
+                  placeHolder="Contact Number"
+                />
             </div>
 
-            <button
-              type="button"
-              className="btn btn-primary h-13"
-              onClick={handleSubmit}
-            >
-              <span className="text-white font-bold">
-                Create Business Account
-              </span>
-            </button>
+            <Button variant="primary" type="submit" onClick={handleSubmit}>Create Business Account</Button>
           </>
         )}
       </form>

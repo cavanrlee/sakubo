@@ -1,12 +1,12 @@
 import { Routes, Route } from "react-router-dom";
 
-import HomePage from "../pages/Home/HomePage.jsx";
-import ProfilePage from "../pages/Profile/ProfilePage.jsx";
-import AboutPage from "../pages/About/AboutPage.jsx";
-import LoginPage from "../pages/Login/Login.jsx";
-import RegisterPage from "../pages/Register/Register.jsx";
-import DashboardPage from "../pages/Dashboard/DashboardPage.jsx";
-import NavBarLayout from "../layouts/Navbar.jsx";
+import HomePage from "@/pages/home/HomePage.jsx";
+import ProfilePage from "@/pages/profile/ProfilePage.jsx";
+import AboutPage from "@/pages/about/AboutPage.jsx";
+import LoginPage from "@/pages/login/Login.jsx";
+import RegisterPage from "@/pages/register/Register.jsx";
+import DashboardPage from "@/pages/dashboard/DashboardPage.jsx";
+import NavBarLayout from "@/layouts/Navbar.jsx";
 
 const AppRoutes = () => {
   return (

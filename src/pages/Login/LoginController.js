@@ -1,4 +1,4 @@
-import axios from "../../api/axios.js";
+import axios from "@/api/axios.js";
 
 export const loginUser = async(username , password) => {
 	await axios.get("/sanctum/csrf-cookie");

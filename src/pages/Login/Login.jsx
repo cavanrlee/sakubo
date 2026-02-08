@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import saKuboLogo from '/saKubo.svg';
-import { loginUser } from "./LoginController";
+import { loginUser } from "@/pages/login/LoginController";
 
 export default function SaKuboLogin() {
   	const [username, setUsername] = useState("");
