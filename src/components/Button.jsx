@@ -53,7 +53,7 @@ const Button = ({
   };
 
   const hoverOutlineText = {
-    primary: "white",   // text turns white on hover
+    primary: themeGreen,   // text turns white on hover
     secondary: "white",
     white: "black",
     black: "white",
