@@ -14,7 +14,7 @@ function HomePage() {
 			    <Logo/>
 
                 <div className="card border-0 p-0">
-                    <div className="row mb-2">
+                    <div className="row">
                         <div className="col-12 my-2">
                             <span className="text-md text-gray-600!">
                                 Discover local businesses in your community.
@@ -22,7 +22,7 @@ function HomePage() {
                         </div>
                     </div>
 
-                    <div className="row my-3">
+                    <div className="row">
                         <div className="col-12 text-center my-2">
                             <div className="alert bg-[#E8F5E8]! border-2 border-[#4CAF50]! rounded-2xl" role="alert">
                                 <div className="col-12 my-3">
