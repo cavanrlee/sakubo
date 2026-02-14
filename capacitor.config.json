@@ -1,5 +1,8 @@
 {
   "appId": "com.saKubo.app",
   "appName": "saKubo",
-  "webDir": "dist"
+  "webDir": "dist",
+    "server": {
+    "cleartext": false
+  }
 }
