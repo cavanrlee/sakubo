@@ -6,17 +6,13 @@ import TextInput from "@/components/TextInput";
 import Button from "@/components/Button"; 
 import Tabs from "@/components/Tabs";
 import Logo from "@/components/Logo";
-// import MessageModal from "@/components/modals/MessageModal"; 
+import Alert from "@/utils/alert";
+
 
 export default function SaKuboRegister() {
   const [activeTab, setActiveTab] = useState("personal");
-  // const [modal, setModal] = useState({ show: false, title: "", message: "", type: "success" });
   const navigate = useNavigate();
 
-
-
-
-  // const handleCloseModal = () => setModal({ ...modal, show: false });
 
 
   const tabList = [
@@ -86,7 +82,10 @@ export default function SaKuboRegister() {
     try {
       const res = await registerUser(payload);
       localStorage.setItem("api_token", res.token);
-      alert(res.message);
+      Alert.success(
+        "Thank you!",
+        <small>Your submission was received successfully.</small>
+      );
       navigate("/login")
     } catch (err) {
       if (err.response?.data?.error?.fields) {
@@ -115,7 +114,7 @@ export default function SaKuboRegister() {
         </div>
 
         {/* TABS */}
-          <Tabs tabs={tabList} activeTab={activeTab} setActiveTab={setActiveTab} />
+        <Tabs tabs={tabList} activeTab={activeTab} setActiveTab={setActiveTab} />
 
         {/* FORM */}
         <form className="w-full mt-6 flex flex-col gap-4 pb-10">
