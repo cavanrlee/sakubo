@@ -2,7 +2,6 @@ import { React } from 'react';
 import { useNavigate } from "react-router-dom";
 import Button from "@/components/Button"; 
 import Logo from "@/components/Logo";
-import './Home.css';
 
 
 function HomePage() {
@@ -59,12 +58,12 @@ function HomePage() {
                         </div>
                     </div>
 
-                    <div className="row my-2">
-                        <div className="col-6 my-2">
+                    <div className="row">
+                        <div className="col-sm-12 col-md-6 my-2">
                             <Button variant="primary" type="button" outline>saKubo News</Button>
                         </div>
 
-                        <div className="col-6 my-2">
+                        <div className="col-sm-12 col-md-6 my-2">
                             <Button variant="primary" type="button"  outline>See Map Coverage</Button>
                         </div>
                     </div>
