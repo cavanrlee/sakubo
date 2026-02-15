@@ -8,12 +8,10 @@ import Tabs from "@/components/Tabs";
 import Logo from "@/components/Logo";
 import Alert from "@/utils/alert";
 
-
 export default function SaKuboRegister() {
   const [activeTab, setActiveTab] = useState("personal");
+  const [businessStep, setBusinessStep] = useState(1); // Step state for Business tab
   const navigate = useNavigate();
-
-
 
   const tabList = [
     { key: "personal", label: "Personal" },
@@ -37,11 +35,14 @@ export default function SaKuboRegister() {
     business_name: "",
     business_category: "",
     business_type: "",
+    business_email: "",
+    business_website: "",
     business_address: "",
     business_barangay: "",
     business_city: "",
     business_province: "",
     business_number: 0,
+    business_notes: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -51,8 +52,8 @@ export default function SaKuboRegister() {
       ...prev,
       account_type: activeTab,
     }));
+    if(activeTab === "business") setBusinessStep(1); // reset step on tab change
   }, [activeTab]);
-
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -65,7 +66,7 @@ export default function SaKuboRegister() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
-    
+
     const accountType = form.account_type;
 
     // Dynamically pick relevant fields
@@ -78,7 +79,6 @@ export default function SaKuboRegister() {
       })
     );
 
-    
     try {
       const res = await registerUser(payload);
       localStorage.setItem("api_token", res.token);
@@ -118,9 +118,9 @@ export default function SaKuboRegister() {
 
         {/* FORM */}
         <form className="w-full mt-6 flex flex-col gap-4 pb-10">
-
           {activeTab === "personal" ? (
             <>
+              {/* Personal tab unchanged */}
               <div className="flex gap-2">
                 <div className="flex-1">
                   <TextInput
@@ -160,56 +160,56 @@ export default function SaKuboRegister() {
                 </div>
               </div>
 
-               <div>
-                  <TextInput
-                    form={form}
-                    errors={errors}
-                    handleChange={handleChange}
-                    name="nickname"
-                    label="Nickname (Optional)"
-                    variant="primary"
-                    type="text"
-                    placeHolder="Nickname"
-                  />
-                </div>
-
               <div>
-                  <TextInput
-                    form={form}
-                    errors={errors}
-                    handleChange={handleChange}
-                    name="number"
-                    label="Number"
-                    variant="primary"
-                    type="number"
-                    placeHolder="Number"
-                  />
+                <TextInput
+                  form={form}
+                  errors={errors}
+                  handleChange={handleChange}
+                  name="nickname"
+                  label="Nickname (Optional)"
+                  variant="primary"
+                  type="text"
+                  placeHolder="Nickname"
+                />
               </div>
 
               <div>
-                  <TextInput
-                    form={form}
-                    errors={errors}
-                    handleChange={handleChange}
-                    name="email"
-                    label="Email (Optional)"
-                    variant="primary"
-                    type="email"
-                    placeHolder="Email"
-                  />
+                <TextInput
+                  form={form}
+                  errors={errors}
+                  handleChange={handleChange}
+                  name="number"
+                  label="Number"
+                  variant="primary"
+                  type="number"
+                  placeHolder="Number"
+                />
               </div>
 
               <div>
-                  <TextInput
-                    form={form}
-                    errors={errors}
-                    handleChange={handleChange}
-                    name="password"
-                    label="Password"
-                    variant="primary"
-                    type="password"
-                    placeHolder="Password"
-                  />
+                <TextInput
+                  form={form}
+                  errors={errors}
+                  handleChange={handleChange}
+                  name="email"
+                  label="Email (Optional)"
+                  variant="primary"
+                  type="email"
+                  placeHolder="Email"
+                />
+              </div>
+
+              <div>
+                <TextInput
+                  form={form}
+                  errors={errors}
+                  handleChange={handleChange}
+                  name="password"
+                  label="Password"
+                  variant="primary"
+                  type="password"
+                  placeHolder="Password"
+                />
               </div>
 
               <div className="flex gap-2">
@@ -254,102 +254,140 @@ export default function SaKuboRegister() {
             </>
           ) : (
             <>
-              <div>
-                <TextInput
-                  form={form}
-                  errors={errors}
-                  handleChange={handleChange}
-                  name="business_name"
-                  label="Business Name"
-                  variant="primary"
-                  type="text"
-                  placeHolder="Business Name"
-                />
+              {/* Business tab with 4 steps */}
+              {/* Navigation Dots */}
+              <div className="flex justify-center gap-2">
+                {[1, 2, 3, 4].map((dot) => (
+                  <span key={dot} onClick ={() => setBusinessStep(dot)} className={`w-3 h-3 rounded-full ${
+                      businessStep === dot ? "bg-[#4CAF50]" : "bg-gray-300"
+                    }`}
+                  ></span>
+                ))}
               </div>
 
-              <div>
-                <TextInput
-                  form={form}
-                  errors={errors}
-                  handleChange={handleChange}
-                  name="business_category"
-                  label="Business Category"
-                  variant="primary"
-                  type="text"
-                  placeHolder="Business Category"
-                />
-              </div>
-
-              <div>
-                <TextInput
-                  form={form}
-                  errors={errors}
-                  handleChange={handleChange}
-                  name="business_type"
-                  label="Business Type"
-                  type="select"
-                  variant="primary"
-                  placeHolder="Business Type"
-                  options={[
-                    { value: "Local", label: "Local" },
-                    { value: "International", label: "International" },
-                  ]}
-                />
-              </div>
-
-              <div>
-                <TextInput
-                  form={form}
-                  errors={errors}
-                  handleChange={handleChange}
-                  name="business_address"
-                  label="Street Address"
-                  variant="primary"
-                  type="text"
-                  placeHolder="Street Address"
-                />
-              </div>
-
-              <div className="flex gap-2">
-                <div className="flex-1">
+              {/* Step 1: Basic Info */}
+              {businessStep === 1 && (
+                <>
                   <TextInput
                     form={form}
                     errors={errors}
                     handleChange={handleChange}
-                    name="business_barangay"
-                    label="Barangay"
+                    name="business_name"
+                    label="Business Name"
                     variant="primary"
                     type="text"
-                    placeHolder="Barangay"
+                    placeHolder="Business Name"
                   />
-                </div>
-                <div className="flex-1">
                   <TextInput
                     form={form}
                     errors={errors}
                     handleChange={handleChange}
-                    name="business_city"
-                    label="City"
+                    name="business_category"
+                    label="Business Category"
                     variant="primary"
                     type="text"
-                    placeHolder="City"
+                    placeHolder="Business Category"
                   />
-                </div>
-                <div className="flex-1">
-                  <TextInput
-                    form={form}
-                    errors={errors}
-                    handleChange={handleChange}
-                    name="business_province"
-                    label="Province"
-                    variant="primary"
-                    type="text"
-                    placeHolder="Province"
-                  />
-                </div>
-              </div>
+                </>
+              )}
 
-              <div>
+              {/* Step 2: Type & Email/Website */}
+              {businessStep === 2 && (
+                <>
+                  <TextInput
+                    form={form}
+                    errors={errors}
+                    handleChange={handleChange}
+                    name="business_type"
+                    label="Business Type"
+                    type="select"
+                    variant="primary"
+                    placeHolder="Business Type"
+                    options={[
+                      { value: "Local", label: "Local" },
+                      { value: "International", label: "International" },
+                    ]}
+                  />
+                  <TextInput
+                    form={form}
+                    errors={errors}
+                    handleChange={handleChange}
+                    name="business_email"
+                    label="Business Email (Optional)"
+                    variant="primary"
+                    type="email"
+                    placeHolder="Email"
+                  />
+                  <TextInput
+                    form={form}
+                    errors={errors}
+                    handleChange={handleChange}
+                    name="business_website"
+                    label="Website (Optional)"
+                    variant="primary"
+                    type="text"
+                    placeHolder="Website"
+                  />
+                </>
+              )}
+
+              {/* Step 3: Address */}
+              {businessStep === 3 && (
+                <>
+                  <TextInput
+                    form={form}
+                    errors={errors}
+                    handleChange={handleChange}
+                    name="business_address"
+                    label="Street Address"
+                    variant="primary"
+                    type="text"
+                    placeHolder="Street Address"
+                  />
+                  <div className="flex gap-2">
+                    <div className="flex-1">
+                      <TextInput
+                        form={form}
+                        errors={errors}
+                        handleChange={handleChange}
+                        name="business_barangay"
+                        label="Barangay"
+                        variant="primary"
+                        type="text"
+                        placeHolder="Barangay"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <TextInput
+                        form={form}
+                        errors={errors}
+                        handleChange={handleChange}
+                        name="business_city"
+                        label="City"
+                        variant="primary"
+                        type="text"
+                        placeHolder="City"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <TextInput
+                        form={form}
+                        errors={errors}
+                        handleChange={handleChange}
+                        name="business_province"
+                        label="Province"
+                        variant="primary"
+                        type="text"
+                        placeHolder="Province"
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Step 4: Contact & Notes */}
+              {businessStep === 4 && (
+                <>
                   <TextInput
                     form={form}
                     errors={errors}
@@ -357,12 +395,48 @@ export default function SaKuboRegister() {
                     name="business_number"
                     label="Contact Number"
                     variant="primary"
-                    type="number"                  
+                    type="number"
                     placeHolder="Contact Number"
                   />
-              </div>
+                  <TextInput
+                    form={form}
+                    errors={errors}
+                    handleChange={handleChange}
+                    name="business_notes"
+                    label="Notes (Optional)"
+                    variant="primary"
+                    type="textarea"
+                    placeHolder="Additional notes"
+                  />
+                </>
+              )}
 
-              <Button variant="primary" type="submit" onClick={handleSubmit}>Create Business Account</Button>
+              {/* Navigation Buttons */}
+              <div className="flex justify-between mt-4">
+                {businessStep > 1 && (
+                  <Button
+                    variant="outline"
+                    type="button"
+                    onClick={() => setBusinessStep(businessStep - 1)}
+                  outline>
+                    Back
+                  </Button>
+                )}
+
+                {businessStep < 4 && (
+                  <Button
+                    variant="primary"
+                    type="button"
+                    onClick={() => setBusinessStep(businessStep + 1)}
+                  >
+                    Next
+                  </Button>
+                )}
+
+                {businessStep === 4 && (
+                  <Button variant="primary" type="submit" onClick={handleSubmit}>Create Business Account</Button>
+                )}
+              </div>
             </>
           )}
         </form>
