@@ -4,6 +4,7 @@ import { loginUser } from "@/pages/login/LoginController";
 import TextInput from "@/components/TextInput";
 import Button from "@/components/Button"; 
 import Logo from "@/components/Logo";
+import Alert from "@/utils/alert";
 
 
 
@@ -32,7 +33,10 @@ export default function SaKuboLogin() {;
 			if (err.response?.data?.error?.fields) {
 				setErrors(err.response.data.error.fields);
 			}else{
-				alert(err.response.data.error.message);
+				Alert.warning(
+					"",
+					<small>{err.response.data.error.message}</small>
+				);
 			}
 		}
   	};
