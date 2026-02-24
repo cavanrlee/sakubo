@@ -8,7 +8,7 @@ import Alert from "@/utils/alert";
 
 
 
-export default function SaKuboLogin() {;
+export default function OTPReceiving() {;
 
 	return (
 		<div className="row mt-5">

@@ -8,38 +8,38 @@ import Alert from "@/utils/alert";
 
 
 
-export default function SaKuboLogin() {;
+export default function OTPSending() {;
 
 	return (
-		<div class="row mt-5">
-			<div class="col-12">
-				<div class="card border-none!">
-					<div class="card-body">
-						<div class="row">
-						<div class="col-12 text-center my-1">
-							<span class="text-xl font-semibold text-black!">Forgot Your Password?</span>
+		<div className="row mt-5">
+			<div className="col-12">
+				<div className="card border-none!">
+					<div className="card-body">
+						<div className="row">
+						<div className="col-12 text-center my-1">
+							<span className="text-xl font-semibold text-black!">Forgot Your Password?</span>
 						</div>
 
-						<div class="col-12 text-center my-1">
-							<span class="text-sm">Enter your phone number to receive a verification code.</span>
+						<div className="col-12 text-center my-1">
+							<span className="text-sm">Enter your phone number to receive a verification code.</span>
 						</div>
 						</div>
 
-						<div class="row mt-2">
-						<div class="col-12 text-center my-1">
-							<div class="input-group" name="mobile-number-input-group">
-								<select class="form-select w-25" name="country-calling-code" id="country-calling-code">
+						<div className="row mt-2">
+						<div className="col-12 text-center my-1">
+							<div className="input-group" name="mobile-number-input-group">
+								<select className="form-select w-25" name="country-calling-code" id="country-calling-code">
 									<option value="+63" data-country-id="34">PH</option>
 									<option value="+63" data-country-id="34">PH</option>
 									<option value="+63" data-country-id="34">PH</option>
 									<option value="+63" data-country-id="34">PH</option>
 								</select>
-								<input class="form-control w-75" type="number" placeholder="9*********" aria-label="Username" aria-describedby="basic-addon11" />
+								<input className="form-control w-75" type="number" placeholder="9*********" aria-label="Username" aria-describedby="basic-addon11" />
 							</div>
 						</div>
 
-						<div class="col-12 mt-2">
-							<div class="row px-3">
+						<div className="col-12 mt-2">
+							<div className="row px-3">
 								<Button variant="primary" type="submit">Send Verification Code</Button>
 							</div>
 						</div>
