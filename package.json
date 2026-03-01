@@ -15,9 +15,11 @@
     "@capacitor/core": "^8.0.2",
     "axios": "^1.13.4",
     "bootstrap": "^5.3.8",
+    "boxicons": "^2.1.4",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router-dom": "^7.13.0",
+    "react-select": "^5.10.2",
     "sweetalert2-react-content": "^5.1.1"
   },
   "devDependencies": {
