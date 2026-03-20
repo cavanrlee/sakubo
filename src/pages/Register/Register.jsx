@@ -718,7 +718,7 @@ export default function SaKuboRegister() {
 							variant="outline"
 							type="button"
 							onClick={() => setBusinessStep(businessStep - 1)}
-							outline>
+							>
 							Back
 						</Button>
 					)}
@@ -745,7 +745,7 @@ export default function SaKuboRegister() {
 					{businessStep === 5 && (
 						<Button 
 							variant="outline" 
-							type="submit" 
+							type="button" 
 							onClick={''}>
 							Save as Draft
 						</Button>

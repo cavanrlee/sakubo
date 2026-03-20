@@ -62,24 +62,24 @@ const Button = ({
   };
   
   // HANDLE HOVER
-  const handleMouseEnter = (e) => {
-    if (disabled) return;
+  // const handleMouseEnter = (e) => {
+  //   if (disabled) return;
 
-    if (outline) {
-      e.target.style.backgroundColor = hoverOutline[variant];
-      e.target.style.color = hoverOutlineText[variant];
-    } else {
-      e.target.style.backgroundColor = hoverSolid[variant];
-    }
-  };
+  //   if (outline) {
+  //     e.target.style.backgroundColor = hoverOutline[variant];
+  //     e.target.style.color = hoverOutlineText[variant];
+  //   } else {
+  //     e.target.style.backgroundColor = hoverSolid[variant];
+  //   }
+  // };
 
-  const handleMouseLeave = (e) => {
-    if (disabled) return;
+  // const handleMouseLeave = (e) => {
+  //   if (disabled) return;
 
-    const style = outline ? outlineStyle[variant] : solidStyle[variant];
-    e.target.style.backgroundColor = style.backgroundColor;
-    e.target.style.color = style.color;
-  };
+  //   const style = outline ? outlineStyle[variant] : solidStyle[variant];
+  //   e.target.style.backgroundColor = style.backgroundColor;
+  //   e.target.style.color = style.color;
+  // };
 
   const currentStyle = outline ? outlineStyle[variant] : solidStyle[variant];
 
@@ -90,8 +90,8 @@ const Button = ({
       onClick={onClick}
       className={`${baseClass} ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       style={currentStyle}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      // onMouseEnter={handleMouseEnter}
+      // onMouseLeave={handleMouseLeave}
     >
       {children}
     </button>
