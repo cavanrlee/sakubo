@@ -2,7 +2,7 @@ import axios from "axios";
 
 const api = axios.create({
     // baseURL: "https://sakubo.x10host.com/",
-    baseURL: "http://sakubo-laravel-api.com/",
+    baseURL: "http://sakubo-laravel-api.com",
     withCredentials: true, 
     withXSRFToken: true,
     headers: {
