@@ -51,7 +51,39 @@ export default function SaKuboRegister() {
 	business_city: "",
 	business_province: "",
 	business_number: 0,
+
+
+	// ===== OPERATING HOURS =====
+	days_of_operation: [],
+	from_time: "",
+	to_time: "",
+
 	business_notes: "",
+
+	// ===== PAYMENT METHODS =====
+	cash: false,
+	gcash: false,
+	paymaya: false,
+	utang_ok: false,
+
+	// ===== SOCIAL MEDIA =====
+	tiktok: "",
+	facebook: "",
+	instagram: "",
+	website: "",
+
+	// ===== BUSINESS REQUIREMENTS (FILES) =====
+	business_permit: null,
+	store_front_photo: null,
+	bir_certificate_of_registration: null,
+	dti_registration: null,
+	sec_registration: null,
+	sanitary_registration: null,
+
+	// ===== PRODUCTS & SERVICES =====
+	products: [],
+	additional_product: ""
+
 	});
 
 	const [errors, setErrors] = useState({});
@@ -660,7 +692,7 @@ export default function SaKuboRegister() {
 							form={form}
 							errors={errors}
 							handleChange={handleChange}
-							name="sec_registration"
+							name="sanitary_registration"
 							label="Sanitary Permit (for food businesses)"
 							variant="primary"
 							type="file"
@@ -681,7 +713,7 @@ export default function SaKuboRegister() {
 							form={form}
 							errors={errors}
 							handleChange={handleChange}
-							name="products"
+							name="products[]"
 							label="Search Product/Servicess"
 							options={options}
 							isMulti={true}
