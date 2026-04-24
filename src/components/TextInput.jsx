@@ -38,9 +38,13 @@ const TextInput = ({
 
   const commonProps = {
     name,
-    onChange: handleChange,
+    ...(type !== "checkbox" &&
+      type !== "radio" &&
+      type !== "file" && {
+        onChange: handleChange
+      }),
     className: `${baseClass} ${
-      (type === "checkbox" || type === "radio") ? "w-auto" : ""
+      type === "checkbox" || type === "radio" ? "w-auto" : ""
     }`,
     placeholder: placeHolder,
     style,

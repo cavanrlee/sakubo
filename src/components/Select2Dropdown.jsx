@@ -58,10 +58,15 @@ const Select2Styled = ({
 
       <Select
         options={options}
-        value={form[name] || []}
+        value={options.filter(opt =>
+          (form[name] || []).includes(opt.value)
+        )}
         onChange={(selected) =>
           handleChange({
-            target: { name, value: selected },
+            target: {
+              name,
+              value: selected ? selected.map(s => s.value) : []
+            }
           })
         }
         isMulti
