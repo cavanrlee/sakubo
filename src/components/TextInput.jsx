@@ -78,7 +78,7 @@ const TextInput = ({
               checked={!!form[name]}
               onChange={(e) =>
                 handleChange({
-                  target: { name, value: e.target.checked, type: "checkbox" },
+                    target: { name, checked: e.target.checked, type: "checkbox" },
                 })
               }
             />
@@ -95,7 +95,7 @@ const TextInput = ({
               checked={!!form[name]}
               onChange={(e) =>
                 handleChange({
-                  target: { name, value: e.target.checked, type: "radio" },
+                  target: { name, checked: e.target.checked, type: "radio" },
                 })
               }
             />

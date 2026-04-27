@@ -60,6 +60,10 @@ export default function SaKuboRegister() {
 		paymaya: false,
 		utang_ok: false,
 
+		delivery: false,
+		meetup: false,
+		pickup: false,
+
 		tiktok: "",
 		facebook: "",
 		instagram: "",
@@ -87,7 +91,7 @@ export default function SaKuboRegister() {
 
 		let finalValue;
 
-		if (type === "checkbox") finalValue = checked;
+		if (type === "checkbox") finalValue = checked ? 1 : 0;
 		else if (type === "file") finalValue = files?.[0] ?? null;
 		else finalValue = value;
 
