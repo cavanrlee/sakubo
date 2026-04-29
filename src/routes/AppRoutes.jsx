@@ -5,6 +5,7 @@ import ProfilePage from "@/pages/profile/ProfilePage.jsx";
 import AboutPage from "@/pages/about/AboutPage.jsx";
 
 import LoginPage from "@/pages/login/Login.jsx";
+import ChangePassword from "@/pages/login/ChangePassword.jsx";
 import OTPSendingPage from "@/pages/login/OTPSending.jsx";
 import OTPReceivingPage from "@/pages/login/OTPReceiving.jsx";
 
@@ -12,13 +13,15 @@ import RegisterPage from "@/pages/register/Register.jsx";
 import DashboardPage from "@/pages/dashboard/Dashboard.jsx";
 import NavBarLayout from "@/layouts/Navbar.jsx";
 
+
 const AppRoutes = () => {
   return (
     <Routes>
       {/* PUBLIC ROUTES */}
-      <Route path="/about" element={<AboutPage />} />
-      <Route path="/otp-sending" element={<OTPSendingPage />} />
-      <Route path="/otp-receiving" element={<OTPReceivingPage />} />
+      <Route path="/About" element={<AboutPage />} />
+      <Route path="/ChangePassword" element={<ChangePassword />} />
+      <Route path="/OTP-sending" element={<OTPSendingPage />} />
+      <Route path="/OTP-receiving" element={<OTPReceivingPage />} />
 
       {/* AUTH ROUTES */}
       <Route path="/" element={<HomePage />} />

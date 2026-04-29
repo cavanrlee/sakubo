@@ -102,7 +102,7 @@ export default function SaKuboLogin() {;
 							/>
 						</div>
 						<div className="col-6">
-							<a href="#" className="float-right text-gray-600! px-2 font-semibold hover:cursor-pointer hover:text-gray-900! no-underline!">
+							<a className="float-right text-gray-600! px-2 font-semibold hover:cursor-pointer hover:text-gray-900! no-underline!" onClick={() => navigate("/OTP-Sending")}>
 								Forgot password?
 							</a>
 						</div>
