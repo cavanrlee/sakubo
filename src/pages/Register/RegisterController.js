@@ -5,3 +5,9 @@ export const registerUser = async (formData) => {
 
   return response.data;
 };
+
+export const getAddressMaintenance = async () => {
+  const response = await axios.get("/api/address-maintenance");
+
+  return response.data;
+};

@@ -1,9 +1,30 @@
 import React from "react";
+import { useState, useEffect } from 'react'
 import Logo from "@/components/Logo";
-import { Icon } from '@iconify/react';
-
+import DefaultUserImage from "@/components/DefaultUserImage";
+import UserCardHeader from "@/components/UserCardHeader";
+import { menuItems, userDetails } from "@/pages/profile/ProfileController";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 
 export default function SakuboProfile() {
+	const navigate = useNavigate();
+	const location = useLocation();
+	const [menus, setMenus] = useState([]);
+
+	useEffect(() => {
+		loadMenus();
+	}, []);
+
+	const loadMenus = async () => {
+		try {
+			const response = await menuItems();
+
+			setMenus(response.menu_items);
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	const logout = async (e) => {
 		localStorage.removeItem("api_token");
 		alert("Logged out");
@@ -11,55 +32,32 @@ export default function SakuboProfile() {
 	}
 
 	return (
-        	<div className="row px-0 mt-3">
-			<div className="col-12">
-				<div className="card rounded-none! shadow-none border-none! px-0 py-2">
-					<div className="card-body py-3 px-0">
-						<div className="row">
-							<div className="col-3">
-							</div>
-							<div className="col-9 text-left border-l">
-								<div className="row">
-									<span className="text-xl text-black font-semibold italic!">Juan Dela Cruz</span>
-									<span className="text-sm text-black font-semibold italic!">+639278486755</span>
-									<span className="text-sm text-muted font-semibold italic!">Insert somehting here.</span>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div className="card rounded-none! shadow-none border-none! px-0 py-2">
-					<div className="card-body py-2 px-0">
+		<div className="row px-0">
+			<div className="col-12 vh-100 flex flex-col">
+				<UserCardHeader />
+				<div className="card rounded-none! shadow-none border-none! px-2 py-0 flex-1 flex flex-col">
+					<div className="card-body flex-1 flex flex-col justify-between h-full">
 						<div className="row">
 							<div className="col-12">
 								<ul className="list-group border-none!">
-									<li className="list-group-item px-0 border-none! d-flex justify-content-between align-items-center">
-										Menu Item
-										<span className="badge badge-center bg-primary">3</span>
-									</li>
-									<li className="list-group-item px-0 border-none! d-flex justify-content-between align-items-center">
-										Menu Item
-										<span className="badge badge-center bg-primary">2</span>
-									</li>
-									<li className="list-group-item px-0 border-none! d-flex justify-content-between align-items-center">
-										Menu Item
-										<span className="badge badge-center bg-primary">6</span>
-									</li>
-									<li className="list-group-item px-0 border-none! d-flex justify-content-between align-items-center">
-										Menu Item
-										<span className="badge badge-center bg-primary">1</span>
-									</li>
-									<li className="list-group-item px-0 border-none! d-flex justify-content-between align-items-center">
-										<Icon icon="mdi:logout" className="me-2"/>
-										<a className="text-black! no-underline! text-semibold" id="log-out" type="button" onClick={logout}>Logout</a>
-									</li>
+									{menus.map((menu_item) => (
+										<li className="list-group-item text-sm px-0 text-gray-600! border-none! d-flex justify-content-between align-items-center" onClick={() => navigate(menu_item.menu_url)} key={menu_item.id}>
+											{menu_item.menu_name}
+										</li>
+									))}
 								</ul>
+							</div>
+						</div>
+						<div className="row mt-auto pb-10">
+							<div className="col-12 text-start py-2 text-sm">
+								<a className="text-gray-600! no-underline! text-semibold" id="log-out" type="button" onClick={logout}>Logout</a>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+
 
 
 		// <div className="row">

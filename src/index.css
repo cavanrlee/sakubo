@@ -71,3 +71,16 @@
   border-radius: 12px !important;
   padding: 10px 20px !important;
 }
+
+
+
+/* Bot nav CSS */
+#bottom-nav {
+  transform: translateY(0);
+  transition: transform 0.15s ease-in-out;
+  will-change: transform;
+}
+
+#bottom-nav.nav-hidden {
+  transform: translateY(100%);
+}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { registerUser } from "@/pages/register/RegisterController";
+import { registerUser, getAddressMaintenance } from "@/pages/register/RegisterController";
 import { useNavigate } from "react-router-dom";
 import TextInput from "@/components/TextInput";
 import Button from "@/components/Button"; 
@@ -11,22 +11,123 @@ import { Icon } from '@iconify/react';
 
 
 export default function SaKuboRegister() {
+	const [errors, setErrors] = useState({});
+	const [regions, setRegions] = useState([]);
+	const [provinces, setProvinces] = useState([]);
+	const [municipalities, setMunicipalities] = useState([]);
+	const [barangays, setBarangays] = useState([]);
 	// const [activeTab, setActiveTab] = useState("personal");
 	// const [businessStep, setBusinessStep] = useState(1);
 
+
+	useEffect(() => {
+		loadAddressMaintenance();
+	}, []);
+
+
 	const navigate = useNavigate();
 
-	const tabList = [
-		{ key: "personal", label: "Personal" },
-		{ key: "business", label: "Business" },
-	];
+	// const tabList = [
+	// 	{ key: "personal", label: "Personal" },
+	// 	{ key: "business", label: "Business" },
+	// ];
 
-	const options = [
-		{ value: "option1", label: "Groceries" },
-		{ value: "option2", label: "Cooked Meals" },
-		{ value: "option3", label: "Delivery" },
-		{ value: "option4", label: "Piso Wifi" },
-	];
+	// const options = [
+	// 	{ value: "option1", label: "Groceries" },
+	// 	{ value: "option2", label: "Cooked Meals" },
+	// 	{ value: "option3", label: "Delivery" },
+	// 	{ value: "option4", label: "Piso Wifi" },
+	// ];
+
+
+	const loadAddressMaintenance = async () => {
+		try {
+			const res = await getAddressMaintenance();
+			setRegions(res || []);
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
+
+	const handleAddressChange = (e) => {
+		const { name, value, type, checked, files } = e.target;
+
+		let finalValue;
+
+		if (type === "checkbox") finalValue = checked ? 1 : 0;
+		else if (type === "file") finalValue = files?.[0] ?? null;
+		else finalValue = value;
+
+		switch (name) {
+			case "region_id": {
+				const region = regions.find(
+					r => r.region_id == finalValue
+				);
+
+				setProvinces(region?.provinces || []);
+				setMunicipalities([]);
+				setBarangays([]);
+
+				setPersonalForm(prev => ({
+					...prev,
+					region_id: finalValue,
+					province_id: "",
+					municipality_id: "",
+					barangay_id: "",
+				}));
+				break;
+			}
+
+			case "province_id": {
+				const province = provinces.find(
+					p => p.province_id == finalValue
+				);
+
+				setMunicipalities(province?.municipalities || []);
+				setBarangays([]);
+
+				setPersonalForm(prev => ({
+					...prev,
+					province_id: finalValue,
+					municipality_id: "",
+					barangay_id: "",
+				}));
+				break;
+			}
+
+			case "municipality_id": {
+				const municipality = municipalities.find(
+					m => m.municipality_id == finalValue
+				);
+
+				setBarangays(municipality?.barangays || []);
+
+				setPersonalForm(prev => ({
+					...prev,
+					municipality_id: finalValue,
+					barangay_id: "",
+				}));
+				break;
+			}
+
+			case "barangay_id": {
+				setPersonalForm(prev => ({
+					...prev,
+					barangay_id: finalValue,
+				}));
+				break;
+			}
+
+			default: {
+				setPersonalForm(prev => ({
+					...prev,
+					[name]: finalValue,
+				}));
+			}
+		}
+	};
+
 
 	const [personalForm, setPersonalForm] = useState({
 		firstname: "",
@@ -36,9 +137,10 @@ export default function SaKuboRegister() {
 		email: "",
 		password: "",
 		number: "",
-		barangay: "",
-		city: "",
-		province: ""
+		region_id: "",
+		barangay_id: "",
+		municipality_id: "",
+		province_id: ""
 	});
 
 	// const [businessForm, setBusinessForm] = useState({
@@ -82,11 +184,6 @@ export default function SaKuboRegister() {
 	// 	additional_product: ""
 	// });
 
-	const [errors, setErrors] = useState({});
-
-	// useEffect(() => {
-	// 	setBusinessStep(activeTab === "business" ? 1 : 0);
-	// }, [activeTab]);
 
 	const handleChange = (e) => {
 		const { name, value, type, checked, files } = e.target;
@@ -101,11 +198,6 @@ export default function SaKuboRegister() {
 			setPersonalForm((prev) => ({ ...prev, [name]: finalValue }));
 			return;
 		}
-
-		// if (name in businessForm) {
-		// 	setBusinessForm((prev) => ({ ...prev, [name]: finalValue }));
-		// 	return;
-		// }
 	};
 
 	const handleSubmit = async (e) => {
@@ -269,39 +361,70 @@ export default function SaKuboRegister() {
 
 				<div className="flex gap-2">
 					<div className="flex-1">
-					<TextInput
+	    				<TextInput
 						form={personalForm}
 						errors={errors}
-						handleChange={handleChange}
-						name="barangay"
-						label="Barangay"
+						name="region_id"
+						label="Region"
+						type="select"
 						variant="primary"
-						type="text"
-						placeHolder="Barangay"
+						placeHolder="Region"
+						handleChange={handleAddressChange}
+						options={regions.map(r => ({
+							value: r.region_id,
+							label: r.region_name,
+						}))}
 					/>
 					</div>
+				</div>
+
+				<div className="flex gap-2">
 					<div className="flex-1">
 					<TextInput
 						form={personalForm}
 						errors={errors}
-						handleChange={handleChange}
-						name="city"
-						label="City"
-						variant="primary"
-						type="text"
-						placeHolder="City"
-					/>
-					</div>
-					<div className="flex-1">
-					<TextInput
-						form={personalForm}
-						errors={errors}
-						handleChange={handleChange}
-						name="province"
+						name="province_id"
 						label="Province"
+						type="select"
 						variant="primary"
-						type="text"
 						placeHolder="Province"
+						handleChange={handleAddressChange}
+						options={provinces.map(p => ({
+							value: p.province_id,
+							label: p.province_name,
+						}))}
+					/>
+					</div>
+					<div className="flex-1">
+					<TextInput
+						form={personalForm}
+						errors={errors}
+						name="municipality_id"
+						label="City"
+						type="select"
+						variant="primary"
+						placeHolder="City"
+						handleChange={handleAddressChange}
+						options={municipalities.map(m => ({
+							value: m.municipality_id,
+							label: m.municipality_name,
+						}))}
+					/>
+					</div>
+					<div className="flex-1">
+					<TextInput
+						form={personalForm}
+						errors={errors}
+						name="barangay_id"
+						label="Barangay"
+						type="select"
+						variant="primary"
+						placeHolder="Barangay"
+						handleChange={handleAddressChange}
+						options={barangays.map(b => ({
+							value: b.barangay_id,
+							label: b.barangay_name,
+						}))}
 					/>
 					</div>
 				</div>

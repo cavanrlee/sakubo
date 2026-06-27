@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 
 import HomePage from "@/pages/home/HomePage.jsx";
 import ProfilePage from "@/pages/profile/ProfilePage.jsx";
+import BusinessAccounts from "@/pages/profile/BusinessAccounts.jsx";
 import AboutPage from "@/pages/about/AboutPage.jsx";
 
 import LoginPage from "@/pages/login/Login.jsx";
@@ -33,6 +34,7 @@ const AppRoutes = () => {
       <Route element={<NavBarLayout />}>
         <Route path="/Dashboard" element={<DashboardPage />} />
         <Route path="/Profile" element={<ProfilePage />} />
+        <Route path="/BusinessAccounts" element={<BusinessAccounts />} />
       </Route>
 
 
