@@ -8,6 +8,7 @@ import Tabs from "@/components/Tabs";
 import Logo from "@/components/Logo";
 import Alert from "@/utils/alert";
 import { Icon } from '@iconify/react';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 
 
 export default function SaKuboRegister() {
@@ -16,8 +17,6 @@ export default function SaKuboRegister() {
 	const [provinces, setProvinces] = useState([]);
 	const [municipalities, setMunicipalities] = useState([]);
 	const [barangays, setBarangays] = useState([]);
-	// const [activeTab, setActiveTab] = useState("personal");
-	// const [businessStep, setBusinessStep] = useState(1);
 
 
 	useEffect(() => {
@@ -26,18 +25,6 @@ export default function SaKuboRegister() {
 
 
 	const navigate = useNavigate();
-
-	// const tabList = [
-	// 	{ key: "personal", label: "Personal" },
-	// 	{ key: "business", label: "Business" },
-	// ];
-
-	// const options = [
-	// 	{ value: "option1", label: "Groceries" },
-	// 	{ value: "option2", label: "Cooked Meals" },
-	// 	{ value: "option3", label: "Delivery" },
-	// 	{ value: "option4", label: "Piso Wifi" },
-	// ];
 
 
 	const loadAddressMaintenance = async () => {
@@ -48,7 +35,6 @@ export default function SaKuboRegister() {
 			console.error(err);
 		}
 	};
-
 
 	const handleAddressChange = (e) => {
 		const { name, value, type, checked, files } = e.target;
@@ -69,13 +55,17 @@ export default function SaKuboRegister() {
 				setMunicipalities([]);
 				setBarangays([]);
 
-				setPersonalForm(prev => ({
-					...prev,
+				const updated = {
+					...personalForm,
 					region_id: finalValue,
 					province_id: "",
 					municipality_id: "",
 					barangay_id: "",
-				}));
+				};
+
+				setPersonalForm(updated);
+				geocodeCurrentAddress(updated);
+
 				break;
 			}
 
@@ -87,12 +77,16 @@ export default function SaKuboRegister() {
 				setMunicipalities(province?.municipalities || []);
 				setBarangays([]);
 
-				setPersonalForm(prev => ({
-					...prev,
+				const updated = {
+					...personalForm,
 					province_id: finalValue,
 					municipality_id: "",
 					barangay_id: "",
-				}));
+				};
+
+				setPersonalForm(updated);
+				geocodeCurrentAddress(updated);
+
 				break;
 			}
 
@@ -103,19 +97,28 @@ export default function SaKuboRegister() {
 
 				setBarangays(municipality?.barangays || []);
 
-				setPersonalForm(prev => ({
-					...prev,
+				const updated = {
+					...personalForm,
 					municipality_id: finalValue,
 					barangay_id: "",
-				}));
+				};
+
+				setPersonalForm(updated);
+				geocodeCurrentAddress(updated);
+
 				break;
 			}
 
 			case "barangay_id": {
-				setPersonalForm(prev => ({
-					...prev,
+
+				const updated = {
+					...personalForm,
 					barangay_id: finalValue,
-				}));
+				};
+
+				setPersonalForm(updated);
+				geocodeCurrentAddress(updated);
+
 				break;
 			}
 
@@ -128,6 +131,47 @@ export default function SaKuboRegister() {
 		}
 	};
 
+	const geocodeCurrentAddress = async ({ regionId, provinceId, municipalityId, barangayId}) => {
+
+		const region = regions.find(r => r.region_id == regionId);
+		const province = provinces.find(p => p.province_id == provinceId);
+		const municipality = municipalities.find(
+			m => m.municipality_id == municipalityId
+		);
+		const barangay = barangays.find(
+			b => b.barangay_id == barangayId
+		);
+
+		const address = [
+			barangay?.barangay_name,
+			municipality?.municipality_name,
+			province?.province_name,
+			region?.region_name,
+			"Philippines",
+		]
+			.filter(Boolean)
+			.join(", ");
+
+		if (!address) return;
+
+		try {
+			const res = await fetch(
+				`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`
+			);
+
+			const data = await res.json();
+
+			if (data.length > 0) {
+				setPersonalForm(prev => ({
+					...prev,
+					latitude: data[0].lat,
+					longitude: data[0].lon,
+				}));
+			}
+		} catch (err) {
+			console.error(err);
+		}
+	};
 
 	const [personalForm, setPersonalForm] = useState({
 		firstname: "",
@@ -140,7 +184,9 @@ export default function SaKuboRegister() {
 		region_id: "",
 		barangay_id: "",
 		municipality_id: "",
-		province_id: ""
+		province_id: "",
+		// latitude: "",
+    		// longitude: "",
 	});
 
 	// const [businessForm, setBusinessForm] = useState({
