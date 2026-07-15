@@ -294,189 +294,192 @@ export default function SaKuboRegister() {
 	};
 	
 	return (
-		<div className="row">
-			<div className="col-12 max-w-xl mx-auto">
-			<Logo/>
+		<div className="container-fluid">
+			<div className="row py-4">
+				<div className="col-12 max-w-xl mx-auto">
+				<Logo/>
 
-			{/* TITLE */}
-			<div className="row mb-4 text-center">
-				<div className="col-12">
-					<span className="text-2xl text-gray-600 font-bold">
-						Create Account
-					</span>
+				{/* TITLE */}
+				<div className="row mb-4 text-center">
+					<div className="col-12">
+						<span className="text-2xl text-gray-600 font-bold">
+							Create Account
+						</span>
+					</div>
+					<div className="col-12">
+						<span className="text-md text-gray-500">
+							Join our community today
+						</span>
+					</div>
 				</div>
-				<div className="col-12">
-					<span className="text-md text-gray-500">
-						Join our community today
-					</span>
-				</div>
-			</div>
-				<form className="w-full mt-6 flex flex-col gap-3 pb-10" onSubmit={handleSubmit}>
+					<form className="w-full mt-6 flex flex-col gap-3 pb-10" onSubmit={handleSubmit}>
 
-				{/* Personal tab unchanged */}
-				<div className="flex gap-2">
-					<div className="flex-1">
-					<TextInput
+					{/* Personal tab unchanged */}
+					<div className="flex gap-2">
+						<div className="flex-1">
+						<TextInput
+							form={personalForm}
+							errors={errors}
+							handleChange={handleChange}
+							name="firstname"
+							label="First Name"
+							variant="primary"
+							type="text"
+							placeHolder="First Name"
+						/>
+						</div>
+						<div className="flex-1">
+						<TextInput
+							form={personalForm}
+							errors={errors}
+							handleChange={handleChange}
+							name="middlename"
+							label="Middle Name"
+							variant="primary"
+							type="text"
+							placeHolder="Middle Name"
+						/>
+						</div>
+						<div className="flex-1">
+						<TextInput
+							form={personalForm}
+							errors={errors}
+							handleChange={handleChange}
+							name="lastname"
+							label="Last Name"
+							variant="primary"
+							type="text"
+							placeHolder="Last Name"
+						/>
+						</div>
+					</div>
+
+					<div>
+						<TextInput
 						form={personalForm}
 						errors={errors}
 						handleChange={handleChange}
-						name="firstname"
-						label="First Name"
+						name="nickname"
+						label="Nickname (Optional)"
 						variant="primary"
 						type="text"
-						placeHolder="First Name"
-					/>
+						placeHolder="Nickname"
+						/>
 					</div>
-					<div className="flex-1">
-					<TextInput
+
+					<div>
+						<TextInput
 						form={personalForm}
 						errors={errors}
 						handleChange={handleChange}
-						name="middlename"
-						label="Middle Name"
+						name="number"
+						label="Number"
 						variant="primary"
-						type="text"
-						placeHolder="Middle Name"
-					/>
+						type="number"
+						placeHolder="Number"
+						/>
 					</div>
-					<div className="flex-1">
-					<TextInput
+
+					<div>
+						<TextInput
 						form={personalForm}
 						errors={errors}
 						handleChange={handleChange}
-						name="lastname"
-						label="Last Name"
+						name="email"
+						label="Email (Optional)"
 						variant="primary"
-						type="text"
-						placeHolder="Last Name"
-					/>
+						type="email"
+						placeHolder="Email"
+						/>
 					</div>
-				</div>
 
-				<div>
-					<TextInput
-					form={personalForm}
-					errors={errors}
-					handleChange={handleChange}
-					name="nickname"
-					label="Nickname (Optional)"
-					variant="primary"
-					type="text"
-					placeHolder="Nickname"
-					/>
-				</div>
-
-				<div>
-					<TextInput
-					form={personalForm}
-					errors={errors}
-					handleChange={handleChange}
-					name="number"
-					label="Number"
-					variant="primary"
-					type="number"
-					placeHolder="Number"
-					/>
-				</div>
-
-				<div>
-					<TextInput
-					form={personalForm}
-					errors={errors}
-					handleChange={handleChange}
-					name="email"
-					label="Email (Optional)"
-					variant="primary"
-					type="email"
-					placeHolder="Email"
-					/>
-				</div>
-
-				<div>
-					<TextInput
-					form={personalForm}
-					errors={errors}
-					handleChange={handleChange}
-					name="password"
-					label="Password"
-					variant="primary"
-					type="password"
-					placeHolder="Password"
-					/>
-				</div>
-
-				<div className="flex gap-2">
-					<div className="flex-1">
-	    				<TextInput
+					<div>
+						<TextInput
 						form={personalForm}
 						errors={errors}
-						name="region_id"
-						label="Region"
-						type="select"
+						handleChange={handleChange}
+						name="password"
+						label="Password"
 						variant="primary"
-						placeHolder="Region"
-						handleChange={handleAddressChange}
-						options={regions.map(r => ({
-							value: r.region_id,
-							label: r.region_name,
-						}))}
-					/>
+						type="password"
+						placeHolder="Password"
+						/>
 					</div>
-				</div>
 
-				<div className="flex gap-2">
-					<div className="flex-1">
-					<TextInput
-						form={personalForm}
-						errors={errors}
-						name="province_id"
-						label="Province"
-						type="select"
-						variant="primary"
-						placeHolder="Province"
-						handleChange={handleAddressChange}
-						options={provinces.map(p => ({
-							value: p.province_id,
-							label: p.province_name,
-						}))}
-					/>
+					<div className="flex gap-2">
+						<div className="flex-1">
+						<TextInput
+							form={personalForm}
+							errors={errors}
+							name="region_id"
+							label="Region"
+							type="select"
+							variant="primary"
+							placeHolder="Region"
+							handleChange={handleAddressChange}
+							options={regions.map(r => ({
+								value: r.region_id,
+								label: r.region_name,
+							}))}
+						/>
+						</div>
 					</div>
-					<div className="flex-1">
-					<TextInput
-						form={personalForm}
-						errors={errors}
-						name="municipality_id"
-						label="City"
-						type="select"
-						variant="primary"
-						placeHolder="City"
-						handleChange={handleAddressChange}
-						options={municipalities.map(m => ({
-							value: m.municipality_id,
-							label: m.municipality_name,
-						}))}
-					/>
+
+					<div className="flex gap-2">
+						<div className="flex-1">
+						<TextInput
+							form={personalForm}
+							errors={errors}
+							name="province_id"
+							label="Province"
+							type="select"
+							variant="primary"
+							placeHolder="Province"
+							handleChange={handleAddressChange}
+							options={provinces.map(p => ({
+								value: p.province_id,
+								label: p.province_name,
+							}))}
+						/>
+						</div>
+						<div className="flex-1">
+						<TextInput
+							form={personalForm}
+							errors={errors}
+							name="municipality_id"
+							label="City"
+							type="select"
+							variant="primary"
+							placeHolder="City"
+							handleChange={handleAddressChange}
+							options={municipalities.map(m => ({
+								value: m.municipality_id,
+								label: m.municipality_name,
+							}))}
+						/>
+						</div>
+						<div className="flex-1">
+						<TextInput
+							form={personalForm}
+							errors={errors}
+							name="barangay_id"
+							label="Barangay"
+							type="select"
+							variant="primary"
+							placeHolder="Barangay"
+							handleChange={handleAddressChange}
+							options={barangays.map(b => ({
+								value: b.barangay_id,
+								label: b.barangay_name,
+							}))}
+						/>
+						</div>
 					</div>
-					<div className="flex-1">
-					<TextInput
-						form={personalForm}
-						errors={errors}
-						name="barangay_id"
-						label="Barangay"
-						type="select"
-						variant="primary"
-						placeHolder="Barangay"
-						handleChange={handleAddressChange}
-						options={barangays.map(b => ({
-							value: b.barangay_id,
-							label: b.barangay_name,
-						}))}
-					/>
-					</div>
+					<Button variant="primary" type="submit">Create Personal Account</Button>
+					</form>
 				</div>
-				<Button variant="primary" type="submit">Create Personal Account</Button>
-				</form>
 			</div>
 		</div>
+
 	);
 }

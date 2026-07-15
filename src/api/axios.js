@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Preferences } from "@capacitor/preferences";
 
 const api = axios.create({
     baseURL: "http://sakubo-laravel-api.com",

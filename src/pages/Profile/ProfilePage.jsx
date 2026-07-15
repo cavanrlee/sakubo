@@ -1,10 +1,11 @@
 import React from "react";
-import { useState, useEffect } from 'react'
 import Logo from "@/components/Logo";
-import DefaultUserImage from "@/components/DefaultUserImage";
+import { Icon } from "@iconify/react";
+import { useState, useEffect } from 'react'
 import UserCardHeader from "@/components/UserCardHeader";
-import { menuItems, userDetails } from "@/pages/profile/ProfileController";
+import DefaultUserImage from "@/components/DefaultUserImage";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { menuItems, userDetails } from "@/pages/profile/ProfileController";
 
 export default function SakuboProfile() {
 	const navigate = useNavigate();
@@ -27,37 +28,38 @@ export default function SakuboProfile() {
 
 	const logout = async (e) => {
 		localStorage.removeItem("api_token");
-		alert("Logged out");
 		window.location.href = "/";
 	}
 
 	return (
 		<div className="row px-0">
-			<div className="col-12 vh-100 flex flex-col">
-				<UserCardHeader />
+			<UserCardHeader />
+
+			<div className="col-12 vh-100 flex flex-col pe-0">
 				<div className="card rounded-none! shadow-none border-none! px-2 py-0 flex-1 flex flex-col">
 					<div className="card-body flex-1 flex flex-col justify-between h-full">
 						<div className="row">
 							<div className="col-12">
-								<ul className="list-group border-none!">
+								<ul className="list-group border-none! text-left!">
 									{menus.map((menu_item) => (
-										<li className="list-group-item text-sm px-0 text-gray-600! border-none! d-flex justify-content-between align-items-center" onClick={() => navigate(menu_item.menu_url)} key={menu_item.id}>
-											{menu_item.menu_name}
+										<li className="list-group-item px-0 text-gray-600! text-sm border-none! d-flex align-items-center" onClick={() => navigate(menu_item.menu_url)} key={menu_item.id}>
+											<Icon className="text-2xl me-2" icon={menu_item.icon_name} />{menu_item.menu_name}
 										</li>
 									))}
 								</ul>
 							</div>
 						</div>
 						<div className="row mt-auto pb-10">
-							<div className="col-12 text-start py-2 text-sm">
-								<a className="text-gray-600! no-underline! text-semibold" id="log-out" type="button" onClick={logout}>Logout</a>
+							<div className="col-12 text-start py-2">
+								<a className="text-gray-600! no-underline! text-sm" id="log-out" type="button" onClick={logout}>Log Out</a>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-
+	);
+}
 
 
 		// <div className="row">
@@ -554,5 +556,3 @@ export default function SakuboProfile() {
 		// 				</form>
 		// 	</div>
 		// </div>
-	);
-}
