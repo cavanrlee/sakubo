@@ -1,15 +1,15 @@
-import axios from "@/api/axios.js";
+import api, { sanctum } from "@/api/axios.js";
 
-// change password
+// login user
 export const loginUser = async(formData) => {
-	const response = await axios.post("/api/login", formData);
-
+	await sanctum.get('/sanctum/csrf-cookie');
+	const response = await api.post("/login", formData);
 	return response.data;
 }
 
+
 // change password
 export const changePassword = async (formData) => {
-	const response = await axios.post("api/change-password", formData);
-
+	const response = await api.post("/me/change-password", formData);
 	return response.data;
 }

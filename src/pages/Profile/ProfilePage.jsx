@@ -2,58 +2,52 @@ import React from "react";
 import Logo from "@/components/Logo";
 import { Icon } from "@iconify/react";
 import { useState, useEffect } from 'react'
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import UserCardHeader from "@/components/UserCardHeader";
 import DefaultUserImage from "@/components/DefaultUserImage";
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
-import { menuItems, userDetails } from "@/pages/profile/ProfileController";
+import { logoutUser } from "@/pages/profile/ProfileController";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function SakuboProfile() {
+    const { user, setUser } = useAuth();
 	const navigate = useNavigate();
 	const location = useLocation();
-	const [menus, setMenus] = useState([]);
 
-	useEffect(() => {
-		loadMenus();
-	}, []);
 
-	const loadMenus = async () => {
+	const logout = async (e) => {
+		e?.preventDefault();
 		try {
-			const response = await menuItems();
-
-			setMenus(response.menu_items);
+			await logoutUser();
+			setUser(null);
+			navigate("/Login");
 		} catch (error) {
 			console.error(error);
 		}
 	};
 
-	const logout = async (e) => {
-		localStorage.removeItem("api_token");
-		window.location.href = "/";
-	}
-
 	return (
 		<div className="row px-0">
 			<UserCardHeader />
+			<div className="col-12 vh-100 flex flex-col">
+				<div className="card rounded-none! shadow-none! border-0! p-0 h-100 flex flex-col">
+					<div className="card-body">
+						<ul className="list-group border-0! flex-1">
+							{user?.menu?.map((menu_item) => (
+								<li key={menu_item.id} className=" list-group-item p-1 text-gray-600! text-sm border-0! d-flex align-items-center cursor-pointer hover:bg-gray-100! 	rounded! " onClick={() => navigate(menu_item.menu_url)} >
+									<Icon className="text-2xl me-3" icon={menu_item.icon_name}/>
+									<span>
+										{menu_item.menu_name}
+									</span>
+								</li>
+							))}
 
-			<div className="col-12 vh-100 flex flex-col pe-0">
-				<div className="card rounded-none! shadow-none border-none! px-2 py-0 flex-1 flex flex-col">
-					<div className="card-body flex-1 flex flex-col justify-between h-full">
-						<div className="row">
-							<div className="col-12">
-								<ul className="list-group border-none! text-left!">
-									{menus.map((menu_item) => (
-										<li className="list-group-item px-0 text-gray-600! text-sm border-none! d-flex align-items-center" onClick={() => navigate(menu_item.menu_url)} key={menu_item.id}>
-											<Icon className="text-2xl me-2" icon={menu_item.icon_name} />{menu_item.menu_name}
-										</li>
-									))}
-								</ul>
-							</div>
-						</div>
-						<div className="row mt-auto pb-10">
-							<div className="col-12 text-start py-2">
-								<a className="text-gray-600! no-underline! text-sm" id="log-out" type="button" onClick={logout}>Log Out</a>
-							</div>
-						</div>
+							<li className=" list-group-item p-1 text-gray-600! text-sm border-0! d-flex align-items-center cursor-pointer hover:bg-gray-100! rounded! " onClick={logout} >
+								<Icon className="text-2xl me-3" icon="solar:logout-2-line-duotone"/>
+								<span>
+									Log Out
+								</span>
+							</li>
+						</ul>
 					</div>
 				</div>
 			</div>

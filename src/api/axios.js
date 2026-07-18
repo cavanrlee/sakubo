@@ -1,14 +1,22 @@
 import axios from "axios";
-import { Preferences } from "@capacitor/preferences";
+
+const baseURL = "http://sakubo-laravel-api.com";
+
+export const sanctum = axios.create({
+    baseURL,
+    withCredentials: true,
+});
 
 const api = axios.create({
-    baseURL: "http://sakubo-laravel-api.com",
-    withCredentials: true, 
+    baseURL: `${baseURL}/api`,
+    withCredentials: true,
+    xsrfCookieName: "XSRF-TOKEN",
+    xsrfHeaderName: "X-XSRF-TOKEN",
     headers: {
         "X-API-KEY": import.meta.env.VITE_SAKUBO_APP_API_KEY,
         "Accept": "application/json",
-        "Content-Type": "application/json"
-    }
+        "Content-Type": "application/json",
+    },
 });
 
 export default api;

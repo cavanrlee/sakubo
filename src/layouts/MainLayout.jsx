@@ -3,11 +3,6 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { Outlet, Link } from "react-router-dom";
 
-const logout = async (e) => {
-  localStorage.removeItem("api_token");
-  alert("Logged out");
-  window.location.href = "/";
-}
 
 const MainLayout = () => {
   return (

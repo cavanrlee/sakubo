@@ -5,9 +5,11 @@ import TextInput from "@/components/TextInput";
 import Button from "@/components/Button";
 import Logo from "@/components/Logo";
 import Alert from "@/utils/alert";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function SaKuboLogin() {
-	const [errors, setErrors] = useState({});
+	const { setUser } = useAuth();
+	const [ errors, setErrors] = useState({});
 	const navigate = useNavigate();
 	const [form, setForm] = useState({
 		email: "",
@@ -23,8 +25,8 @@ export default function SaKuboLogin() {
 		e.preventDefault();
 		setErrors({});
 		try {
-			const data = await loginUser(form);
-			localStorage.setItem("api_token", data.data.api_token);
+			const response = await loginUser(form);
+			setUser(response.data);
 			navigate("/dashboard");
 		} catch (err) {
 			if (err.response?.data?.error?.fields) {

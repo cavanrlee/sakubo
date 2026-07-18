@@ -1,13 +1,14 @@
-import axios from "@/api/axios.js";
+import api, { sanctum } from "@/api/axios.js";
 
 export const registerUser = async (formData) => {
-  const response = await axios.post("/api/register", formData);
+  await sanctum.get('/sanctum/csrf-cookie');
+  const response = await api.post("/register", formData);
 
   return response.data;
 };
 
 export const getAddressMaintenance = async () => {
-  const response = await axios.get("/api/address-maintenance");
+  const response = await api.get("/address-maintenance");
 
   return response.data;
 };

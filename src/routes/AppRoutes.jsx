@@ -12,36 +12,66 @@ import OTPReceivingPage from "@/pages/login/OTPReceiving.jsx";
 
 import RegisterPage from "@/pages/register/Register.jsx";
 import DashboardPage from "@/pages/dashboard/Dashboard.jsx";
+
 import NavBarLayout from "@/layouts/Navbar.jsx";
+import ProtectedRoute from "@/routes/ProtectedRoute.jsx";
 
 
 const AppRoutes = () => {
-  return (
-    <Routes>
-      {/* PUBLIC ROUTES */}
-      <Route path="/About" element={<AboutPage />} />
-      <Route path="/ChangePassword" element={<ChangePassword />} />
-      <Route path="/OTP-sending" element={<OTPSendingPage />} />
-      <Route path="/OTP-receiving" element={<OTPReceivingPage />} />
 
-      {/* AUTH ROUTES */}
-      <Route path="/" element={<HomePage />} />
-      <Route path="/Login" element={<LoginPage />} />
-      <Route path="/Register" element={<RegisterPage />} />
+    return (
+        <Routes>
 
+            {/* PUBLIC ROUTES */}
+            <Route path="/" element={<HomePage />} />
+            <Route path="/About" element={<AboutPage />} />
 
-      {/* NESTED ROUTES WITH LAYOUT */}
-      <Route element={<NavBarLayout />}>
-        <Route path="/Dashboard" element={<DashboardPage />} />
-        <Route path="/Profile" element={<ProfilePage />} />
-        <Route path="/BusinessAccounts" element={<BusinessAccounts />} />
-      </Route>
+            <Route path="/Login" element={<LoginPage />} />
+            <Route path="/Register" element={<RegisterPage />} />
+
+            <Route path="/OTP-sending" element={<OTPSendingPage />} />
+            <Route path="/OTP-receiving" element={<OTPReceivingPage />} />
 
 
-      {/* FALLBACK (404) */}
-      <Route path="*" element={<h2>Page Not Found</h2>} />
-    </Routes>
-  );
+            {/* AUTHENTICATED ROUTES */}
+            <Route element={<ProtectedRoute />}>
+
+                <Route element={<NavBarLayout />}>
+
+                    <Route 
+                        path="/Dashboard" 
+                        element={<DashboardPage />} 
+                    />
+
+                    <Route 
+                        path="/Profile" 
+                        element={<ProfilePage />} 
+                    />
+
+                    <Route 
+                        path="/BusinessAccounts" 
+                        element={<BusinessAccounts />} 
+                    />
+
+                    <Route 
+                        path="/ChangePassword" 
+                        element={<ChangePassword />} 
+                    />
+
+                </Route>
+
+            </Route>
+
+
+            {/* 404 */}
+            <Route 
+                path="*" 
+                element={<h2>Page Not Found</h2>} 
+            />
+
+        </Routes>
+    );
 };
+
 
 export default AppRoutes;

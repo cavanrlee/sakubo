@@ -1,36 +1,20 @@
 import React from "react";
 import { useState, useEffect } from 'react';
-import { userBusinessAccounts } from "@/pages/profile/ProfileController";
+import { useAuth } from "@/hooks/useAuth";
+
 
 const BusinessAccountsCards = () => {
-	const [business_accnt_details, setBusinessAccntCards] = useState([]);
-
-	const [form, setForm] = useState({
-		api_token: localStorage.getItem("api_token")
-	});
-
-	const businessDeets = async (e) => {
-		try {
-			const response = await userBusinessAccounts(form);
-			setBusinessAccntCards(response.business_accnt_details);
-		} catch (error) {
-			console.error(error);
-		}
-	};
+	const { user } = useAuth();
 
 	const toTitleCase = (text) =>
 		text.replace(/\w\S*/g, (word) =>
 			word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
 		);
 
-	useEffect(() => {
-		businessDeets();
-	}, []);
-
 	return (
 		<>
 			{
-				business_accnt_details.map((details, index) => (
+				user?.business_accnt_details.map((details, index) => (
 					<div className="card shadow-none border py-0 px-2 my-3" key={index}>
 						<div className="card-body">
 							<div className="row">
@@ -47,7 +31,7 @@ const BusinessAccountsCards = () => {
 										</div>
 
 										<div className="col-2 text-xs! text-center p-0 text-muted">
-											<a class="no-underline! text-[#4CAF50]!">Manage</a>
+											<a className="no-underline! text-[#4CAF50]!">Manage</a>
 										</div>
 									</div>
 

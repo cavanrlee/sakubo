@@ -1,0 +1,1 @@
+import api, { sanctum } from "@/api/axios.js";
