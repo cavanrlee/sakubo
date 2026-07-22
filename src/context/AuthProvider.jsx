@@ -10,8 +10,8 @@ const AuthProvider = ({ children }) => {
 
     const checkAuth = async () => {
         try {
-            const response = await api.get("/me");
-            setUser(response.data.user);
+            const response = await api.get("/dashboard");
+            setUser(response.data.data);
         } catch (error) {
             setUser(null);
         } finally {

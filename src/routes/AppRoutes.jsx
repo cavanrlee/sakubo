@@ -1,4 +1,6 @@
-import { Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import { App } from "@capacitor/app";
 
 import HomePage from "@/pages/home/HomePage.jsx";
 import ProfilePage from "@/pages/profile/ProfilePage.jsx";
@@ -18,6 +20,21 @@ import ProtectedRoute from "@/routes/ProtectedRoute.jsx";
 
 
 const AppRoutes = () => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const backButtonListener = App.addListener('backButton', ({ canGoBack }) => {
+            if (canGoBack) {
+                window.history.back();
+            } else {
+                App.exitApp();
+            }
+        });
+
+        return () => {
+            backButtonListener.then(listener => listener.remove());
+        };
+    }, [navigate]);
 
     return (
         <Routes>

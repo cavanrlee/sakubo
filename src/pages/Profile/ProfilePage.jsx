@@ -5,20 +5,32 @@ import { useState, useEffect } from 'react'
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import UserCardHeader from "@/components/UserCardHeader";
 import DefaultUserImage from "@/components/DefaultUserImage";
-import { logoutUser } from "@/pages/profile/ProfileController";
+import { logoutUser } from "@/pages/login/LoginController";
 import { useAuth } from "@/hooks/useAuth";
+import { getDeviceInfoObject } from "@/helpers/deviceHelper";
 
 export default function SakuboProfile() {
-    const { user, setUser } = useAuth();
+    const { user } = useAuth();
 	const navigate = useNavigate();
 	const location = useLocation();
+     const [form, setForm] = useState({device_id: ""});
+	
 
+	useEffect(() => {
+          const loadDevice = async () => {
+               const deviceData = await getDeviceInfoObject();
+               setForm((prev) => ({
+                    ...prev,
+                    device_id: deviceData.device_id,
+               }));
+          };
+          loadDevice();
+     }, []);
 
 	const logout = async (e) => {
-		e?.preventDefault();
+		e.preventDefault();
 		try {
-			await logoutUser();
-			setUser(null);
+			await logoutUser(form);
 			navigate("/Login");
 		} catch (error) {
 			console.error(error);
@@ -41,7 +53,7 @@ export default function SakuboProfile() {
 								</li>
 							))}
 
-							<li className=" list-group-item p-1 text-gray-600! text-sm border-0! d-flex align-items-center cursor-pointer hover:bg-gray-100! rounded! " onClick={logout} >
+							<li className="list-group-item p-1 text-gray-600! text-sm border-0! d-flex align-items-center cursor-pointer hover:bg-gray-100! rounded! " onClick={logout} >
 								<Icon className="text-2xl me-3" icon="solar:logout-2-line-duotone"/>
 								<span>
 									Log Out

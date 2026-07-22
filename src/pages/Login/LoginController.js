@@ -10,6 +10,13 @@ export const loginUser = async(formData) => {
 
 // change password
 export const changePassword = async (formData) => {
-	const response = await api.post("/me/change-password", formData);
+	const response = await api.post("/change-password", formData);
+	return response.data;
+}
+
+
+// logout user
+export const logoutUser = async(formData) => {
+	const response = await api.post("/logout", formData);
 	return response.data;
 }

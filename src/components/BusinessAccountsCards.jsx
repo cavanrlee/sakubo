@@ -14,7 +14,7 @@ const BusinessAccountsCards = () => {
 	return (
 		<>
 			{
-				user?.business_accnt_details.map((details, index) => (
+				user?.business_accnt_details?.map((details, index) => (
 					<div className="card shadow-none border py-0 px-2 my-3" key={index}>
 						<div className="card-body">
 							<div className="row">
