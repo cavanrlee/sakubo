@@ -2,7 +2,7 @@
   "appId": "com.saKubo.app",
   "appName": "saKubo",
   "webDir": "dist",
-    "server": {
-    "cleartext": true
+  "server": {
+    "androidScheme": "https"
   }
 }
