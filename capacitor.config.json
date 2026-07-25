@@ -3,7 +3,6 @@
   "appName": "saKubo",
   "webDir": "dist",
   "server": {
-    "url": "https://sakubo-web.onrender.com",
-    "cleartext": true
+    "androidScheme": "https"
   }
 }
