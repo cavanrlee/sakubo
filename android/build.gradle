@@ -24,6 +24,26 @@ allprojects {
     }
 }
 
+// Force all subprojects to use Java 17 to match the JDK 17 environment.
+// This fixes the "error: invalid source release: 21" issue.
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            project.android {
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_17
+                    targetCompatibility JavaVersion.VERSION_17
+                }
+                if (project.plugins.hasPlugin('kotlin-android')) {
+                    kotlinOptions {
+                        jvmTarget = '17'
+                    }
+                }
+            }
+        }
+    }
+}
+
 // Fixed the 'buildDir' deprecation warning often seen in Gradle 8+
 layout.buildDirectory.set(file("$rootDir/build"))
 

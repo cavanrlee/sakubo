@@ -5,12 +5,12 @@ import { Capacitor } from "@capacitor/core";
 const getBaseURL = () => {
     // 1. Mobile app sa Capacitor (Android/iOS)
     if (Capacitor.isNativePlatform()) {
-        return "https://your-laravel-app.onrender.com";
+        return "https://sakubo-web.onrender.com";
     }
 
     // Production web
     if (import.meta.env.PROD) {
-        return "https://your-laravel-app.onrender.com";
+        return "https://sakubo-web.onrender.com";
     }
 
     // Local Development
@@ -29,6 +29,7 @@ export const sanctum = axios.create({
 const api = axios.create({
     baseURL: `${baseURL}/api`,
     withCredentials: true,
+    withXSRFToken: true,
     headers: {
         "X-API-KEY": import.meta.env.VITE_SAKUBO_APP_API_KEY,
         "Accept": "application/json",
