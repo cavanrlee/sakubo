@@ -5,12 +5,12 @@ import { Capacitor } from "@capacitor/core";
 const getBaseURL = () => {
     // 1. Mobile app sa Capacitor (Android/iOS)
     if (Capacitor.isNativePlatform()) {
-        return "/";
+        return "https://sakubo-web.onrender.com";
     }
 
     // Production web
     if (import.meta.env.PROD) {
-        return "/";
+        return "https://sakubo-web.onrender.com";
     }
 
     // Local Development
