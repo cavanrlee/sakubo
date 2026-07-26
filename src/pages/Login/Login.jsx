@@ -49,9 +49,9 @@ export default function SaKuboLogin() {
                setUser(response.data);
                navigate("/dashboard");
           } catch (err) {
-               if (err.response?.data?.errors) {
-                    setErrors(err.response.data.errors);
-               }
+			if (err.response?.data?.error?.fields) {
+				setErrors(err.response.data.error.fields);
+			}
           }
      };
 
