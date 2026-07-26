@@ -328,6 +328,8 @@ export default function SaKuboRegister() {
 							placeHolder="First Name"
 						/>
 						</div>
+					</div>
+					<div className="flex gap-2">
 						<div className="flex-1">
 						<TextInput
 							form={personalForm}
@@ -340,6 +342,8 @@ export default function SaKuboRegister() {
 							placeHolder="Middle Name"
 						/>
 						</div>
+					</div>
+					<div className="flex gap-2">
 						<div className="flex-1">
 						<TextInput
 							form={personalForm}
@@ -353,7 +357,6 @@ export default function SaKuboRegister() {
 						/>
 						</div>
 					</div>
-
 					<div>
 						<TextInput
 						form={personalForm}
@@ -442,6 +445,8 @@ export default function SaKuboRegister() {
 							}))}
 						/>
 						</div>
+					</div>
+					<div className="flex gap-2">
 						<div className="flex-1">
 						<TextInput
 							form={personalForm}
@@ -458,6 +463,8 @@ export default function SaKuboRegister() {
 							}))}
 						/>
 						</div>
+					</div>
+					<div className="flex gap-2">
 						<div className="flex-1">
 						<TextInput
 							form={personalForm}
