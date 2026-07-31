@@ -5,6 +5,7 @@ import { App } from "@capacitor/app";
 import HomePage from "@/pages/home/HomePage.jsx";
 import ProfilePage from "@/pages/profile/ProfilePage.jsx";
 import BusinessAccounts from "@/pages/profile/BusinessAccounts.jsx";
+import ManageBusinessAccounts from "@/pages/profile/ManageBusinessAccounts.jsx";
 import AboutPage from "@/pages/about/AboutPage.jsx";
 
 import LoginPage from "@/pages/login/Login.jsx";
@@ -68,6 +69,11 @@ const AppRoutes = () => {
                     <Route 
                         path="/BusinessAccounts" 
                         element={<BusinessAccounts />} 
+                    />
+
+                    <Route
+                        path="/ManageBusinessAccounts"
+                        element={<ManageBusinessAccounts />}
                     />
 
                     <Route 

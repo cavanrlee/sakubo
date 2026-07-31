@@ -5,12 +5,12 @@ import { Capacitor } from "@capacitor/core";
 const getBaseURL = () => {
     // 1. Mobile app sa Capacitor (Android/iOS)
     if (Capacitor.isNativePlatform()) {
-        return "https://sakubo-web.onrender.com";
+        return "https://your-laravel-app.onrender.com";
     }
 
     // Production web
     if (import.meta.env.PROD) {
-        return "https://sakubo-web.onrender.com";
+        return "https://your-laravel-app.onrender.com";
     }
 
     // Local Development
@@ -26,14 +26,25 @@ export const sanctum = axios.create({
 });
 
 // API application routes
+// const api = axios.create({
+//     baseURL: `${baseURL}/api`,
+//     withCredentials: true,
+//     headers: {
+//         "X-API-KEY": import.meta.env.VITE_SAKUBO_APP_API_KEY,
+//         "Accept": "application/json",
+//         "Content-Type": "application/json",
+//     },
+// });
+
 const api = axios.create({
     baseURL: `${baseURL}/api`,
     withCredentials: true,
     withXSRFToken: true,
+    xsrfCookieName: "XSRF-TOKEN",
+    xsrfHeaderName: "X-XSRF-TOKEN",
     headers: {
+        Accept: "application/json",
         "X-API-KEY": import.meta.env.VITE_SAKUBO_APP_API_KEY,
-        "Accept": "application/json",
-        "Content-Type": "application/json",
     },
 });
 

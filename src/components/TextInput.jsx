@@ -41,11 +41,9 @@ const TextInput = ({
     ...(type !== "checkbox" &&
       type !== "radio" &&
       type !== "file" && {
-        onChange: handleChange
-      }),
-    className: `${baseClass} ${
-      type === "checkbox" || type === "radio" ? "w-auto" : ""
-    }`,
+      onChange: handleChange
+    }),
+    className: `${baseClass} ${type === "checkbox" || type === "radio" ? "w-auto" : ""} ${type === "select" ? "form-select" : ""}`,
     placeholder: placeHolder,
     style,
     onFocus: handleFocus,
