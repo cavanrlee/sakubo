@@ -8,7 +8,7 @@ import Tabs from "@/components/Tabs";
 import Logo from "@/components/Logo";
 import Alert from "@/utils/alert";
 import { Icon } from '@iconify/react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+
 
 
 export default function SaKuboRegister() {
@@ -131,47 +131,6 @@ export default function SaKuboRegister() {
 		}
 	};
 
-	const geocodeCurrentAddress = async ({ regionId, provinceId, municipalityId, barangayId}) => {
-
-		const region = regions.find(r => r.region_id == regionId);
-		const province = provinces.find(p => p.province_id == provinceId);
-		const municipality = municipalities.find(
-			m => m.municipality_id == municipalityId
-		);
-		const barangay = barangays.find(
-			b => b.barangay_id == barangayId
-		);
-
-		const address = [
-			barangay?.barangay_name,
-			municipality?.municipality_name,
-			province?.province_name,
-			region?.region_name,
-			"Philippines",
-		]
-			.filter(Boolean)
-			.join(", ");
-
-		if (!address) return;
-
-		try {
-			const res = await fetch(
-				`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`
-			);
-
-			const data = await res.json();
-
-			if (data.length > 0) {
-				setPersonalForm(prev => ({
-					...prev,
-					latitude: data[0].lat,
-					longitude: data[0].lon,
-				}));
-			}
-		} catch (err) {
-			console.error(err);
-		}
-	};
 
 	const [personalForm, setPersonalForm] = useState({
 		firstname: "",

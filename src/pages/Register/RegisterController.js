@@ -13,9 +13,3 @@ export const getAddressMaintenance = async () => {
   return response.data;
 };
 
-
-export const regsiterBusinessAccount = async (formData) => {
-  const response = await api.post("/register-business-account", formData);
-
-  return response.data;
-};

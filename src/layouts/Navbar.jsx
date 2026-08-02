@@ -42,9 +42,9 @@ const NavBar = () => {
 			<footer>
 				<nav className="fixed bottom-0 left-0 right-0 bg-white h-13 shadow-[0_-2px_6px_-1px_rgba(0,0,0,0.1)]" id="bottom-nav" ref={div_ref}>
 					<ul className="flex justify-around items-center h-full m-0 p-0">
-						{user?.bot_nav_items?.map((items) => (
-							<li className={navItemClass(items.bot_nav_menu_url)} onClick={() => navigate(items.bot_nav_menu_url)} key={items.id}>
-								<Icon className="text-2xl me-2" icon={items.icon_name} />
+						{user?.bot_nav_menu?.map((list) => (
+							<li className={navItemClass(list.url)} onClick={() => navigate(list.url)} key={list.id}>
+								<Icon className="text-2xl me-2" icon={list.icon_name} />
 							</li>
 						))}
 					</ul>

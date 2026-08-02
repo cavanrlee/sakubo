@@ -72,7 +72,7 @@ const AppRoutes = () => {
                     />
 
                     <Route
-                        path="/ManageBusinessAccounts"
+                        path="/ManageBusinessAccounts/:id?"
                         element={<ManageBusinessAccounts />}
                     />
 
