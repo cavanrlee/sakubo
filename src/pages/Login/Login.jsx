@@ -5,7 +5,9 @@ import TextInput from "@/components/TextInput";
 import Button from "@/components/Button";
 import Logo from "@/components/Logo";
 import { getDeviceInfoObject } from "@/helpers/deviceHelper";
+import { Geolocation } from "@capacitor/geolocation";
 import { useAuth } from "@/hooks/useAuth";
+
 
 export default function SaKuboLogin() {
 
@@ -23,14 +25,58 @@ export default function SaKuboLogin() {
 
      useEffect(() => {
           const loadDevice = async () => {
-               const deviceData = await getDeviceInfoObject();
-               setForm((prev) => ({
-                    ...prev,
-                    ...deviceData,
-               }));
+               try {
+                    // Get device information
+                    const deviceData = await getDeviceInfoObject();
+
+                    setForm((prev) => ({
+                         ...prev,
+                         ...deviceData,
+                    }));
+
+                    // Request location permission
+                    const permission = await Geolocation.requestPermissions();
+
+                    console.log("Location permission:", permission);
+
+                    if (permission.location === "granted" ||permission.coarseLocation === "granted") {
+                         console.log("Location permission granted");
+                    } else {
+                         console.log("Location permission denied");
+                    }
+
+               } catch (error) {
+                    console.error("Failed to load device information:", error);
+               }
           };
+
           loadDevice();
      }, []);
+
+
+     const requestLocationPermission = async () => {
+          try {
+               const permission = await Geolocation.requestPermissions();
+
+               console.log("Location permission:", permission);
+
+               if (
+                    permission.location === "granted" ||
+                    permission.coarseLocation === "granted"
+               ) {
+                    console.log("Location permission granted");
+                    return true;
+               }
+
+               console.log("Location permission denied");
+               return false;
+
+          } catch (error) {
+               console.error("Location permission error:", error);
+               return false;
+          }
+     };
+
 
      const handleChange = (e) => {
           const { name, value, type, checked } = e.target;

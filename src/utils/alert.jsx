@@ -21,7 +21,7 @@ const ThemedSwal = MySwal.mixin({
 
 const ThemedToast = Swal.mixin({
   toast: true,
-  position: "top-end",
+  position: "top",
   showConfirmButton: false,
   timer: 2000,
   timerProgressBar: true,
