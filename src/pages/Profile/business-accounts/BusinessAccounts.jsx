@@ -18,13 +18,13 @@ export default function BusinessAccounts() {
 			<UserCardHeader />
 			<div className="col-12 mt-3 mb-0 px-9!">
 				<div className="row">
-					<button className="btn flex items-center justify-center gap-2 border-2! border-dashed! border-[#4CAF50]! bg-[#91d893]! text-white! w-full" onClick={() => navigate("/ManageBusinessAccounts")}>
+					<button className="btn flex items-center justify-center gap-2 border-2! border-dashed! border-[#4CAF50]! bg-[#91d893]! text-white! w-full" onClick={() => navigate("/business-accounts/add")}>
 						<Icon className="text-2xl me-2 inline-block shrink-0 mb-1" icon="solar:add-circle-bold-duotone" />Add Business Account
 					</button>
 				</div>
 			</div>
 			<div className="col-12 px-6!">
-				<BusinessAccountsCards />
+				<BusinessAccountsCards/>
 			</div>
 		</div >
 	);

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import Alert from "@/utils/alert";
+import { deleteBusinessAccount } from "@/pages/profile/ProfileController";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
@@ -10,7 +12,7 @@ const BusinessAccountsCards = () => {
      // State para sa current location ng user
      const [userLocation, setUserLocation] = useState({ lat: null, lon: null });
 
-     // 1. Kunin ang current location ng user pag-load ng component
+     // load user location on component mount
      useEffect(() => {
           if (navigator.geolocation) {
                navigator.geolocation.getCurrentPosition(
@@ -27,6 +29,7 @@ const BusinessAccountsCards = () => {
           }
      }, []);
 
+     // Function to convert text to title case
      const toTitleCase = (text) => {
           if (!text) return "";
           return text.replace(/\w\S*/g, (word) =>
@@ -34,7 +37,7 @@ const BusinessAccountsCards = () => {
           );
      };
 
-     // 2. Haversine Formula para kalkulahin ang distansya sa kilometers
+     // calculate distance between user and business
      const calculateDistance = (lat2, lon2) => {
           if (!userLocation.lat || !userLocation.lon || !lat2 || !lon2) return null;
 
@@ -50,6 +53,30 @@ const BusinessAccountsCards = () => {
           const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
           return (R * c).toFixed(1);
      };
+
+     // delete business account with confirmation
+     const handleDelete = async (id) => {
+          const isConfirmed = await Alert.confirm(
+               "Are you sure?", 
+               "Once deleted, you will not be able to recover this business account!"
+          );
+
+          if (isConfirmed) {
+               try {
+                    await deleteBusinessAccount(id);
+                    Alert.toast.success("Business account deleted successfully!");
+                    
+                    setTimeout(() => {
+                         navigate("/business-accounts");
+                         window.location.reload();
+                    }, 2000);
+               } catch (err) {
+                    Alert.toast.error("Failed to delete the business account.");
+                    console.error(err);
+               }
+          }
+     };
+          
 
      return (
           <>
@@ -73,9 +100,14 @@ const BusinessAccountsCards = () => {
                                                        </div>
                                                   </div>
 
-                                                  <div className="col-2 text-xs! text-center p-0 text-muted">
-                                                       <button className="no-underline! text-[#4CAF50]!" variant="primary" onClick={() => navigate(`/ManageBusinessAccounts/${list.id}`)}>
-                                                            Manage
+                                                  <div className="col-1 text-md! text-center p-0 text-muted">
+                                                       <button className="no-underline! text-yellow-500!" variant="primary" onClick={() => navigate(`/business-accounts/edit/${list.id}`)}>
+                                                            <Icon className="inline-block shrink-0 mb-1" icon="solar:pen-2-bold-duotone" />
+                                                       </button>
+                                                  </div>
+                                                  <div className="col-1 text-md! text-center p-0 text-muted">
+                                                       <button className="no-underline! text-red-500!" variant="primary" onClick={handleDelete.bind(null, list.id)}>
+                                                            <Icon className="inline-block shrink-0 mb-1" icon="solar:trash-bin-2-bold-duotone" />
                                                        </button>
                                                   </div>
                                              </div>

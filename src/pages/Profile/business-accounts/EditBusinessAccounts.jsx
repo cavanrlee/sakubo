@@ -16,7 +16,7 @@ import Alert from "@/utils/alert";
 import DefaultUserImage from "@/components/DefaultUserImage";
 import UserCardHeader from "@/components/UserCardHeader";
 
-export default function ManageBusinessAccounts() {
+export default function EditBusinessAccounts() {
      const navigate = useNavigate();
      const location = useLocation();
      const { id } = useParams(); // Kukuha ng ID mula sa URL (para sa pag-edit)
@@ -381,7 +381,13 @@ export default function ManageBusinessAccounts() {
 
           try {
                await updateBusinessAccount(id, formData);
-               navigate("/BusinessAccounts");
+               Alert.toast.success("Business account updated successfully!");
+                              
+               setTimeout(() => {
+                    navigate("/business-accounts");
+                    window.location.reload();
+               }, 2000);
+
           } catch (err) {
                if (err.response?.data?.error?.fields) {
                     setErrors(err.response.data.error.fields);
@@ -907,7 +913,7 @@ export default function ManageBusinessAccounts() {
 
                                    {businessStep === 5 && (
                                         <Button variant="primary" type="submit">
-                                             {id ? "Update Application" : "Submit Application"}
+                                             Update Business Account
                                         </Button>
                                    )}
                               </div>
