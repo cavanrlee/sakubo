@@ -17,7 +17,7 @@ const ProtectedRoute = () => {
 
     // 2. If finished loading and no user, send to login
     if (!user) {
-        return <Navigate to="/Login" replace />;
+        return <Navigate to="/login" replace />;
     }
 
     // 3. If user exists, render the child routes (NavBarLayout, etc.)
