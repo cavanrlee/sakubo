@@ -5,9 +5,8 @@ import { Icon } from "@iconify/react";
 import { useState, useEffect } from 'react'
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 
-import DefaultUserImage from "@/components/DefaultUserImage";
-import UserCardHeader from "@/components/UserCardHeader";
-import BusinessAccountsCards from "@/components/BusinessAccountsCards";
+import UserCard from "@/components/cards/UserCard";
+import BusinessAccountsCards from "@/components/cards/BusinessAccountsCards";
 
 export default function BusinessAccounts() {
 	const navigate = useNavigate();
@@ -15,7 +14,8 @@ export default function BusinessAccounts() {
 
 	return (
 		<div className="row px-0">
-			<UserCardHeader />
+			<UserCard/>
+
 			<div className="col-12 mt-3 mb-0 px-9!">
 				<div className="row">
 					<button className="btn flex items-center justify-center gap-2 border-2! border-dashed! border-[#4CAF50]! bg-[#91d893]! text-white! w-full" onClick={() => navigate("/business-accounts/add")}>
@@ -23,6 +23,7 @@ export default function BusinessAccounts() {
 					</button>
 				</div>
 			</div>
+
 			<div className="col-12 px-6!">
 				<BusinessAccountsCards/>
 			</div>

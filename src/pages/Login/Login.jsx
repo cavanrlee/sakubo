@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "@/pages/login/LoginController";
-import TextInput from "@/components/TextInput";
-import Button from "@/components/Button";
+import TextInput from "@/components/inputs";
+import Button from "@/components/buttons/Button";
 import Logo from "@/components/Logo";
 import { getDeviceInfoObject } from "@/helpers/deviceHelper";
 import { Geolocation } from "@capacitor/geolocation";
@@ -46,7 +46,7 @@ export default function SaKuboLogin() {
                     }
 
                } catch (error) {
-                    console.error("Failed to load device information:", error);
+                    console.log("Failed to load device information:", error);
                }
           };
 
@@ -105,16 +105,16 @@ export default function SaKuboLogin() {
           <div className="container-fluid">
                <div className="row">
                     <div className="col-12 py-4 max-w-xl mx-auto">
-                         <Logo />
+                         <Logo/>
 
                          <div className="card border-0 p-0">
                               <div className="row mb-2">
-                                   <div className="col-12 my-2">
+                                   <div className="col-12">
                                         <span className="text-2xl text-gray-600! font-bold">
                                              Welcome back!
                                         </span>
                                    </div>
-                                   <div className="col-12 my-2">
+                                   <div className="col-12">
                                         <span className="text-md text-gray-600!">
                                              Sign in to your account.
                                         </span>
@@ -162,7 +162,7 @@ export default function SaKuboLogin() {
                                              />
                                         </div>
                                         <div className="col-6">
-                                             <a className="float-right text-gray-600! px-2 font-semibold hover:cursor-pointer hover:text-gray-900! no-underline!" onClick={() => navigate("/OTP-Sending")}>
+                                             <a className="float-right text-sm text-gray-600! px-2 font-semibold hover:cursor-pointer hover:text-gray-900! no-underline!" onClick={() => navigate("/otp-sending")}>
                                                   Forgot password?
                                              </a>
                                         </div>

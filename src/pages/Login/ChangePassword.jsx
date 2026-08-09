@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { changePassword } from '@/pages/login/LoginController';
-import TextInput from "@/components/TextInput";
-import Button from "@/components/Button";
+import TextInput from "@/components/inputs";
+import Button from "@/components/buttons/Button";
 import Logo from "@/components/Logo";
 import Alert from "@/utils/alert";
 

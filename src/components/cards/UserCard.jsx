@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from 'react';
-import DefaultUserImage from "@/components/DefaultUserImage";
+import Avatar from "@/components/Avatar";
 import { useAuth } from "@/hooks/useAuth";
 
 const UserCardHeader = () => {
@@ -9,7 +9,7 @@ const UserCardHeader = () => {
 	return (
 		<div className="row align-items-center bg-[#4CAF50]! m-0 py-3">
 			<div className="col-3 p-3">
-				<DefaultUserImage />
+				<Avatar />
 			</div>
 			<div className="col-7 border-l border-white">
 				<div className="row text-left mx-0">

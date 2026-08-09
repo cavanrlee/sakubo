@@ -26,7 +26,7 @@ const ThemedToast = Swal.mixin({
   timer: 2000,
   timerProgressBar: true,
   customClass: {
-    popup: "!rounded-xl !p-3 !text-xs !shadow-lg",
+    popup: "!rounded-xl !p-3 !text-xs !shadow-lg !mt-4",
   },
   didOpen: (toast) => {
     toast.addEventListener("mouseenter", Swal.stopTimer);

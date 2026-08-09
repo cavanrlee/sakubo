@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { registerUser, getAddressMaintenance } from "@/pages/register/RegisterController";
 import { useNavigate } from "react-router-dom";
-import TextInput from "@/components/TextInput";
-import Button from "@/components/Button"; 
-import Select2Dropdown from "@/components/Select2Dropdown";
-import Tabs from "@/components/Tabs";
+import TextInput from "@/components/inputs";
+import Button from "@/components/buttons/Button";
+import Tabs from "@/components/tabs/Tabs";
 import Logo from "@/components/Logo";
 import Alert from "@/utils/alert";
 import { Icon } from '@iconify/react';
@@ -144,51 +143,7 @@ export default function SaKuboRegister() {
 		barangay_id: "",
 		municipality_id: "",
 		province_id: "",
-		// latitude: "",
-    		// longitude: "",
 	});
-
-	// const [businessForm, setBusinessForm] = useState({
-	// 	business_name: "",
-	// 	business_category: "",
-	// 	business_type: "",
-	// 	business_address: "",
-	// 	business_barangay: "",
-	// 	business_city: "",
-	// 	business_province: "",
-	// 	business_number: "",
-
-	// 	days_of_operation: "",
-	// 	from_time: "",
-	// 	to_time: "",
-
-	// 	business_notes: "",
-
-	// 	cash: false,
-	// 	gcash: false,
-	// 	paymaya: false,
-	// 	utang_ok: false,
-
-	// 	delivery: false,
-	// 	meetup: false,
-	// 	pickup: false,
-
-	// 	tiktok: "",
-	// 	facebook: "",
-	// 	instagram: "",
-	// 	website: "",
-
-	// 	business_permit: null,
-	// 	store_front_photo: null,
-	// 	bir_certificate_of_registration: null,
-	// 	dti_registration: null,
-	// 	sec_registration: null,
-	// 	sanitary_registration: null,
-
-	// 	products: [],
-	// 	additional_product: ""
-	// });
-
 
 	const handleChange = (e) => {
 		const { name, value, type, checked, files } = e.target;

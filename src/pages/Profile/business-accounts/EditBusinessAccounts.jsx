@@ -8,13 +8,14 @@ import { useAuth } from "@/hooks/useAuth";
 import { getAddressMaintenance } from "@/pages/register/RegisterController";
 import { updateBusinessAccount } from "@/pages/profile/ProfileController";
 
-import TextInput from "@/components/TextInput";
-import Button from "@/components/Button";
-import Select2Dropdown from "@/components/Select2Dropdown";
-import Tabs from "@/components/Tabs";
+
+import TextInput from "@/components/inputs";
+import Button from "@/components/buttons/Button";
+import Select2 from "@/components/select2/Select2";
+import Tabs from "@/components/tabs/Tabs";
 import Alert from "@/utils/alert";
-import DefaultUserImage from "@/components/DefaultUserImage";
-import UserCardHeader from "@/components/UserCardHeader";
+import UserCard from "@/components/cards/UserCard";
+
 
 export default function EditBusinessAccounts() {
      const navigate = useNavigate();
@@ -46,15 +47,18 @@ export default function EditBusinessAccounts() {
           business_address: "",
 
           region_id: "",
-          barangay_id: "",
-          municipality_id: "",
           province_id: "",
+          municipality_id: "",
+          barangay_id: "",
           business_contact_number: "",
 
-          days_of_operation: "",
+          days_open: [],
+
           open_time: "",
           close_time: "",
+
           business_notes: "",
+
 
           // Step #2
           tiktok_link: "",
@@ -69,6 +73,7 @@ export default function EditBusinessAccounts() {
           sec_registration: null,
           sanitary_registration: null,
 
+          // Step #3
           products: [],
           additional_product: ""
      });
@@ -117,7 +122,7 @@ export default function EditBusinessAccounts() {
 
 				// --- Kuhanin ang bilang ng araw ---
 				let daysCount = "";
-				const rawDays = foundBusiness.days_of_operation || foundBusiness.days_open;
+				const rawDays = foundBusiness.days_open || foundBusiness.days_open;
 
 				if (Array.isArray(rawDays)) {
 					daysCount = String(rawDays.length);
@@ -156,7 +161,7 @@ export default function EditBusinessAccounts() {
 					open_time: formatTime(foundBusiness.open_time || ""),
                          close_time: formatTime(foundBusiness.close_time || ""),
 
-                         days_of_operation: daysCount,
+                         days_open: daysCount,
 
                          // Products / Services
                          products: servicesArray
@@ -336,7 +341,7 @@ export default function EditBusinessAccounts() {
           setErrors({});
           const formData = new FormData();
 
-          const daysOpenArray = getDaysArray(businessForm.days_of_operation);
+          const daysOpenArray = getDaysArray(businessForm.days_open);
 
           const paymentsArray = [];
           if (businessForm.cash) paymentsArray.push("Cash");
@@ -351,7 +356,7 @@ export default function EditBusinessAccounts() {
 
           const submissionData = {
                ...businessForm,
-               days_of_operation: daysOpenArray,
+               days_open: daysOpenArray,
                payments_accepted: paymentsArray,
                business_services: servicesArray,
           };
@@ -398,7 +403,7 @@ export default function EditBusinessAccounts() {
      return (
           <div className="container-fluid">
                <div className="row px-0">
-                    <UserCardHeader />
+                    <UserCard/>
 
                     <div className="col-12">
                          <form className="w-full mt-6 flex flex-col gap-3 pb-10" onSubmit={handleSubmit}>
@@ -580,7 +585,7 @@ export default function EditBusinessAccounts() {
                                                        form={businessForm}
                                                        errors={errors}
                                                        handleChange={handleChange}
-                                                       name="days_of_operation"
+                                                       name="days_open"
                                                        label="Days"
                                                        type="select"
                                                        variant="primary"
@@ -863,7 +868,7 @@ export default function EditBusinessAccounts() {
                                         <p className="text-muted text-center">
                                              Search and select what you offer to help customers find you.
                                         </p>
-                                        <Select2Dropdown
+                                        <Select2
                                              form={businessForm}
                                              errors={errors}
                                              handleChange={handleChange}

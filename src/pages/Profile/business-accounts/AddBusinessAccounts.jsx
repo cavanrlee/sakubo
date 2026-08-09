@@ -6,16 +6,14 @@ import { useState, useEffect } from 'react';
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { getAddressMaintenance } from "@/pages/register/RegisterController";
-// Palitan ang update function ng create function para sa Add Page
 import { createBusinessAccount } from "@/pages/profile/ProfileController";
 
-import TextInput from "@/components/TextInput";
-import Button from "@/components/Button";
-import Select2Dropdown from "@/components/Select2Dropdown";
-import Tabs from "@/components/Tabs";
+import TextInput from "@/components/inputs";
+import Button from "@/components/buttons/Button";
+import Select2 from "@/components/select2/Select2";
+import Tabs from "@/components/tabs/Tabs";
 import Alert from "@/utils/alert";
-import DefaultUserImage from "@/components/DefaultUserImage";
-import UserCardHeader from "@/components/UserCardHeader";
+import UserCard from "@/components/cards/UserCard";
 
 export default function AddBusinessAccounts() {
      const navigate = useNavigate();
@@ -51,7 +49,7 @@ export default function AddBusinessAccounts() {
           province_id: "",
           business_contact_number: "",
 
-          days_of_operation: "",
+          days_open: "",
           open_time: "",
           close_time: "",
           business_notes: "",
@@ -78,6 +76,7 @@ export default function AddBusinessAccounts() {
           sec_registration: null,
           sanitary_registration: null,
 
+          // Step #3
           products: [],
           additional_product: ""
      });
@@ -96,13 +95,18 @@ export default function AddBusinessAccounts() {
      };
 
      const handleAddressChange = (e) => {
-          const { name, value, type, checked, files } = e.target;
+          const target = e?.target || e || {};
+          const { name, value, type, checked, files } = target;
 
           let finalValue;
 
-          if (type === "checkbox") finalValue = checked ? 1 : 0;
-          else if (type === "file") finalValue = files?.[0] ?? null;
-          else finalValue = value;
+          if (type === "checkbox") {
+               finalValue = checked ? 1 : 0;
+          } else if (type === "file" || files) {
+               finalValue = files?.[0] ?? (value instanceof File ? value : null);
+          } else {
+               finalValue = value;
+          }
 
           switch (name) {
                case "region_id": {
@@ -124,7 +128,6 @@ export default function AddBusinessAccounts() {
 
                     setBusinessForm(updated);
                     geocodeCurrentAddress(updated);
-
                     break;
                }
 
@@ -145,7 +148,6 @@ export default function AddBusinessAccounts() {
 
                     setBusinessForm(updated);
                     geocodeCurrentAddress(updated);
-
                     break;
                }
 
@@ -164,7 +166,6 @@ export default function AddBusinessAccounts() {
 
                     setBusinessForm(updated);
                     geocodeCurrentAddress(updated);
-
                     break;
                }
 
@@ -176,7 +177,6 @@ export default function AddBusinessAccounts() {
 
                     setBusinessForm(updated);
                     geocodeCurrentAddress(updated);
-
                     break;
                }
 
@@ -238,18 +238,31 @@ export default function AddBusinessAccounts() {
      ];
 
      const handleChange = (e) => {
-          const { name, value, type, checked, files } = e.target;
+          const target = e?.target || e;
+          const name = target?.name;
+
+          if (!name) return;
 
           let finalValue;
 
-          if (type === "checkbox") finalValue = checked ? 1 : 0;
-          else if (type === "file") finalValue = files?.[0] ?? null;
-          else finalValue = value;
-
-          if (name in businessForm) {
-               setBusinessForm((prev) => ({ ...prev, [name]: finalValue }));
-               return;
+          // Direktang silipin ang files kung mayroon man
+          if (target.files && target.files.length > 0) {
+               finalValue = target.files[0];
+          } 
+          else if (target.type === "file") {
+               finalValue = target.value instanceof File ? target.value : null;
+          } 
+          else if (target.type === "checkbox") {
+               finalValue = target.checked ? 1 : 0;
+          } 
+          else {
+               finalValue = target.value;
           }
+
+          setBusinessForm((prev) => ({ 
+               ...prev, 
+               [name]: finalValue 
+          }));
      };
 
      const handleSubmit = async (e) => {
@@ -257,7 +270,7 @@ export default function AddBusinessAccounts() {
           setErrors({});
           const formData = new FormData();
 
-          const daysOpenArray = getDaysArray(businessForm.days_of_operation);
+          const daysOpenArray = getDaysArray(businessForm.days_open);
 
           const paymentsArray = [];
           if (businessForm.cash) paymentsArray.push("Cash");
@@ -270,9 +283,14 @@ export default function AddBusinessAccounts() {
           if (businessForm.meetup) servicesArray.push("Meet Up");
           if (businessForm.pickup) servicesArray.push("Pick Up");
 
+          const cleanProducts = Array.isArray(businessForm.products)
+               ? businessForm.products.map(p => (typeof p === 'object' ? p.value || p.label : p))
+               : [];
+
           const submissionData = {
                ...businessForm,
-               days_of_operation: daysOpenArray,
+               products: cleanProducts,
+               days_open: daysOpenArray,
                payments_accepted: paymentsArray,
                business_services: servicesArray,
           };
@@ -286,13 +304,19 @@ export default function AddBusinessAccounts() {
                     formData.append(key, value);
                }
                else if (Array.isArray(value)) {
-                    value.forEach(v => formData.append(`${key}[]`, v));
+                    value.forEach(v => {
+                         if (v !== null && v !== undefined) {
+                              formData.append(`${key}[]`, v);
+                         }
+                    });
                }
                else if (typeof value === "boolean") {
                     formData.append(key, value ? "1" : "0");
                }
                else {
-                    formData.append(key, value ?? "");
+                    if (value !== null && value !== undefined) {
+                         formData.append(key, value);
+                    }
                }
           });
 
@@ -314,7 +338,7 @@ export default function AddBusinessAccounts() {
      return (
           <div className="container-fluid">
                <div className="row px-0">
-                    <UserCardHeader />
+                    <UserCard/>
 
                     <div className="col-12">
                          <form className="w-full mt-6 flex flex-col gap-3 pb-10" onSubmit={handleSubmit}>
@@ -328,490 +352,478 @@ export default function AddBusinessAccounts() {
                               </div>
 
                               {/* Step 1: Basic Info */}
-                              {businessStep === 1 && (
-                                   <>
-                                        <span className="text-xl font-bold text-gray-500">
-                                             Business Information
-                                        </span>
+                              <div className={businessStep === 1 ? "flex flex-col gap-3" : "hidden"}>
+                                   <span className="text-xl font-bold text-gray-500">
+                                        Business Information
+                                   </span>
 
-                                        <TextInput
-                                             form={businessForm}
-                                             errors={errors}
-                                             handleChange={handleChange}
-                                             name="business_name"
-                                             label="Business Name"
-                                             variant="primary"
-                                             type="text"
-                                             placeHolder="Business Name"
-                                        />
+                                   <TextInput
+                                        form={businessForm}
+                                        errors={errors}
+                                        handleChange={handleChange}
+                                        name="business_name"
+                                        label="Business Name"
+                                        variant="primary"
+                                        type="text"
+                                        placeHolder="Business Name"
+                                   />
 
-                                        <TextInput
-                                             form={businessForm}
-                                             errors={errors}
-                                             handleChange={handleChange}
-                                             name="business_category"
-                                             label="Business Category"
-                                             variant="primary"
-                                             type="text"
-                                             placeHolder="Business Category"
-                                        />
+                                   <TextInput
+                                        form={businessForm}
+                                        errors={errors}
+                                        handleChange={handleChange}
+                                        name="business_category"
+                                        label="Business Category"
+                                        variant="primary"
+                                        type="text"
+                                        placeHolder="Business Category"
+                                   />
 
-                                        <TextInput
-                                             form={businessForm}
-                                             errors={errors}
-                                             handleChange={handleChange}
-                                             name="business_type"
-                                             label="Business Type"
-                                             type="select"
-                                             variant="primary"
-                                             placeHolder="Business Type"
-                                             options={[
-                                                  { value: "Local", label: "Local" },
-                                                  { value: "International", label: "International" },
-                                             ]}
-                                        />
+                                   <TextInput
+                                        form={businessForm}
+                                        errors={errors}
+                                        handleChange={handleChange}
+                                        name="business_type"
+                                        label="Business Type"
+                                        type="select"
+                                        variant="primary"
+                                        placeHolder="Business Type"
+                                        options={[
+                                             { value: "Local", label: "Local" },
+                                             { value: "International", label: "International" },
+                                        ]}
+                                   />
 
-                                        <TextInput
-                                             form={businessForm}
-                                             errors={errors}
-                                             handleChange={handleChange}
-                                             name="business_email"
-                                             label="Business Email (Optional)"
-                                             variant="primary"
-                                             type="email"
-                                             placeHolder="Email"
-                                        />
+                                   <TextInput
+                                        form={businessForm}
+                                        errors={errors}
+                                        handleChange={handleChange}
+                                        name="business_email"
+                                        label="Business Email (Optional)"
+                                        variant="primary"
+                                        type="email"
+                                        placeHolder="Email"
+                                   />
 
-                                        <TextInput
-                                             form={businessForm}
-                                             errors={errors}
-                                             handleChange={handleChange}
-                                             name="business_website"
-                                             label="Website (Optional)"
-                                             variant="primary"
-                                             type="text"
-                                             placeHolder="Website"
-                                        />
+                                   <TextInput
+                                        form={businessForm}
+                                        errors={errors}
+                                        handleChange={handleChange}
+                                        name="business_website"
+                                        label="Website (Optional)"
+                                        variant="primary"
+                                        type="text"
+                                        placeHolder="Website"
+                                   />
 
-                                        <TextInput
-                                             form={businessForm}
-                                             errors={errors}
-                                             handleChange={handleChange}
-                                             name="business_address"
-                                             label="Street Address"
-                                             variant="primary"
-                                             type="text"
-                                             placeHolder="Street Address"
-                                        />
+                                   <TextInput
+                                        form={businessForm}
+                                        errors={errors}
+                                        handleChange={handleChange}
+                                        name="business_address"
+                                        label="Street Address"
+                                        variant="primary"
+                                        type="text"
+                                        placeHolder="Street Address"
+                                   />
 
-                                        <div className="flex gap-2">
-                                             <div className="flex-1">
-                                                  <TextInput
-                                                       form={businessForm}
-                                                       errors={errors}
-                                                       name="region_id"
-                                                       label="Region"
-                                                       type="select"
-                                                       variant="primary"
-                                                       placeHolder="Region"
-                                                       handleChange={handleAddressChange}
-                                                       options={regions.map(r => ({
-                                                            value: r.region_id,
-                                                            label: r.region_name,
-                                                       }))}
-                                                  />
-                                             </div>
+                                   <div className="flex gap-2">
+                                        <div className="flex-1">
+                                             <TextInput
+                                                  form={businessForm}
+                                                  errors={errors}
+                                                  name="region_id"
+                                                  label="Region"
+                                                  type="select"
+                                                  variant="primary"
+                                                  placeHolder="Region"
+                                                  handleChange={handleAddressChange}
+                                                  options={regions.map(r => ({
+                                                       value: r.region_id,
+                                                       label: r.region_name,
+                                                  }))}
+                                             />
                                         </div>
+                                   </div>
 
-                                        <div className="flex gap-2">
-                                             <div className="flex-1">
-                                                  <TextInput
-                                                       form={businessForm}
-                                                       errors={errors}
-                                                       name="province_id"
-                                                       label="Province"
-                                                       type="select"
-                                                       variant="primary"
-                                                       placeHolder="Province"
-                                                       handleChange={handleAddressChange}
-                                                       options={provinces.map(p => ({
-                                                            value: p.province_id,
-                                                            label: p.province_name,
-                                                       }))}
-                                                  />
-                                             </div>
+                                   <div className="flex gap-2">
+                                        <div className="flex-1">
+                                             <TextInput
+                                                  form={businessForm}
+                                                  errors={errors}
+                                                  name="province_id"
+                                                  label="Province"
+                                                  type="select"
+                                                  variant="primary"
+                                                  placeHolder="Province"
+                                                  handleChange={handleAddressChange}
+                                                  options={provinces.map(p => ({
+                                                       value: p.province_id,
+                                                       label: p.province_name,
+                                                  }))}
+                                             />
                                         </div>
+                                   </div>
 
-                                        <div className="flex gap-2">
-                                             <div className="flex-1">
-                                                  <TextInput
-                                                       form={businessForm}
-                                                       errors={errors}
-                                                       name="municipality_id"
-                                                       label="City"
-                                                       type="select"
-                                                       variant="primary"
-                                                       placeHolder="City"
-                                                       handleChange={handleAddressChange}
-                                                       options={municipalities.map(m => ({
-                                                            value: m.municipality_id,
-                                                            label: m.municipality_name,
-                                                       }))}
-                                                  />
-                                             </div>
+                                   <div className="flex gap-2">
+                                        <div className="flex-1">
+                                             <TextInput
+                                                  form={businessForm}
+                                                  errors={errors}
+                                                  name="municipality_id"
+                                                  label="City"
+                                                  type="select"
+                                                  variant="primary"
+                                                  placeHolder="City"
+                                                  handleChange={handleAddressChange}
+                                                  options={municipalities.map(m => ({
+                                                       value: m.municipality_id,
+                                                       label: m.municipality_name,
+                                                  }))}
+                                             />
                                         </div>
+                                   </div>
 
-                                        <div className="flex gap-2">
-                                             <div className="flex-1">
-                                                  <TextInput
-                                                       form={businessForm}
-                                                       errors={errors}
-                                                       name="barangay_id"
-                                                       label="Barangay"
-                                                       type="select"
-                                                       variant="primary"
-                                                       placeHolder="Barangay"
-                                                       handleChange={handleAddressChange}
-                                                       options={barangays.map(b => ({
-                                                            value: b.barangay_id,
-                                                            label: b.barangay_name,
-                                                       }))}
-                                                  />
-                                             </div>
+                                   <div className="flex gap-2">
+                                        <div className="flex-1">
+                                             <TextInput
+                                                  form={businessForm}
+                                                  errors={errors}
+                                                  name="barangay_id"
+                                                  label="Barangay"
+                                                  type="select"
+                                                  variant="primary"
+                                                  placeHolder="Barangay"
+                                                  handleChange={handleAddressChange}
+                                                  options={barangays.map(b => ({
+                                                       value: b.barangay_id,
+                                                       label: b.barangay_name,
+                                                  }))}
+                                             />
                                         </div>
+                                   </div>
 
-                                        <TextInput
-                                             form={businessForm}
-                                             errors={errors}
-                                             handleChange={handleChange}
-                                             name="business_contact_number"
-                                             label="Contact Number"
-                                             variant="primary"
-                                             type="number"
-                                             placeHolder="Contact Number"
-                                        />
-                                        <div className="flex gap-2">
-                                             <div className="flex-1">
-                                                  <TextInput
-                                                       form={businessForm}
-                                                       errors={errors}
-                                                       handleChange={handleChange}
-                                                       name="days_of_operation"
-                                                       label="Days"
-                                                       type="select"
-                                                       variant="primary"
-                                                       placeHolder="Select Days"
-                                                       options={[
-                                                            { value: "1", label: "1" },
-                                                            { value: "2", label: "2" },
-                                                            { value: "3", label: "3" },
-                                                            { value: "4", label: "4" },
-                                                            { value: "5", label: "5" },
-                                                            { value: "6", label: "6" },
-                                                            { value: "7", label: "7" },
-                                                       ]}
-                                                  />
-                                             </div>
+                                   <TextInput
+                                        form={businessForm}
+                                        errors={errors}
+                                        handleChange={handleChange}
+                                        name="business_contact_number"
+                                        label="Contact Number"
+                                        variant="primary"
+                                        type="number"
+                                        placeHolder="Contact Number"
+                                   />
+                                   <div className="flex gap-2">
+                                        <div className="flex-1">
+                                             <TextInput
+                                                  form={businessForm}
+                                                  errors={errors}
+                                                  handleChange={handleChange}
+                                                  name="days_open"
+                                                  label="Days"
+                                                  type="select"
+                                                  variant="primary"
+                                                  placeHolder="Select Days"
+                                                  options={[
+                                                       { value: "1", label: "1" },
+                                                       { value: "2", label: "2" },
+                                                       { value: "3", label: "3" },
+                                                       { value: "4", label: "4" },
+                                                       { value: "5", label: "5" },
+                                                       { value: "6", label: "6" },
+                                                       { value: "7", label: "7" },
+                                                  ]}
+                                             />
                                         </div>
-                                        <div className="flex gap-2">
-                                             <div className="flex-1">
-                                                  <TextInput
-                                                       form={businessForm}
-                                                       errors={errors}
-                                                       handleChange={handleChange}
-                                                       name="open_time"
-                                                       label="Open Time"
-                                                       variant="primary"
-                                                       type="time"
-                                                       placeHolder=""
-                                                  />
-                                             </div>
-                                             <div className="flex-1">
-                                                  <TextInput
-                                                       form={businessForm}
-                                                       errors={errors}
-                                                       handleChange={handleChange}
-                                                       name="close_time"
-                                                       label="Close Time"
-                                                       variant="primary"
-                                                       type="time"
-                                                       placeHolder=""
-                                                  />
-                                             </div>
+                                   </div>
+                                   <div className="flex gap-2">
+                                        <div className="flex-1">
+                                             <TextInput
+                                                  form={businessForm}
+                                                  errors={errors}
+                                                  handleChange={handleChange}
+                                                  name="open_time"
+                                                  label="Open Time"
+                                                  variant="primary"
+                                                  type="time"
+                                             />
                                         </div>
+                                        <div className="flex-1">
+                                             <TextInput
+                                                  form={businessForm}
+                                                  errors={errors}
+                                                  handleChange={handleChange}
+                                                  name="close_time"
+                                                  label="Close Time"
+                                                  variant="primary"
+                                                  type="time"
+                                             />
+                                        </div>
+                                   </div>
 
-                                        <span className="text-sm text-left font-bold text-gray-700">
-                                             Payment Method Accepted
-                                        </span>
+                                   <span className="text-sm text-left font-bold text-gray-700">
+                                        Payment Method Accepted
+                                   </span>
 
-                                        <div className="flex gap-2">
-                                             <div className="flex-1 border p-3 border-gray-500 rounded-lg">
-                                                  <TextInput
-                                                       form={businessForm}
-                                                       errors={errors}
-                                                       handleChange={handleChange}
-                                                       name="cash"
-                                                       label="Cash"
-                                                       variant="primary"
-                                                       type="checkbox"
-                                                  />
-                                             </div>
-                                             <div className="flex-1 border p-3 border-gray-500 rounded-lg">
-                                                  <TextInput
-                                                       form={businessForm}
-                                                       errors={errors}
-                                                       handleChange={handleChange}
-                                                       name="gcash"
-                                                       label="GCash"
-                                                       variant="primary"
-                                                       type="checkbox"
-                                                  />
-                                             </div>
+                                   <div className="flex gap-2">
+                                        <div className="flex-1 border p-3 border-gray-500 rounded-lg">
+                                             <TextInput
+                                                  form={businessForm}
+                                                  errors={errors}
+                                                  handleChange={handleChange}
+                                                  name="cash"
+                                                  label="Cash"
+                                                  variant="primary"
+                                                  type="checkbox"
+                                             />
                                         </div>
-                                        <div className="flex gap-2">
-                                             <div className="flex-1 border p-3 border-gray-500 rounded-lg">
-                                                  <TextInput
-                                                       form={businessForm}
-                                                       errors={errors}
-                                                       handleChange={handleChange}
-                                                       name="paymaya"
-                                                       label="PayMaya"
-                                                       variant="primary"
-                                                       type="checkbox"
-                                                  />
-                                             </div>
-                                             <div className="flex-1 border p-3 border-gray-500 rounded-lg">
-                                                  <TextInput
-                                                       form={businessForm}
-                                                       errors={errors}
-                                                       handleChange={handleChange}
-                                                       name="utang_ok"
-                                                       label="Utang OK"
-                                                       variant="primary"
-                                                       type="checkbox"
-                                                  />
-                                             </div>
+                                        <div className="flex-1 border p-3 border-gray-500 rounded-lg">
+                                             <TextInput
+                                                  form={businessForm}
+                                                  errors={errors}
+                                                  handleChange={handleChange}
+                                                  name="gcash"
+                                                  label="GCash"
+                                                  variant="primary"
+                                                  type="checkbox"
+                                             />
                                         </div>
-                                        <span className="text-sm text-left font-bold text-gray-700">
-                                             Service Option (Optional)
-                                        </span>
-                                        <div className="flex gap-2">
-                                             <div className="flex-1 border p-3 border-gray-500 rounded-lg">
-                                                  <TextInput
-                                                       form={businessForm}
-                                                       errors={errors}
-                                                       handleChange={handleChange}
-                                                       name="delivery"
-                                                       label="Delivery"
-                                                       variant="primary"
-                                                       type="checkbox"
-                                                  />
-                                             </div>
-                                             <div className="flex-1 border p-3 border-gray-500 rounded-lg">
-                                                  <TextInput
-                                                       form={businessForm}
-                                                       errors={errors}
-                                                       handleChange={handleChange}
-                                                       name="meetup"
-                                                       label="Meet Up"
-                                                       variant="primary"
-                                                       type="checkbox"
-                                                  />
-                                             </div>
+                                   </div>
+                                   <div className="flex gap-2">
+                                        <div className="flex-1 border p-3 border-gray-500 rounded-lg">
+                                             <TextInput
+                                                  form={businessForm}
+                                                  errors={errors}
+                                                  handleChange={handleChange}
+                                                  name="paymaya"
+                                                  label="PayMaya"
+                                                  variant="primary"
+                                                  type="checkbox"
+                                             />
                                         </div>
-                                        <div className="flex gap-2">
-                                             <div className="flex-1 border p-3 border-gray-500 rounded-lg">
-                                                  <TextInput
-                                                       form={businessForm}
-                                                       errors={errors}
-                                                       handleChange={handleChange}
-                                                       name="pickup"
-                                                       label="Pick Up"
-                                                       variant="primary"
-                                                       type="checkbox"
-                                                  />
-                                             </div>
-                                             <div className="flex-1 p-3"></div>
+                                        <div className="flex-1 border p-3 border-gray-500 rounded-lg">
+                                             <TextInput
+                                                  form={businessForm}
+                                                  errors={errors}
+                                                  handleChange={handleChange}
+                                                  name="utang_ok"
+                                                  label="Utang OK"
+                                                  variant="primary"
+                                                  type="checkbox"
+                                             />
                                         </div>
-                                        <TextInput
-                                             form={businessForm}
-                                             errors={errors}
-                                             handleChange={handleChange}
-                                             name="business_notes"
-                                             label="Additional Information (Optional)"
-                                             variant="primary"
-                                             type="textarea"
-                                             placeHolder="Additional notes"
-                                        />
-                                   </>
-                              )}
+                                   </div>
+                                   <span className="text-sm text-left font-bold text-gray-700">
+                                        Service Option (Optional)
+                                   </span>
+                                   <div className="flex gap-2">
+                                        <div className="flex-1 border p-3 border-gray-500 rounded-lg">
+                                             <TextInput
+                                                  form={businessForm}
+                                                  errors={errors}
+                                                  handleChange={handleChange}
+                                                  name="delivery"
+                                                  label="Delivery"
+                                                  variant="primary"
+                                                  type="checkbox"
+                                             />
+                                        </div>
+                                        <div className="flex-1 border p-3 border-gray-500 rounded-lg">
+                                             <TextInput
+                                                  form={businessForm}
+                                                  errors={errors}
+                                                  handleChange={handleChange}
+                                                  name="meetup"
+                                                  label="Meet Up"
+                                                  variant="primary"
+                                                  type="checkbox"
+                                             />
+                                        </div>
+                                   </div>
+                                   <div className="flex gap-2">
+                                        <div className="flex-1 border p-3 border-gray-500 rounded-lg">
+                                             <TextInput
+                                                  form={businessForm}
+                                                  errors={errors}
+                                                  handleChange={handleChange}
+                                                  name="pickup"
+                                                  label="Pick Up"
+                                                  variant="primary"
+                                                  type="checkbox"
+                                             />
+                                        </div>
+                                        <div className="flex-1 p-3"></div>
+                                   </div>
+                                   <TextInput
+                                        form={businessForm}
+                                        errors={errors}
+                                        handleChange={handleChange}
+                                        name="business_notes"
+                                        label="Additional Information (Optional)"
+                                        variant="primary"
+                                        type="textarea"
+                                        placeHolder="Additional notes"
+                                   />
+                              </div>
 
                               {/* Step 2: Social Media */}
-                              {businessStep === 2 && (
-                                   <>
-                                        <span className="text-xl font-bold text-gray-500">
-                                             Social Media
-                                        </span>
-                                        <span className="text-md text-gray-500">
-                                             Help customers find you on social media
-                                        </span>
-                                        <TextInput
-                                             form={businessForm}
-                                             errors={errors}
-                                             handleChange={handleChange}
-                                             name="tiktok_link"
-                                             label="Tiktok Username"
-                                             variant="primary"
-                                             type="text"
-                                             placeHolder="@yourbusiness"
-                                        />
-                                        <TextInput
-                                             form={businessForm}
-                                             errors={errors}
-                                             handleChange={handleChange}
-                                             name="facebook_link"
-                                             label="Facebook Page/Profile"
-                                             variant="primary"
-                                             type="text"
-                                             placeHolder="facebook.com/yourbusiness"
-                                        />
-                                        <TextInput
-                                             form={businessForm}
-                                             errors={errors}
-                                             handleChange={handleChange}
-                                             name="instagram_link"
-                                             label="Instagram"
-                                             variant="primary"
-                                             type="text"
-                                             placeHolder="@yourbusiness"
-                                        />
-                                        <TextInput
-                                             form={businessForm}
-                                             errors={errors}
-                                             handleChange={handleChange}
-                                             name="website_link"
-                                             label="Website URL"
-                                             variant="primary"
-                                             type="text"
-                                             placeHolder="http://yourbusiness.com"
-                                        />
-                                   </>
-                              )}
+                              <div className={businessStep === 2 ? "flex flex-col gap-3" : "hidden"}>
+                                   <span className="text-xl font-bold text-gray-500">
+                                        Social Media
+                                   </span>
+                                   <span className="text-md text-gray-500">
+                                        Help customers find you on social media
+                                   </span>
+                                   <TextInput
+                                        form={businessForm}
+                                        errors={errors}
+                                        handleChange={handleChange}
+                                        name="tiktok_link"
+                                        label="Tiktok Username"
+                                        variant="primary"
+                                        type="text"
+                                        placeHolder="@yourbusiness"
+                                   />
+                                   <TextInput
+                                        form={businessForm}
+                                        errors={errors}
+                                        handleChange={handleChange}
+                                        name="facebook_link"
+                                        label="Facebook Page/Profile"
+                                        variant="primary"
+                                        type="text"
+                                        placeHolder="facebook.com/yourbusiness"
+                                   />
+                                   <TextInput
+                                        form={businessForm}
+                                        errors={errors}
+                                        handleChange={handleChange}
+                                        name="instagram_link"
+                                        label="Instagram"
+                                        variant="primary"
+                                        type="text"
+                                        placeHolder="@yourbusiness"
+                                   />
+                                   <TextInput
+                                        form={businessForm}
+                                        errors={errors}
+                                        handleChange={handleChange}
+                                        name="website_link"
+                                        label="Website URL"
+                                        variant="primary"
+                                        type="text"
+                                        placeHolder="http://yourbusiness.com"
+                                   />
+                              </div>
 
                               {/* Step 3: Business Requirements */}
-                              {businessStep === 3 && (
-                                   <>
-                                        <span className="text-lg font-bold text-gray-500">
-                                             Business Requirements
-                                        </span>
-                                        <div className="alert text-left alert-warning border-start border-4 border-warning d-flex align-items-start gap-3 rounded-3">
-                                             <i className="bx bx-error-circle mt-1"></i>While providing documents is optional,
-                                             You're welcome to register without them. You can easily upload any necessary
-                                             documents at your convenience within your Business Account settings.
-                                        </div>
-                                        <p className="text-muted text-center">
-                                             Uploading business documents helps build trust with customers and improves your business credibility on saKubo.
-                                        </p>
+                              <div className={businessStep === 3 ? "flex flex-col gap-3" : "hidden"}>
+                                   <span className="text-lg font-bold text-gray-500">
+                                        Business Requirements
+                                   </span>
+                                   <div className="alert text-left alert-warning border-start border-4 border-warning d-flex align-items-start gap-3 rounded-3">
+                                        <i className="bx bx-error-circle mt-1"></i>While providing documents is optional,
+                                        You're welcome to register without them. You can easily upload any necessary
+                                        documents at your convenience within your Business Account settings.
+                                   </div>
+                                   <p className="text-muted text-center">
+                                        Uploading business documents helps build trust with customers and improves your business credibility on saKubo.
+                                   </p>
 
-                                        <TextInput
-                                             form={businessForm}
-                                             errors={errors}
-                                             handleChange={handleChange}
-                                             name="business_permit"
-                                             label="Business Permit / LGU Permit"
-                                             variant="primary"
-                                             type="file"
-                                        />
-                                        <TextInput
-                                             form={businessForm}
-                                             errors={errors}
-                                             handleChange={handleChange}
-                                             name="store_front_photo"
-                                             label="Store Front Photo"
-                                             variant="primary"
-                                             type="file"
-                                        />
-                                        <TextInput
-                                             form={businessForm}
-                                             errors={errors}
-                                             handleChange={handleChange}
-                                             name="bir_certificate_of_registration"
-                                             label="BIR Certificate of Registration"
-                                             variant="primary"
-                                             type="file"
-                                        />
-                                        <TextInput
-                                             form={businessForm}
-                                             errors={errors}
-                                             handleChange={handleChange}
-                                             name="dti_registration"
-                                             label="DTI Registration (for sole proprietorship)"
-                                             variant="primary"
-                                             type="file"
-                                        />
-                                        <TextInput
-                                             form={businessForm}
-                                             errors={errors}
-                                             handleChange={handleChange}
-                                             name="sec_registration"
-                                             label="SEC Registration (for sole corporation/partnership)"
-                                             variant="primary"
-                                             type="file"
-                                        />
-                                        <TextInput
-                                             form={businessForm}
-                                             errors={errors}
-                                             handleChange={handleChange}
-                                             name="sanitary_registration"
-                                             label="Sanitary Permit (for food businesses)"
-                                             variant="primary"
-                                             type="file"
-                                        />
-                                   </>
-                              )}
+                                   <TextInput
+                                        form={businessForm}
+                                        errors={errors}
+                                        handleChange={handleChange}
+                                        name="business_permit"
+                                        label="Business Permit / LGU Permit"
+                                        variant="primary"
+                                        type="file"
+                                   />
+                                   <TextInput
+                                        form={businessForm}
+                                        errors={errors}
+                                        handleChange={handleChange}
+                                        name="store_front_photo"
+                                        label="Store Front Photo"
+                                        variant="primary"
+                                        type="file"
+                                   />
+                                   <TextInput
+                                        form={businessForm}
+                                        errors={errors}
+                                        handleChange={handleChange}
+                                        name="bir_certificate_of_registration"
+                                        label="BIR Certificate of Registration"
+                                        variant="primary"
+                                        type="file"
+                                   />
+                                   <TextInput
+                                        form={businessForm}
+                                        errors={errors}
+                                        handleChange={handleChange}
+                                        name="dti_registration"
+                                        label="DTI Registration (for sole proprietorship)"
+                                        variant="primary"
+                                        type="file"
+                                   />
+                                   <TextInput
+                                        form={businessForm}
+                                        errors={errors}
+                                        handleChange={handleChange}
+                                        name="sec_registration"
+                                        label="SEC Registration (for sole corporation/partnership)"
+                                        variant="primary"
+                                        type="file"
+                                   />
+                                   <TextInput
+                                        form={businessForm}
+                                        errors={errors}
+                                        handleChange={handleChange}
+                                        name="sanitary_registration"
+                                        label="Sanitary Permit (for food businesses)"
+                                        variant="primary"
+                                        type="file"
+                                   />
+                              </div>
 
                               {/* Step 4: Product & Services */}
-                              {businessStep === 4 && (
-                                   <>
-                                        <span className="text-xl font-bold text-gray-500">
-                                             Product & Services
-                                        </span>
-                                        <p className="text-muted text-center">
-                                             Search and select what you offer to help customers find you.
-                                        </p>
-                                        <Select2Dropdown
-                                             form={businessForm}
-                                             errors={errors}
-                                             handleChange={handleChange}
-                                             name="products"
-                                             label="Search Product/Services"
-                                             options={options}
-                                             isMulti={true}
-                                             variant="primary"
-                                             type="select"
-                                             placeHolder="Type to search offering"
-                                        />
-                                        <TextInput
-                                             form={businessForm}
-                                             errors={errors}
-                                             handleChange={handleChange}
-                                             name="additional_product"
-                                             label="Additional Product/Services (Optional)"
-                                             variant="primary"
-                                             type="textarea"
-                                             placeHolder="Describe any additional products or services not listed above..."
-                                        />
-                                   </>
-                              )}
+                              <div className={businessStep === 4 ? "flex flex-col gap-3" : "hidden"}>
+                                   <span className="text-xl font-bold text-gray-500">
+                                        Product & Services
+                                   </span>
+                                   <p className="text-muted text-center">
+                                        Search and select what you offer to help customers find you.
+                                   </p>
+                                   <Select2
+                                        form={businessForm}
+                                        errors={errors}
+                                        handleChange={handleChange}
+                                        name="products"
+                                        label="Search Product/Services"
+                                        options={options}
+                                        isMulti={true}
+                                        variant="primary"
+                                        type="select"
+                                        placeHolder="Type to search offering"
+                                   />
+                                   <TextInput
+                                        form={businessForm}
+                                        errors={errors}
+                                        handleChange={handleChange}
+                                        name="additional_product"
+                                        label="Additional Product/Services (Optional)"
+                                        variant="primary"
+                                        type="textarea"
+                                        placeHolder="Describe any additional products or services not listed above..."
+                                   />
+                              </div>
 
                               {/* Step 5: Review the Informations */}
-                              {businessStep === 5 && (
-                                   <>
-                                        <span className="text-xl font-bold text-gray-500">
-                                             Review your Information
-                                        </span>
-                                   </>
-                              )}
+                              <div className={businessStep === 5 ? "flex flex-col gap-3" : "hidden"}>
+                                   <span className="text-xl font-bold text-gray-500">
+                                        Review your Information
+                                   </span>
+                              </div>
 
                               {/* Navigation Buttons */}
                               <div className="flex justify-between mt-4">

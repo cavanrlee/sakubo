@@ -4,7 +4,6 @@ import { Capacitor } from "@capacitor/core";
 // ============================================================
 // BASE URL
 // ============================================================
-
 const getBaseURL = () => {
 
     // Capacitor Android / iOS
@@ -27,7 +26,6 @@ const baseURL = getBaseURL();
 // ============================================================
 // AXIOS API
 // ============================================================
-
 const api = axios.create({
     baseURL: `${baseURL}/api`,
     headers: {
@@ -41,19 +39,14 @@ const api = axios.create({
 // ============================================================
 // ADD SANCTUM TOKEN TO REQUEST
 // ============================================================
-
 api.interceptors.request.use(
     (config) => {
-
         const token = localStorage.getItem("token");
-
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
-
         return config;
     },
-
     (error) => {
         return Promise.reject(error);
     }
@@ -63,24 +56,18 @@ api.interceptors.request.use(
 // ============================================================
 // HANDLE AUTHENTICATION ERROR
 // ============================================================
-
 api.interceptors.response.use(
     (response) => {
         return response;
     },
-
     (error) => {
-
         if (error.response?.status === 401) {
-
             console.warn(
                 "Authentication failed:",
                 error.response?.data
             );
-
             localStorage.removeItem("token");
         }
-
         return Promise.reject(error);
     }
 );
