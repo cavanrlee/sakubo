@@ -30,7 +30,6 @@ const api = axios.create({
     baseURL: `${baseURL}/api`,
     headers: {
         Accept: "application/json",
-        "Content-Type": "application/json",
         "X-API-KEY": import.meta.env.VITE_SAKUBO_APP_API_KEY,
     },
 });
