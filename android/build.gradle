@@ -38,6 +38,8 @@ subprojects {
                         namespace "com.getcapacitor.app"
                     } else if (project.name == 'capacitor-device') {
                         namespace "com.getcapacitor.device"
+                    } else if (project.name == 'capacitor-geolocation') {
+                        namespace "com.byteowls.capacitor.geolocation"
                     }
                 }
                 compileOptions {
@@ -48,6 +50,15 @@ subprojects {
                     kotlinOptions {
                         jvmTarget = '17'
                     }
+                }
+            }
+        }
+
+        // Force Java Toolchain to 17 to prevent Gradle from looking for Java 21
+        if (project.plugins.hasPlugin('java') || project.plugins.hasPlugin('com.android.library') || project.plugins.hasPlugin('com.android.application')) {
+            java {
+                toolchain {
+                    languageVersion = JavaLanguageVersion.of(17)
                 }
             }
         }

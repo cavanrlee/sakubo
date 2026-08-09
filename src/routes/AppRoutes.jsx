@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
+import Alert from "@/utils/alert";
 import { App } from "@capacitor/app";
 
 import HomePage from "@/pages/home/HomePage.jsx";
@@ -31,13 +32,23 @@ const AppRoutes = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const backButtonListener = App.addListener('backButton', ({ canGoBack }) => {
-            if (canGoBack) {
-                window.history.back();
-            } else {
-                App.exitApp();
+        const backButtonListener = App.addListener(
+            "backButton",
+            async ({ canGoBack }) => {
+                if (canGoBack) {
+                    window.history.back();
+                } else {
+                    const confirmed = await Alert.confirm(
+                        "Exit app?",
+                        "Are you sure you want to exit the application?"
+                    );
+
+                    if (confirmed) {
+                        App.exitApp();
+                    }
+                }
             }
-        });
+        );
 
         return () => {
             backButtonListener.then(listener => listener.remove());

@@ -1,22 +1,60 @@
-import api, { sanctum } from "@/api/axios.js";
-
-// login user
-export const loginUser = async(formData) => {
-	await sanctum.get('/sanctum/csrf-cookie');
-	const response = await api.post("/login", formData);
-	return response.data;
-}
+import api from "@/api/axios.js";
 
 
-// change password
+// ============================================================
+// LOGIN USER
+// ============================================================
+
+export const loginUser = async (formData) => {
+
+    const response = await api.post(
+        "/login",
+        formData
+    );
+
+    // Save Sanctum Personal Access Token
+    if (response.data.success) {
+
+        const token = response.data.data.token;
+
+        localStorage.setItem(
+            "token",
+            token
+        );
+    }
+
+    return response.data;
+};
+
+
+// ============================================================
+// CHANGE PASSWORD
+// ============================================================
+
 export const changePassword = async (formData) => {
-	const response = await api.post("/change-password", formData);
-	return response.data;
-}
+
+    const response = await api.post(
+        "/change-password",
+        formData
+    );
+
+    return response.data;
+};
 
 
-// logout user
-export const logoutUser = async(formData) => {
-	const response = await api.post("/logout", formData);
-	return response.data;
-}
+// ============================================================
+// LOGOUT USER
+// ============================================================
+
+export const logoutUser = async (formData) => {
+
+    const response = await api.post(
+        "/logout",
+        formData
+    );
+
+    // Remove local Sanctum token
+    localStorage.removeItem("token");
+
+    return response.data;
+};

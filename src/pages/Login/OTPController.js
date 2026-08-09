@@ -1,4 +1,4 @@
-import api, { sanctum } from "@/api/axios.js";
+import api from "@/api/axios.js";
 
 export const sendOTP = async (formData) => {
 	const response = await api.post("/send-otp", formData);

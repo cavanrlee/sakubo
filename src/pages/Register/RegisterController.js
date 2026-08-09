@@ -1,7 +1,7 @@
-import api, { sanctum } from "@/api/axios.js";
+import api from "@/api/axios.js";
 
 export const registerUser = async (formData) => {
-  await sanctum.get('/sanctum/csrf-cookie');
+  // await sanctum.get('/sanctum/csrf-cookie');
   const response = await api.post("/register", formData);
 
   return response.data;
