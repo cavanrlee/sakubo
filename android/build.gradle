@@ -1,0 +1,73 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.9.1'
+        classpath 'com.google.gms:google-services:4.4.2'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+apply from: "variables.gradle"
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+// Force all subprojects to use Java 17 to match the JDK 17 environment.
+// This also fixes the "Namespace not specified" issue for older Capacitor plugins by injecting it if missing.
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            project.android {
+                if (namespace == null) {
+                    // Setting namespaces for Capacitor plugins that might be missing them in AGP 8+
+                    if (project.name == 'capacitor-community-http') {
+                        namespace "com.getcapacitor.community.http"
+                    } else if (project.name == 'capacitor-app') {
+                        namespace "com.getcapacitor.app"
+                    } else if (project.name == 'capacitor-device') {
+                        namespace "com.getcapacitor.device"
+                    } else if (project.name == 'capacitor-geolocation') {
+                        namespace "com.byteowls.capacitor.geolocation"
+                    }
+                }
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_17
+                    targetCompatibility JavaVersion.VERSION_17
+                }
+                if (project.plugins.hasPlugin('kotlin-android')) {
+                    kotlinOptions {
+                        jvmTarget = '17'
+                    }
+                }
+            }
+        }
+
+        // Force Java Toolchain to 17 to prevent Gradle from looking for Java 21
+        if (project.plugins.hasPlugin('java') || project.plugins.hasPlugin('com.android.library') || project.plugins.hasPlugin('com.android.application')) {
+            java {
+                toolchain {
+                    languageVersion = JavaLanguageVersion.of(17)
+                }
+            }
+        }
+    }
+}
+
+// Fixed the 'buildDir' deprecation warning often seen in Gradle 8+
+layout.buildDirectory.set(file("$rootDir/build"))
+
+task clean(type: Delete) {
+    delete rootProject.layout.buildDirectory
+}

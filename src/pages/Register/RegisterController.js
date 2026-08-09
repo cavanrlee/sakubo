@@ -1,7 +1,15 @@
-import express from "express";
-import db_connection from "../../server/db.js";
+import api from "@/api/axios.js";
 
-const router = express.Router();
+export const registerUser = async (formData) => {
+  // await sanctum.get('/sanctum/csrf-cookie');
+  const response = await api.post("/register", formData);
 
+  return response.data;
+};
 
-export default router;
+export const getAddressMaintenance = async () => {
+  const response = await api.get("/address-maintenance");
+
+  return response.data;
+};
+

@@ -1,11 +1,25 @@
 @import "tailwindcss";
 @import "bootstrap";
+@import "@fontsource/poppins/100.css";
+@import "@fontsource/poppins/300.css";
+@import "@fontsource/poppins/400.css";
+@import "@fontsource/poppins/500.css";
+@import "@fontsource/poppins/700.css";
+@import "@fontsource/poppins/900.css";
+
+
+body {
+  font-family: "Poppins", sans-serif;
+}
 
 .btn-primary {
   border-color: #4CAF50 !important;
   background-color: #4CAF50 !important;
 }
 
+.btn-primary:hover {
+  background-color: #338837 !important;
+}
 
 #root {
   max-width: 1280px;
@@ -20,9 +34,11 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -31,6 +47,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -48,4 +65,33 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.swal2-confirm {
+  background-color: #4CAF50 !important;
+  border-radius: 12px !important;
+  padding: 10px 20px !important;
+  font-weight: 500 !important;
+}
+
+.swal2-confirm:hover {
+  background-color: #43A047 !important;
+}
+
+.swal2-cancel {
+  border-radius: 12px !important;
+  padding: 10px 20px !important;
+}
+
+
+
+/* Bot nav CSS */
+#bottom-nav {
+  transform: translateY(0);
+  transition: transform 0.15s ease-in-out;
+  will-change: transform;
+}
+
+#bottom-nav.nav-hidden {
+  transform: translateY(100%);
 }

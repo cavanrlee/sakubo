@@ -1,153 +1,406 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { registerUser, getAddressMaintenance } from "@/pages/register/RegisterController";
+import { useNavigate } from "react-router-dom";
+import TextInput from "@/components/inputs";
+import Button from "@/components/buttons/Button";
+import Tabs from "@/components/tabs/Tabs";
+import Logo from "@/components/Logo";
+import Alert from "@/utils/alert";
+import { Icon } from '@iconify/react';
+
+
 
 export default function SaKuboRegister() {
-  const [activeTab, setActiveTab] = useState("personal");
+	const [errors, setErrors] = useState({});
+	const [regions, setRegions] = useState([]);
+	const [provinces, setProvinces] = useState([]);
+	const [municipalities, setMunicipalities] = useState([]);
+	const [barangays, setBarangays] = useState([]);
 
-  return (
-    <div className="bg-white text-gray-800 flex flex-col items-center min-h-screen p-6">
-      {/* HEADER */}
-      <header className="text-center mt-4">
-        <h1 className="text-2xl font-bold text-green-700">saKubo</h1>
-        <p className="text-sm text-gray-600 mt-1">Join our community today</p>
-      </header>
 
-      {/* TAB BUTTONS */}
-      <div className="flex mt-4 w-full max-w-sm bg-gray-100 rounded-xl p-1">
-        <button
-          className={`w-1/2 py-2 rounded-lg font-medium transition ${
-            activeTab === "personal"
-              ? "bg-green-600 text-white"
-              : "text-gray-700 hover:bg-gray-200"
-          }`}
-          onClick={() => setActiveTab("personal")}
-        >
-          Personal
-        </button>
-        <button
-          className={`w-1/2 py-2 rounded-lg font-medium transition ${
-            activeTab === "business"
-              ? "bg-green-600 text-white"
-              : "text-gray-700 hover:bg-gray-200"
-          }`}
-          onClick={() => setActiveTab("business")}
-        >
-          Business
-        </button>
-      </div>
+	useEffect(() => {
+		loadAddressMaintenance();
+	}, []);
 
-      {/* FORM SECTION */}
-      <form className="w-full max-w-sm mt-6 flex flex-col gap-4">
-        {activeTab === "personal" ? (
-          <>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                placeholder="First Name"
-                className="w-1/2 border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
-              />
-              <input
-                type="text"
-                placeholder="Last Name"
-                className="w-1/2 border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
-              />
-            </div>
 
-            <input
-              type="text"
-              placeholder="Nickname"
-              className="border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
-            />
+	const navigate = useNavigate();
 
-            <input
-              type="text"
-              placeholder="Mobile Number"
-              className="border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
-            />
 
-            <input
-              type="email"
-              placeholder="Email Address (Optional)"
-              className="border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
-            />
+	const loadAddressMaintenance = async () => {
+		try {
+			const res = await getAddressMaintenance();
+			setRegions(res || []);
+		} catch (err) {
+			console.error(err);
+		}
+	};
 
-            <div className="flex gap-2">
-              <input
-                type="text"
-                placeholder="Barangay"
-                className="w-1/3 border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
-              />
-              <input
-                type="text"
-                placeholder="City"
-                className="w-1/3 border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
-              />
-              <input
-                type="text"
-                placeholder="Province"
-                className="w-1/3 border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
-              />
-            </div>
+	const handleAddressChange = (e) => {
+		const { name, value, type, checked, files } = e.target;
 
-            <button className="bg-green-600 text-white py-3 rounded-xl font-medium hover:bg-green-700 transition">
-              Create Personal Account
-            </button>
-          </>
-        ) : (
-          <>
-            <input
-              type="text"
-              placeholder="Business Name"
-              className="border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
-            />
+		let finalValue;
 
-            <input
-              type="text"
-              placeholder="Business Category"
-              className="border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
-            />
+		if (type === "checkbox") finalValue = checked ? 1 : 0;
+		else if (type === "file") finalValue = files?.[0] ?? null;
+		else finalValue = value;
 
-            <select className="border border-gray-300 rounded-xl p-3 text-sm text-gray-700 focus:ring-2 focus:ring-green-500 outline-none">
-              <option>Select Type</option>
-              <option>Retail</option>
-              <option>Service</option>
-            </select>
+		switch (name) {
+			case "region_id": {
+				const region = regions.find(
+					r => r.region_id == finalValue
+				);
 
-            <input
-              type="text"
-              placeholder="Street Address"
-              className="border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
-            />
+				setProvinces(region?.provinces || []);
+				setMunicipalities([]);
+				setBarangays([]);
 
-            <div className="flex gap-2">
-              <input
-                type="text"
-                placeholder="Barangay"
-                className="w-1/3 border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
-              />
-              <input
-                type="text"
-                placeholder="City"
-                className="w-1/3 border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
-              />
-              <input
-                type="text"
-                placeholder="Province"
-                className="w-1/3 border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
-              />
-            </div>
+				const updated = {
+					...personalForm,
+					region_id: finalValue,
+					province_id: "",
+					municipality_id: "",
+					barangay_id: "",
+				};
 
-            <input
-              type="text"
-              placeholder="Contact Number"
-              className="border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-green-500 outline-none"
-            />
+				setPersonalForm(updated);
+				geocodeCurrentAddress(updated);
 
-            <button className="bg-green-600 text-white py-3 rounded-xl font-medium hover:bg-green-700 transition">
-              Create Business Account
-            </button>
-          </>
-        )}
-      </form>
-    </div>
-  );
+				break;
+			}
+
+			case "province_id": {
+				const province = provinces.find(
+					p => p.province_id == finalValue
+				);
+
+				setMunicipalities(province?.municipalities || []);
+				setBarangays([]);
+
+				const updated = {
+					...personalForm,
+					province_id: finalValue,
+					municipality_id: "",
+					barangay_id: "",
+				};
+
+				setPersonalForm(updated);
+				geocodeCurrentAddress(updated);
+
+				break;
+			}
+
+			case "municipality_id": {
+				const municipality = municipalities.find(
+					m => m.municipality_id == finalValue
+				);
+
+				setBarangays(municipality?.barangays || []);
+
+				const updated = {
+					...personalForm,
+					municipality_id: finalValue,
+					barangay_id: "",
+				};
+
+				setPersonalForm(updated);
+				geocodeCurrentAddress(updated);
+
+				break;
+			}
+
+			case "barangay_id": {
+
+				const updated = {
+					...personalForm,
+					barangay_id: finalValue,
+				};
+
+				setPersonalForm(updated);
+				geocodeCurrentAddress(updated);
+
+				break;
+			}
+
+			default: {
+				setPersonalForm(prev => ({
+					...prev,
+					[name]: finalValue,
+				}));
+			}
+		}
+	};
+
+
+	const [personalForm, setPersonalForm] = useState({
+		firstname: "",
+		middlename: "",
+		lastname: "",
+		nickname: "",
+		email: "",
+		password: "",
+		number: "",
+		region_id: "",
+		barangay_id: "",
+		municipality_id: "",
+		province_id: "",
+	});
+
+	const handleChange = (e) => {
+		const { name, value, type, checked, files } = e.target;
+
+		let finalValue;
+
+		if (type === "checkbox") finalValue = checked ? 1 : 0;
+		else if (type === "file") finalValue = files?.[0] ?? null;
+		else finalValue = value;
+
+		if (name in personalForm) {
+			setPersonalForm((prev) => ({ ...prev, [name]: finalValue }));
+			return;
+		}
+	};
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		setErrors({});
+		const formData = new FormData();
+
+		Object.entries(personalForm).forEach(([key, value]) => {
+
+			// FILES
+			if (value instanceof File) {
+				formData.append(key, value);
+			}
+
+			// ARRAY (products, days_of_operation)
+			else if (Array.isArray(value)) {
+				value.forEach(v => formData.append(`${key}[]`, v));
+			}
+
+			// BOOLEAN
+			else if (typeof value === "boolean") {
+				formData.append(key, value ? "1" : "0");
+			}
+
+			// DEFAULT
+			else {
+				formData.append(key, value ?? "");
+			}
+		});
+
+		try {
+			const res = await registerUser(formData);
+
+			localStorage.setItem("api_token", res.token);
+
+			Alert.success(
+				"Thank you!",
+				<small>Your submission was received successfully.</small>
+			);
+
+			navigate("/login");
+
+		} catch (err) {
+			if (err.response?.data?.error?.fields) {
+				setErrors(err.response.data.error.fields);
+			}
+		}
+	};
+	
+	return (
+		<div className="container-fluid">
+			<div className="row py-4">
+				<div className="col-12 max-w-xl mx-auto">
+				<Logo/>
+
+				{/* TITLE */}
+				<div className="row mb-4 text-center">
+					<div className="col-12">
+						<span className="text-2xl text-gray-600 font-bold">
+							Create Account
+						</span>
+					</div>
+					<div className="col-12">
+						<span className="text-md text-gray-500">
+							Join our community today
+						</span>
+					</div>
+				</div>
+					<form className="w-full mt-6 flex flex-col gap-3 pb-10" onSubmit={handleSubmit}>
+
+					{/* Personal tab unchanged */}
+					<div className="flex gap-2">
+						<div className="flex-1">
+						<TextInput
+							form={personalForm}
+							errors={errors}
+							handleChange={handleChange}
+							name="firstname"
+							label="First Name"
+							variant="primary"
+							type="text"
+							placeHolder="First Name"
+						/>
+						</div>
+					</div>
+					<div className="flex gap-2">
+						<div className="flex-1">
+						<TextInput
+							form={personalForm}
+							errors={errors}
+							handleChange={handleChange}
+							name="middlename"
+							label="Middle Name"
+							variant="primary"
+							type="text"
+							placeHolder="Middle Name"
+						/>
+						</div>
+					</div>
+					<div className="flex gap-2">
+						<div className="flex-1">
+						<TextInput
+							form={personalForm}
+							errors={errors}
+							handleChange={handleChange}
+							name="lastname"
+							label="Last Name"
+							variant="primary"
+							type="text"
+							placeHolder="Last Name"
+						/>
+						</div>
+					</div>
+					<div>
+						<TextInput
+						form={personalForm}
+						errors={errors}
+						handleChange={handleChange}
+						name="nickname"
+						label="Nickname (Optional)"
+						variant="primary"
+						type="text"
+						placeHolder="Nickname"
+						/>
+					</div>
+
+					<div>
+						<TextInput
+						form={personalForm}
+						errors={errors}
+						handleChange={handleChange}
+						name="number"
+						label="Number"
+						variant="primary"
+						type="number"
+						placeHolder="Number"
+						/>
+					</div>
+
+					<div>
+						<TextInput
+						form={personalForm}
+						errors={errors}
+						handleChange={handleChange}
+						name="email"
+						label="Email (Optional)"
+						variant="primary"
+						type="email"
+						placeHolder="Email"
+						/>
+					</div>
+
+					<div>
+						<TextInput
+						form={personalForm}
+						errors={errors}
+						handleChange={handleChange}
+						name="password"
+						label="Password"
+						variant="primary"
+						type="password"
+						placeHolder="Password"
+						/>
+					</div>
+
+					<div className="flex gap-2">
+						<div className="flex-1">
+						<TextInput
+							form={personalForm}
+							errors={errors}
+							name="region_id"
+							label="Region"
+							type="select"
+							variant="primary"
+							placeHolder="Region"
+							handleChange={handleAddressChange}
+							options={regions.map(r => ({
+								value: r.region_id,
+								label: r.region_name,
+							}))}
+						/>
+						</div>
+					</div>
+
+					<div className="flex gap-2">
+						<div className="flex-1">
+						<TextInput
+							form={personalForm}
+							errors={errors}
+							name="province_id"
+							label="Province"
+							type="select"
+							variant="primary"
+							placeHolder="Province"
+							handleChange={handleAddressChange}
+							options={provinces.map(p => ({
+								value: p.province_id,
+								label: p.province_name,
+							}))}
+						/>
+						</div>
+					</div>
+					<div className="flex gap-2">
+						<div className="flex-1">
+						<TextInput
+							form={personalForm}
+							errors={errors}
+							name="municipality_id"
+							label="City"
+							type="select"
+							variant="primary"
+							placeHolder="City"
+							handleChange={handleAddressChange}
+							options={municipalities.map(m => ({
+								value: m.municipality_id,
+								label: m.municipality_name,
+							}))}
+						/>
+						</div>
+					</div>
+					<div className="flex gap-2">
+						<div className="flex-1">
+						<TextInput
+							form={personalForm}
+							errors={errors}
+							name="barangay_id"
+							label="Barangay"
+							type="select"
+							variant="primary"
+							placeHolder="Barangay"
+							handleChange={handleAddressChange}
+							options={barangays.map(b => ({
+								value: b.barangay_id,
+								label: b.barangay_name,
+							}))}
+						/>
+						</div>
+					</div>
+					<Button variant="primary" type="submit">Create Personal Account</Button>
+					</form>
+				</div>
+			</div>
+		</div>
+
+	);
 }

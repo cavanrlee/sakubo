@@ -1,49 +1,182 @@
-import React from "react";
+import { useState, useEffect } from 'react'
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "@/pages/login/LoginController";
+import TextInput from "@/components/inputs";
+import Button from "@/components/buttons/Button";
+import Logo from "@/components/Logo";
+import { getDeviceInfoObject } from "@/helpers/deviceHelper";
+import { Geolocation } from "@capacitor/geolocation";
+import { useAuth } from "@/hooks/useAuth";
+
 
 export default function SaKuboLogin() {
-  return (
-    <div className="bg-white text-gray-800 flex flex-col items-center justify-between min-h-screen p-4">
-      <header className="text-center mt-8">
-        <h1 className="text-2xl font-bold text-green-700">saKubo</h1>
-        <p className="text-sm text-gray-600 mt-1">
-          Discover local businesses in your community
-        </p>
-      </header>
 
-      <section className="w-full max-w-sm border border-green-300 rounded-2xl p-4 mt-6 text-center">
-        <div className="flex items-center justify-center text-red-600 mb-2">
-          <span className="mr-1">📍</span>
-          <span className="text-sm font-medium">Current Location Detected</span>
-        </div>
-        <p className="text-base font-semibold text-gray-800">
-          Brgy. Commonwealth, Quezon City
-        </p>
-        <p className="text-xs text-gray-500 mt-1">
-          47 businesses found in your area
-        </p>
-      </section>
+     const { setUser }             = useAuth(null);
+     const [errors, setErrors]     = useState({});
+     const navigate                = useNavigate();
 
-      <div className="flex flex-col gap-3 w-full max-w-sm mt-6">
-        <button className="bg-green-600 hover:bg-green-700 text-white py-2 rounded-2xl font-medium">
-          Log In
-        </button>
-        <button className="border border-green-600 text-green-600 hover:bg-green-50 py-2 rounded-2xl font-medium">
-          Sign Up
-        </button>
-      </div>
+     const [form, setForm] = useState({
+         email:         "",
+         password:      "",
+         device_id:     "",
+         device_name:   "",
+         device_token:  null,
+     });
 
-      <div className="mt-4 text-sm text-green-600 cursor-pointer hover:underline">
-        Log In as A Guest
-      </div>
+     useEffect(() => {
+          const loadDevice = async () => {
+               try {
+                    // Get device information
+                    const deviceData = await getDeviceInfoObject();
 
-      <footer className="flex justify-center gap-4 w-full max-w-sm mt-6 mb-8">
-        <button className="flex-1 border border-gray-300 text-gray-700 py-2 rounded-2xl font-medium">
-          📰 saKubo News
-        </button>
-        <button className="flex-1 border border-gray-300 text-gray-700 py-2 rounded-2xl font-medium">
-          📍 See Coverage Map
-        </button>
-      </footer>
-    </div>
-  );
+                    setForm((prev) => ({
+                         ...prev,
+                         ...deviceData,
+                    }));
+
+                    // Request location permission
+                    const permission = await Geolocation.requestPermissions();
+
+                    console.log("Location permission:", permission);
+
+                    if (permission.location === "granted" ||permission.coarseLocation === "granted") {
+                         console.log("Location permission granted");
+                    } else {
+                         console.log("Location permission denied");
+                    }
+
+               } catch (error) {
+                    console.log("Failed to load device information:", error);
+               }
+          };
+
+          loadDevice();
+     }, []);
+
+
+     const requestLocationPermission = async () => {
+          try {
+               const permission = await Geolocation.requestPermissions();
+
+               console.log("Location permission:", permission);
+
+               if (
+                    permission.location === "granted" ||
+                    permission.coarseLocation === "granted"
+               ) {
+                    console.log("Location permission granted");
+                    return true;
+               }
+
+               console.log("Location permission denied");
+               return false;
+
+          } catch (error) {
+               console.error("Location permission error:", error);
+               return false;
+          }
+     };
+
+
+     const handleChange = (e) => {
+          const { name, value, type, checked } = e.target;
+          setForm((prev) => ({ 
+              ...prev, 
+              [name]: type === 'checkbox' ? checked : value 
+          }));
+     };
+
+     
+     const handleLogin = async (e) => {
+          e.preventDefault();
+          setErrors({});
+          try {
+               const response = await loginUser(form);
+               setUser(response.data);
+               navigate("/dashboard");
+          } catch (err) {
+			if (err.response?.data?.error?.fields) {
+				setErrors(err.response.data.error.fields);
+			}
+          }
+     };
+
+     return (
+          <div className="container-fluid">
+               <div className="row">
+                    <div className="col-12 py-4 max-w-xl mx-auto">
+                         <Logo/>
+
+                         <div className="card border-0 p-0">
+                              <div className="row mb-2">
+                                   <div className="col-12">
+                                        <span className="text-2xl text-gray-600! font-bold">
+                                             Welcome back!
+                                        </span>
+                                   </div>
+                                   <div className="col-12">
+                                        <span className="text-md text-gray-600!">
+                                             Sign in to your account.
+                                        </span>
+                                   </div>
+                              </div>
+
+                              <form onSubmit={handleLogin} id="login-form">
+                                   <div className="row mt-4">
+                                        <div className="col-12 my-2">
+                                             <TextInput
+                                                  form={form}
+                                                  errors={errors}
+                                                  handleChange={handleChange}
+                                                  name="email"
+                                                  label="Mobile Number/Email"
+                                                  variant="primary"
+                                                  type="text"
+                                                  placeHolder="+639XX-XXX-XXXX"
+                                             />
+                                        </div>
+                                        <div className="col-12 my-2">
+                                             <TextInput
+                                                  form={form}
+                                                  errors={errors}
+                                                  handleChange={handleChange}
+                                                  name="password"
+                                                  label="Password"
+                                                  variant="primary"
+                                                  type="password"
+                                                  placeHolder="Enter your password"
+                                             />
+                                        </div>
+                                   </div>
+
+                                   <div className="row mt-2">
+                                        <div className="col-6">
+                                             <TextInput
+                                                  form={form}
+                                                  errors={errors}
+                                                  handleChange={handleChange}
+                                                  name="remember"
+                                                  label="Remember me"
+                                                  variant="primary"
+                                                  type="checkbox"
+                                             />
+                                        </div>
+                                        <div className="col-6">
+                                             <a className="float-right text-sm text-gray-600! px-2 font-semibold hover:cursor-pointer hover:text-gray-900! no-underline!" onClick={() => navigate("/otp-sending")}>
+                                                  Forgot password?
+                                             </a>
+                                        </div>
+                                   </div>
+
+                                   <div className="row mt-2">
+                                        <div className="col-12 my-2">
+                                             <Button variant="primary" type="submit" onSubmit={handleLogin}>Log In</Button>
+                                        </div>
+                                   </div>
+                              </form>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     );
 }
