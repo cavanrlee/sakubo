@@ -30,7 +30,7 @@ export default function SakuboProfile() {
 		e.preventDefault();
 		try {
 			await logoutUser(form);
-			navigate("/Login");
+			navigate("/");
 		} catch (error) {
 			console.error(error);
 		}
